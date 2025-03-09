@@ -1,0 +1,60 @@
+{% extends 'include/adminBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-header pb-0">
+      <h6>Parking List table</h6>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Manager</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sub City</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Woreda</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keble</th>
+            <th class="text-secondary opacity-7"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for park in parkings %}
+          <tr>
+            <td>
+              <div class="d-flex px-2 py-1">
+                <div>
+                  <img src="{{park.image1.url}}" class="avatar avatar-sm me-3">
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                  <h6 class="mb-0 text-xs">{{park.name}}</h6>
+                  <p class="text-xs text-secondary mb-0">{{park.user.email}}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-bold mb-0">Manager</p>
+              <p class="text-xs text-secondary mb-0">{{park.user.first_name}} {{park.user.last_name}}</p>
+            </td>
+            <td class="align-middle text-center text-sm">
+              <span class="text-secondary text-xs font-weight-bold">{{park.address}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-bold">{{park.subcity}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-bold">{{park.woreda}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-bold">{{park.keble}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-bold">Detail</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

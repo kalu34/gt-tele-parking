@@ -1,0 +1,82 @@
+{% extends 'Subcity/include/SubcityBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% include 'Subcity/Report/include/ReportInclude.html' %}
+  <h4 class=" bg-primary p-2 rounded text-white">Income Report</h4>
+  <div class="d-flex justify-content-between mt-2">
+    <div class="search w-25">
+      <div class="mb-3">
+        <input type="email" class="form-control"style = "border: 1px solid rgba(0,0,0,0.2); width: 100%; height: 40px; padding: 10px 15px; background: transparent;" placeholder="search ...">
+      </div>
+    </div>
+    
+    <div class="">
+      {% if 'SubcityCustomerReportPerDay' in request.get_full_path %}
+      <a href = "{% url 'SubcityCustomerReportPerDay' id=woreda_id %}" class="btn  btn-outline-secondary">User Per Day <i class="fa-solid fa-check mx-2"></i></a>
+      <a href="{% url 'SubcityCustomerReportPerMonth'  id=woreda_id month_name='Jan'  %}" class="btn  bg-light mx-3">User Per Month </a>
+      <a href="{% url 'SubcityCustomerReportPerYear' id=woreda_id %}" class="btn  bg-light">User Per Year  </a>
+      {% elif 'SubcityCustomerReportPerMonth' in request.get_full_path %}
+      <a href = "{% url 'SubcityCustomerReportPerDay'  id=woreda_id %}" class="btn  bg-light">User Per Day</a>
+      <a href="{% url 'SubcityCustomerReportPerMonth'  id=woreda_id month_name='Jan'  %}" class="btn  btn-outline-secondary mx-3">User Per Month <i class="fa-solid fa-check mx-2"></i> </a>
+      <a href="{% url 'SubcityCustomerReportPerYear' id=woreda_id %}" class="btn  bg-light">User Per Year  </a>
+      {% else %}
+      <a href = "{% url 'SubcityCustomerReportPerDay' id=woreda_id %}" class="btn  bg-light">User Per Day </a>
+      <a href="{% url 'SubcityCustomerReportPerMonth' id=woreda_id month_name='Jan'   %}" class="btn  bg-light mx-3">User Per Month </a>
+      <a href="{% url 'SubcityCustomerReportPerYear' id=woreda_id %}" class="btn  btn-outline-secondary">User Per Year  <i class="fa-solid fa-check mx-2"></i></a>
+      {% endif %}
+    </div>
+
+  </div>
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Parking</th>
+            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
+            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Car</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plate Number</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+            <th class="text-secondary opacity-7"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in users %}
+          <tr>
+            <td>
+              <div class="d-flex px-2 py-1">
+                <div>
+                  <i class="fa-solid fa-user" ></i>
+                </div>
+                <div class="d-flex flex-column justify-content-center mx-3">
+                  <h6 class="mb-0 text-xs">{{item.payment.user.first_name}} {{item.user.last_name}}</h6>
+                  <p class="text-xs text-secondary mb-0">{{item.payment.user.email}}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-bold mb-0">{{item.payment.request_id.parking.name}}</p>
+              <p class="text-xs text-secondary mb-0">{{item.payment.request_id.parking.address}}</p>
+            </td>
+            <td class="align-middle text-center text-sm">
+              <span class="text-secondary text-xs font-weight-normal">{{item.payment.user.phone_number}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-normal">{{item.car.model}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-normal">{{item.car.plate_number}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-normal">{{item.payment.user.address}}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

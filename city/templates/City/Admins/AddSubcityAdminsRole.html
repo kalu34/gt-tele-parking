@@ -1,0 +1,59 @@
+{% extends 'City/include/CityBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4 px-5"> 
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+
+  <h4 class="text-center text-white bg-dark p-2 rounded">Role Assign</h4>
+  <div class="text-dark">
+    <h6>Information Guild </h6>
+    <ul>
+      <li>Please Provied A valid Subcity 'W0-1'</li>
+      <li>The Below Woreda Are Assumed to be monitured by this user</li>
+      <li>Select the correct permission, accessable to the defiend user</li>
+      <li class="text-danger">Any change to the user role will resamble a block on the access of the user </li>
+    </ul>
+  </div>
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+      {% for field in form %}
+      <div class="col-md-6 mt-2 mb-2">
+        <label for="{{ field.id_for_label }}">{{ field.label }} *</label>
+        {{ field }}
+      </div>
+    {% endfor %}
+    </div>
+    <div class="d-flex rounded shadow p-3 align-items-center border-1 flex-wrap flex-sm-nowrap">
+      <button type="submit" class="btn btn-dark me-2">Save</button>
+      {% if fomr.instance.pk %}
+      <a href="{% url 'RemoveSubcityAdmin' id=user_id %}" class="btn btn-danger">Delete</a>
+      {% else %}
+      <a href="" class="btn btn-danger disabled">Delete</a>
+      {% endif %}
+    </div> 
+  </form>
+
+
+</div>
+{% endblock %}

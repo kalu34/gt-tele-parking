@@ -1,0 +1,151 @@
+{% extends 'City/include/CityBase.html' %} {% load static %} {% block content %}
+
+<div class="container-fluid py-4 px-5">
+  {% include 'City/Report/include/CityReportBase.html' %}
+  <h4 class="bg-gradient-primary p-2 px-3 rounded text-white">Income Report</h4>
+  <div class="row">
+    <div class="col-12">
+      <div class="card border shadow-xs mb-4">
+        <div class="card-header border-bottom pb-0">
+          <div class="d-sm-flex align-items-center">
+            <div>
+              <h6 class="font-weight-semibold text-lg mb-0">Woreda list</h6>
+              <p class="text-sm">See information about In SUB - {{subcity}} W0 - {{woreda}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body px-0 py-0">
+          <div class="border-bottom py-3 px-3 d-sm-flex align-items-center">
+            <div class="">
+              <div class="row">
+                <div class="col-12">
+                  <div class="col">
+                    {% if 'CityCustomerReportPerDay' in request.get_full_path %}
+                    <a href="{% url 'CityCustomerReportPerDay' subcity=subcity woreda=woreda %}" class="btn btn-outline-secondary bg-gradient-primary w-100 w-sm-auto">
+                      User Per Day
+                      <i class="fa-solid fa-check mx-2"></i>
+                    </a>
+                    <a href="{% url 'CityCustomerReportPerMonth'  subcity=subcity woreda=woreda month='Jan'  %}" class="btn btn-white w-100 w-sm-auto">User Per Month</a>
+                    <a href="{% url 'CityCustomerReportPerYear' subcity=subcity woreda=woreda %}" class="btn btn-white w-100 w-sm-auto">User Per Year</a>
+                    {% elif 'CityCustomerReportPerMonth' in request.get_full_path %}
+                    <a href="{% url 'CityCustomerReportPerDay'  subcity=subcity woreda=woreda %}" class="btn btn-white w-100 w-sm-auto">User Per Day</a>
+                    <a
+                      href="{% url 'CityCustomerReportPerMonth'  subcity=subcity woreda=woreda month='Jan'  %}"
+                      class="btn btn-outline-secondary bg-gradient-primary w-100 w-sm-auto">
+                      User Per Month
+                      <i class="fa-solid fa-check mx-2"></i>
+                    </a>
+                    <a href="{% url 'CityCustomerReportPerYear' subcity=subcity woreda=woreda %}" class="btn btn-white w-100 w-sm-auto">User Per Year</a>
+                    {% else %}
+                    <a href="{% url 'CityCustomerReportPerDay' subcity=subcity woreda=woreda %}" class="btn btn-white w-100 w-sm-auto">User Per Day</a>
+                    <a href="{% url 'CityCustomerReportPerMonth' subcity=subcity woreda=woreda month='Jan'   %}" class="btn btn-white w-100 w-sm-auto">User Per Month</a>
+                    <a href="{% url 'CityCustomerReportPerYear' subcity=subcity woreda=woreda %}" class="btn btn-outline-secondary bg-gradient-primary w-100 w-sm-auto">
+                      User Per Year
+                      <i class="fa-solid fa-check mx-2"></i>
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="input-group w-sm-25 ms-auto">
+              <span class="input-group-text text-body">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+                </svg>
+              </span>
+              <input type="text" class="form-control" placeholder="Search" />
+            </div>
+          </div>
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Parking</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Car</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Plate Number</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in IncomeReport %}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div>
+                        <i class="fa-solid fa-user" ></i>
+                      </div>
+                      <div class="d-flex flex-column justify-content-center mx-3">
+                        <h6 class="mb-0 text-xs">{{item.payment.user.first_name}} {{item.user.last_name}}</h6>
+                        <p class="text-xs text-secondary mb-0">{{item.payment.user.email}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">{{item.payment.request_id.parking.name}}</p>
+                    <p class="text-xs text-secondary mb-0">{{item.payment.request_id.parking.address}}</p>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="text-secondary text-xs font-weight-normal">{{item.payment.user.phone_number}}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-normal">{{item.car.model}}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-normal">{{item.car.plate_number}}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-normal">{{item.payment.user.address}}</span>
+                  </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div></div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h3 class="mb-0 text-xs">Sum</h3>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-xs text-secondary mb-0">{{sum}} Birr</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="border-top py-3 px-3 d-flex align-items-center">
+            {% if IncomeReport.has_previous %}
+            <a href="?page={{IncomeReport.previous_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
+            {% else %}
+            <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Previous</a>
+            {% endif %}
+            <nav aria-label="..." class="ms-auto">
+              <ul class="pagination pagination-light mb-0">
+                {% for num in IncomeReport.paginator.page_range %}
+                <li class="page-item" aria-current="page">
+                  <a href="?page={{num}}" class="page-link font-weight-bold {% if IncomeReport.number == num %}bg-gradient-primary text-white {% endif %}">{{num}}</a>
+                </li>
+                {% endfor %}
+              </ul>
+            </nav>
+            {% if IncomeReport.has_next %}
+            <a href="?page={{IncomeReport.next_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0">Previous</a>
+            {% else %}
+            <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Next</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

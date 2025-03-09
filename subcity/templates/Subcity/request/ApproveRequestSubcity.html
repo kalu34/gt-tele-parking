@@ -1,0 +1,56 @@
+{% extends 'Subcity/include/SubcityBase.html' %} {% load static %} {% block content %}
+<div class="container">
+
+  <div class="bg-primary rounded py-3 px-2">
+    <h3 class="text-white"> Request Detail</h3>
+  </div>
+  <p class="font-weight-normal">Hilton Parking Center</p>
+  <div class="row mt-2 rounded">
+    <div class="col-md-7"> 
+      <div class="bg-white p-2">
+        <h5>Parking Detail</h5>
+        <div class="row gx-1">
+          <div class="col-md-8 bg-white rounded p-3">
+            <li>Group -> {{parking.parking_group.name}}</li>
+            <li>Name -> {{parking.name}}</li>
+            <li>Address -> {{parking.address}}</li>
+            <li>Subcity -> {{parking.subcity}}</li>
+            <hr>
+            <li>Ev Charging -> {% if parking.has_ev_charging %} Yes {% else %} No{% endif %}</li>
+            <li>Disable Parking -> {% if parking.has_disabled_parking %} Yes {% else %} No{% endif %}</li>
+            <li>Coverd -> {% if parking.is_covered %} Yes {% else %} No{% endif %}</li>
+            <li>Security Cam -> {% if parking.has_security_cameras %} Yes {% else %} No{% endif %}</li>
+            <li>Security Guard -> {% if parking.has_security_guard %} Yes {% else %} No{% endif %}</li>
+          </div>
+          <div class="col-md-4 bg-gray-100 rounded p-2">
+            <p class="p-0 text-white m-0">Price Per Hour: 12 Birr</p>
+            <p class="p-0 text-white m-0">Price Per Day:  120 Birr</p>
+            <p class="p-0 text-white m-0"><i class="fa-solid fa-car"></i> : 34</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="my-3">
+          <label class="middle mb-2" for="inputUsername">
+            <i class="fa-regular fa-user mx-1"></i>
+            Reason For Approving
+          </label>
+          {{form.message}}
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Approve <i class="fa-solid fa-check"></i></button>
+      </form>
+    </div>
+  </div>
+  <div class="bg-white mt-2 p-2 rounded ">
+    <h6>Legal Document </h6>
+      {% for doc in legalDocument %}
+      <li><a href="{{ doc.insurance_file }}" download>Insurance File</a></li>
+      <li><a href="{{ doc.legal_document }}" download>Legal Document File</a></li>
+      {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

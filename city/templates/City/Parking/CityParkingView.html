@@ -1,0 +1,97 @@
+{% extends 'City/include/CityBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4 px-5">
+  <h5 class="px-3 py-2 bg-gradient-dark text-white rounded shadow">Parking Group</h5>
+  <div class="row">
+    <div class="col-12">
+      <div class="card border shadow-xs mb-4">
+        <div class="card-body px-0 py-0">
+          <div class="border-bottom py-3 px-3 d-sm-flex align-items-center">
+            <div>
+              <h6 class="font-weight-semibold text-lg mb-0">All Request list</h6>
+              <p class="text-sm">See information about all  request</p>
+            </div>
+          </div>
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="text-secondary text-xs font-weight-semibold opacity-7">Parking Group</th>
+                  <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Parking</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Subcity</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Woreda</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Slot</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Price</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in parkings %}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-square-parking me-2"></i>
+                      </div>
+                      <div class="d-flex flex-column justify-content-center ms-1">
+                        <h6 class="mb-0 text-sm font-weight-semibold">{{item.parking_group.name}}</h6>
+                        <p class="text-sm text-secondary mb-0">{{item.parking_group.subcity}} - W0 {{item.parking_group.woreda}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-sm text-dark font-weight-semibold mb-0">{{item.name}}</p>
+                    <p class="text-sm text-dark font-weight-semibold mb-0">{{item.address}}</p>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="text-secondary text-sm font-weight-normal">{{item.subcity}}</span>
+                    <!-- <span class="badge badge-sm border border-success text-success bg-success">Active</span> -->
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-sm font-weight-normal">{{item.woreda}}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-sm font-weight-normal">{{item.slot_capacity}}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-sm font-weight-normal">{{item.price_per_hour}} Birr/ Hr</span>
+                  </td>
+                  <td class="align-middle">
+                    <a href="{% url 'CityParkingViewDetail'  id=item.id %}"><i class="fa-solid fa-eye"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="border-top py-3 px-3 d-flex align-items-center">
+            {% if parkings.has_previous %}
+            <a href="?page={{parkings.previous_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+             {% else %}  
+             <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Previous</a>
+             {% endif %}
+            <nav aria-label="..." class="ms-auto">
+              <ul class="pagination pagination-light mb-0">
+                {% for num in parkings.paginator.page_range %}
+                <li class="page-item" aria-current="page">
+                  <a href="?page={{num}}" class="page-link font-weight-bold  {% if parkings.number == num %}bg-gradient-primary text-white {% endif %}">{{num}}</a>
+                </li>
+                {% endfor %}
+                
+              </ul>
+            </nav>
+            {% if parkings.has_next %}
+            <a href="?page={{parkings.next_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+             {% else %}  
+             <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Next</a>
+             {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

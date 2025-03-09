@@ -1,0 +1,119 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% include 'Woreda/Report/include/ReportWoredaBase.html' %}
+  <h4 class=" bg-dark p-2 rounded text-white text-center">Income Report</h4>
+  <div class="d-flex justify-content-between mt-2">
+    <div class="search w-25 d-flex align-items-center">
+      
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=1 %}"  class="month text-xs {% if 'IncomeReportWoredaPerMonth/1' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Jan</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=2 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/2' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Feb</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=3 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/3' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Mar</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=4 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/4' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Apr</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=5 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/5' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">May</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=6 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/6' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Jun</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=7 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/7' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Jly</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=8 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/8' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Aug</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=9 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/9' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Sep</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=10 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/10' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Oct</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=11 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/11' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Nov</a>
+      <a  href="{% url 'IncomeReportWoredaPerMonth' id=12 %}" class="month text-xs {% if 'IncomeReportWoredaPerMonth/12' in request.get_full_path %}  bg-dark text-white mx-1 {% else %}  bg-light mx-1 text-dark {% endif %}rounded p-1 ">Dec</a>
+    </div>
+    <div class="">
+      {% if 'IncomeReportWoredaPerDay' in request.get_full_path %}
+      <a href = "{% url 'IncomeReportWoredaPerDay' %}" class="btn  btn-outline-secondary">Income Per Day <i class="fa-solid fa-check mx-2"></i></a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=1 %}" class="btn  bg-light mx-3">Income Per Month </a>
+      <a href="{% url 'IncomeReportWoredaPerYear' %}" class="btn  bg-light">Income Per Year  </a>
+      {% elif 'IncomeReportWoredaPerMonth' in request.get_full_path %}
+      <a href = "{% url 'IncomeReportWoredaPerDay' %}" class="btn  bg-light">Income Per Day</a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=1 %}" class="btn  btn-outline-secondary mx-3">Income Per Month <i class="fa-solid fa-check mx-2"></i> </a>
+      <a href="{% url 'IncomeReportWoredaPerYear' %}" class="btn  bg-light">Income Per Year  </a>
+      {% else %}
+      <a href = "{% url 'IncomeReportWoredaPerDay' %}" class="btn  btn-outline-secondary">Income Per Day </a>
+      <a href="{% url 'IncomeReportWoredaPerMonth' id=1 %}" class="btn  bg-light mx-3">Income Per Month </a>
+      <a href="{% url 'IncomeReportWoredaPerYear' %}" class="btn  bg-light">Income Per Year  <i class="fa-solid fa-check mx-2"></i></a>
+      {% endif %}
+    </div>
+
+  </div>
+    <div class="card mt-3">
+      <div class="table-responsive">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trx-Ref</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Amount</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
+              <th class="text-uppercase text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+              <th class="text-secondary opacity-7"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in payments %}
+            <tr>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                  
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-xs">{{item.user.first_name}}</h6>
+                    <p class="text-xs text-secondary mb-0">{{item.user.email}}</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="text-xs font-weight-bold mb-0">{{item.request_id}}</p>
+                <p class="text-xs text-secondary mb-0">{{item.tx_ref}}</p>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <span class="text-secondary text-xs font-weight-normal">{{item.amount}}</span>
+              </td>
+              <td class="align-middle text-center">
+                <span class="text-secondary text-xs font-weight-normal">{{item.date}}</span>
+              </td>
+              <td>
+                <p class="text-xs font-weight-bold mb-0">{{item.request_id.parking.name}}</p>
+              </td>
+
+              {% if item.status == 'successful' %}
+              <td class="align-middle text-center">
+                <p class="text-xs font-weight-bold mb-0 text-success"><i class="fa-solid fa-check"></i></p>
+                </td>
+              {% else %}
+              <td>
+                <p class="text-xs font-weight-bold mb-0 text-danger"><i class="fa-solid fa-x"></i></p>
+                </td>
+              {% endif %}
+
+            </tr>
+
+            {% endfor %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div>
+                  
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h3 class="mb-0 text-xs">Sum</h3>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="text-xs text-secondary mb-0">{{sum}} Birr </p>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+  {% endblock %}

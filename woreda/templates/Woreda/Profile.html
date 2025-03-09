@@ -1,0 +1,119 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+  <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+    <span class="mask  bg-gradient-dark  opacity-6"></span>
+  </div>
+  <div class="card card-body mx-2 mx-md-2 mt-n6">
+    <div class="row gx-4 mb-2">
+      <div class="col-auto">
+        <div class="avatar avatar-xl position-relative">
+          {% if profile_form.image %}
+                    <img src="{{profile_form.image.value.url}}"  width="300px" alt="Profile Image" class="img-fluid" />
+          {% else %}
+                    <i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-auto my-auto">
+        <div class="h-100">
+          <h5 class="mb-1">
+            {{request.user.first_name}} {{request.user.last_name}}
+          </h5>
+          <p class="mb-0 font-weight-normal text-sm">
+            {{request.user.subcity}} / {{request.user.woreda}}
+          </p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="row ms-1 mt-4">   
+    <div class="col-md-7 rounded">
+      <h6>Profile Setting</h6>
+      <form  method="POST">
+        {% csrf_token %}
+        <div class="row bg-white">
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3 d-flex align-items-center">
+              <label for="" class="mx-2 w-100"><i class="fa-solid fa-user"></i> Username</label>
+              {{form.username}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3 d-flex align-items-center">
+              <label for="" class="mx-2 w-100"><i class="fa-solid fa-phone"></i> Phone Number</label>
+              {{form.phone_number}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3 d-flex align-items-center">
+              <label for="" class="mx-2 w-100"><i class="fa-solid fa-boxes-packing"></i> First Name</label>
+              {{form.first_name}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3 d-flex align-items-center">
+              <label for="" class="mx-2 w-100"><i class="fa-solid fa-boxes-packing"></i> Last Name</label>
+              {{form.last_name}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3 d-flex align-items-center">
+              <label for="" class="mx-2 w-100"><i class="fa-solid fa-envelope"></i>  Email</label>
+              {{form.email}}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3 d-flex align-items-center">
+              <label for="" class="mx-2 w-100"><i class="fa-solid fa-location-dot"></i> Address</label>
+              {{form.address}}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-dark w-100">Save Change</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <form action="{% url 'change_password' %}" method="post"> 
+        {% csrf_token %}
+        <h6>Password Setting</h6>
+        <div class="bg-white py-1 px-3">
+          <div class="input-group input-group-outline my-3 d-flex align-items-center">
+            <label for="" class="mx-2 w-100"><i class="fa-solid fa-key"></i> Current Password</label>
+            <input type="password" name="currentPassword" class="form-control">
+          </div>
+          <div class="input-group input-group-outline my-3 d-flex align-items-center">
+            <label for="" class="mx-2 w-100"><i class="fa-solid fa-lock"></i> New Password</label>
+            <input type="password" name="newPassword" class="form-control">
+          </div>
+          <div class="input-group input-group-outline my-3 d-flex align-items-center">
+            <label for="" class="mx-2 w-100"><i class="fa-solid fa-lock"></i> Confirm Password</label>
+            <input type="password" name="confirmPassword" class="form-control">
+          </div>
+          <button type="submit" class=" btn btn-dark w-100"> Save Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

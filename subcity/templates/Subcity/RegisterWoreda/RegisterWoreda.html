@@ -1,0 +1,80 @@
+{% extends 'Subcity/include/SubcityBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+
+  <h5 class="bg-primary text-white rounded p-3">Woreda Admin</h5>
+  <h5>Detail Information</h5>
+  <ul>
+    <li class="text-sm">Fill Approperate Data For All the Fields </li>
+    <li class="text-sm">Provide Only Needed Number And Character Less Than 30 </li>
+    <li class="text-sm">Any Legal Decison made is directly related to the woreda admin registered</li>
+    <li class="text-sm">Input Must Be acurate and valid, in order to make the registraiton Acceptable</li>
+  </ul>
+  <form method="POST">  
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-10">
+        <div class="row">
+          {% for field in form %}
+          <div class="col-md-6 mt-2 mb-2">
+            <label for="{{ field.id_for_label }}">{{ field.label }} * </label>
+            {{ field }}
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+      <div class="bg-white rounded p-3 d-flex justify-content-between">
+        <div class="d-flex">
+        <button class="btn btn-dark" type="submit">save</button>
+        <a href="{% url 'RegisterWoreda' id=0 %}" class="btn btn-dark mx-2">save and add another</a>
+      </div>
+          <button class="btn btn-danger">delete</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card p-3 border-1">
+        <h5 class="text-center text-dark text-white bg-gradient-dark p-2 rounded"><i class="fa-solid fa-users"></i> User Role</h5>
+        <div class="d-flex justify-content-end mt-2">
+          {% if form.instance.pk %}
+          {% if role %}
+          <a href="{% url 'AdminWoredaDetail' id=form.instance.pk %}" class="btn btn-dark"> Open Role</a>
+          {% else %}
+          <a href="{% url 'AddWoredaAdminsRole' id=form.instance.pk %}" class="btn btn-dark"><i class="fa-solid fa-plus"></i> Add Role</a>
+          {% endif %}
+          {% else %}
+          <a href="{% url 'AddWoredaAdminsRole' id=0 %}" class="btn btn-dark disabled "><i class="fa-solid fa-plus"></i> Add Role</a>
+          {% endif %}
+        </div>
+        <hr>
+        <h6>Information Detail About The Role Of the Above User</h6>
+        <ul>
+          <li class="text-sm">This User is allowed to all permission that is happend to be executed and approved</li>
+          <li class="text-sm">Any Change made, it is directly refected to the Above User</li>
+          <li class="text-sm">Be informed that, The crossponding user is allowed to performe any operation according to it role permission</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

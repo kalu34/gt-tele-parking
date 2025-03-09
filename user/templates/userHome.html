@@ -1,0 +1,626 @@
+{% extends 'include/userBase.html' %}
+{% load static %}
+{% block content %}
+<head>
+          <!-- LeafLet Code -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Leaf Let Routing Machine -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+</head>
+      <body>
+      <div class="background"></div>
+
+      <div class="reserve-box d-none">
+            <div class="d-flex justify-content-between">
+                  <div class="">
+                        <h4 class="parking_title"></h4>
+                        <h6 class="parking_location"></h6>
+                  </div>
+                  <div class="">
+                        <a class="fs-4 button_close" ><i class="fa-solid fa-square-xmark"></i></a>
+                  </div>
+            </div>
+            <h6 class="text-danger text-center" id="errorMessage"></h6>
+            <h6 class="text-success text-center" id="successMessage"></h6>
+            <div class="horizontal-line"></div>
+            <div class="d-flex justify-content-between">
+                  <div class="parking_info">
+                        <div class="parking_image_box">
+                              <div class="box">
+                                    <img src="" alt="">
+                              </div>
+                              <div class="box">
+                                    <img src="" alt="">
+                              </div>
+                        </div>
+                        <div class="parking_detail_info mt-2">
+                              <h5 class="text-dark">Parking Info</h5>
+                              <hr>
+                              <div style="font-size: small;" class="d-flex align-items-center justify-content-between text-muted">
+                                    <div id="parking-info-list-1">
+                                        <li id="parking-price">Price: 120 Birr</li>
+                                        <li id="parking-available-slots">Available Slots: 20</li>
+                                        <li id="parking-slot-capacity">Slot Capacity: 20</li>
+                                        <li id="parking-payment-methods">Payment Methods: Card</li>
+                                    </div>
+                                    <div id="parking-info-list-2">
+                                        <li id="parking-amenities">Amenities: Telebirr</li>
+                                        <li id="parking-disabled">Disabled Parking: Yes</li>
+                                        <li id="parking-ev-charging">EV Charging: Yes</li>
+                                        <li id="parking-security-cameras">Security Cameras: No</li>
+                                        <li id="parking-security-guard">Security Guard: Yes</li>
+                                    </div>
+                                </div>
+                        </div>
+                  </div>
+                  <div class="reserve_info">
+                        <h5>Reserve Parking </h5>
+                        <hr>
+                        <div class="reserve_time">
+                              <div class="mb-3">
+                                    <label for="datetimeInput text-muted"><i class="fa-solid fa-clock"></i> Start</label>
+                                    <input type="datetime-local" class="form-control" id="startTime" name="datetimeInput">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="datetimeInput text-muted"><i class="fa-solid fa-clock"></i> End</label>
+                                    <input type="datetime-local" class="form-control" id="endTime" name="datetimeInput">
+                                </div>
+                        </div>
+                        <div class="reserve_spot">
+                              <div class="mb-4">
+                                    <label for="selectOption">Select Spot:</label>
+                                    <select class="form-control" id="selectOption" name="selectOption">
+                                        <option value="">Choose...</option>
+                                        <option value="1">Spot 1</option>
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="reserve-btn-container">
+
+                        </div>
+                  </div>
+            </div>
+      </div>
+            <div class="listing">
+                  <div class="serch-box">
+                        <input type="text" name="" id="" placeholder="near by parking">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                  <div class="fiter-box">
+                        <div class="filter">
+                              <button>12 Birr/hr</button>
+                        </div>
+                        <div class="filter">
+                              <button>18 Birr/hr</button>
+                        </div>
+                        <div class="filter">
+                              <button>22 Birr/hr</button>
+                        </div>
+                        <div class="filter">
+                              <button>32 Birr/hr</button>
+                        </div>
+                  </div>
+                  <div class="filter-text">
+                        <p>Filter</p>
+                        <i class="fa-solid fa-arrow-down-short-wide"></i>
+                  </div>
+                  <div class="loader d-none" style="margin: 0 auto;" id="loader"></div>
+                  <div class="listing-box-main" id="listings-container">
+                  </div>
+                  {% if parking_request_active %}
+                  <script>
+                        const listingContainer = document.querySelector('#listings-container')
+                        listingContainer.classList.add('d-none')
+                  </script>
+                                    <div class="listing-box-main" id="listings-container">
+                                          <div class="listing-box" >
+                                                <div class="image-listing">
+                                                      <img src="{{parking_request_active.parking.image1.url}}" alt="">
+                                                      <img src="{{parking_request_active.parking.image2.url}}" alt="">
+                                                </div>
+                                                <div class="text-listing">
+                                                      <h6>{{parking_request_active.parking.name}}</h6>
+                                                      <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="">
+                                                                  <div class="d-flex align-items-center py-1">
+                                                                        <img src="{% static 'assets/icon/cars-icon.svg' %}" alt="" class="mx-3">
+                                                                        <span>{{parking_request_active.parking.available_slots}}</span>
+                                                                  </div>
+                                                                  <div class="d-flex">
+                                                                        <img src="{% static 'assets/icon/time-alarm.svg' %}" alt="" class="mx-4">
+                                                                        <span>3 mins</span>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="white-line"></div>
+                                                            <div class="value">
+                                                                  <h5>{{parking_request_active.parking.price_per_hour}} Birr/hr</h4>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="listing-detail">
+                                            <div class="row row-cols-2">
+                                              <div class="col py-2">
+                                                <h6>parking Man</h6>
+                                                <i class="fa-solid fa-user"></i>
+                                                <span class="mx-2">{{parking_request_active.user.username}}</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Price Per Day</h6>
+                                                <i class="fa-solid fa-money-bill"></i>
+                                                <span class="mx-2">120 Birr</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Total Capacity</h6>
+                                                <i class="fa-solid fa-car"></i>
+                                                <span class="mx-2">{{parking_request_active.parking.slot_capacity}} Spots</span>
+                                              </div>
+                                            </div>
+                                            <div class="col py-2">
+                                              <h6>Parking Address</h6>
+                                              <i class="fa-solid fa-location-crosshairs"></i>
+                                              <span class="mx-2">{{parking_request_active.parking.address}} Spot</span>
+                                            </div>
+                                          </div>
+                                    </div>
+                  {% elif parking_reserved_request %}
+                  <script>
+                        const listingContainer2 = document.querySelector('#listings-container')
+                        listingContainer2.classList.add('d-none')
+                  </script>
+                                    <div class="listing-box-main" id="listings-container">
+                                          <div class="listing-box" >
+                                                <div class="image-listing">
+                                                      <img src="{{parking_reserved_request.parking.image1.url}}" alt="">
+                                                      <img src="{{parking_reserved_request.parking.image2.url}}" alt="">
+                                                </div>
+                                                <div class="text-listing">
+                                                      <h6>{{parking_reserved_request.parking.name}}</h6>
+                                                      <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="">
+                                                                  <div class="d-flex align-items-center py-1">
+                                                                        <img src="{% static 'assets/icon/cars-icon.svg' %}" alt="" class="mx-3">
+                                                                        <span>{{parking_reserved_request.parking.available_slots}}</span>
+                                                                  </div>
+                                                                  <div class="d-flex">
+                                                                        <img src="{% static 'assets/icon/time-alarm.svg' %}" alt="" class="mx-4">
+                                                                        <span>3 mins</span>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="white-line"></div>
+                                                            <div class="value">
+                                                                  <h5>{{parking_reserved_request.parking.price_per_hour}} Birr/hr</h4>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="listing-detail">
+                                            <div class="row row-cols-2">
+                                              <div class="col py-2">
+                                                <h6>parking Man</h6>
+                                                <i class="fa-solid fa-user"></i>
+                                                <span class="mx-2">{{parking_reserved_request.user.username}}</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Price Per Day</h6>
+                                                <i class="fa-solid fa-money-bill"></i>
+                                                <span class="mx-2">120 Birr</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Total Capacity</h6>
+                                                <i class="fa-solid fa-car"></i>
+                                                <span class="mx-2">{{parking_reserved_request.parking.slot_capacity}} Spots</span>
+                                              </div>
+                                            </div>
+                                            <div class="col py-2">
+                                              <h6>Parking Address</h6>
+                                              <i class="fa-solid fa-location-crosshairs"></i>
+                                              <span class="mx-2">{{parking_reserved_request.parking.address}} Spot</span>
+                                            </div>
+                                          </div>
+                                    </div>
+                  {% elif parking_requests_pending %}
+                  <script>
+                        const listingContainer1 = document.querySelector('#listings-container')
+                        listingContainer1.classList.add('d-none')
+                  </script>
+                                    <div class="listing-box-main" id="listings-container">
+                                          <div class="listing-box" >
+                                                <div class="image-listing">
+                                                      <img src="{{parking_requests_pending.parking.image1.url}}" alt="">
+                                                      <img src="{{parking_requests_pending.parking.image2.url}}" alt="">
+                                                </div>
+                                                <div class="text-listing">
+                                                      <h6>{{parking_requests_pending.parking.name}}</h6>
+                                                      <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="">
+                                                                  <div class="d-flex align-items-center py-1">
+                                                                        <img src="{% static 'assets/icon/cars-icon.svg' %}" alt="" class="mx-3">
+                                                                        <span>{{parking_requests_pending.parking.available_slots}}</span>
+                                                                  </div>
+                                                                  <div class="d-flex">
+                                                                        <img src="{% static 'assets/icon/time-alarm.svg' %}" alt="" class="mx-4">
+                                                                        <span>3 mins</span>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="white-line"></div>
+                                                            <div class="value">
+                                                                  <h5>{{parking_requests_pending.parking.price_per_hour}} Birr/hr</h4>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="listing-detail">
+                                            <div class="row row-cols-2">
+                                              <div class="col py-2">
+                                                <h6>parking Man</h6>
+                                                <i class="fa-solid fa-user"></i>
+                                                <span class="mx-2">{{parking_requests_pending.user.username}}</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Price Per Day</h6>
+                                                <i class="fa-solid fa-money-bill"></i>
+                                                <span class="mx-2">120 Birr</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Total Capacity</h6>
+                                                <i class="fa-solid fa-car"></i>
+                                                <span class="mx-2">{{parking_requests_pending.parking.slot_capacity}} Spots</span>
+                                              </div>
+                                            </div>
+                                            <div class="col py-2">
+                                              <h6>Parking Address</h6>
+                                              <i class="fa-solid fa-location-crosshairs"></i>
+                                              <span class="mx-2">{{parking_requests_pending.parking.address}} Spot</span>
+                                            </div>
+                                          </div>
+                                    </div>
+                  {% elif parking_appointment %}
+                  <script>
+                        const listingContainer4 = document.querySelector('#listings-container')
+                        listingContainer4.classList.add('d-none')
+                  </script>
+                                    <div class="listing-box-main" id="listings-container">
+                                          <div class="listing-box" >
+                                                <div class="image-listing">
+                                                      <img src="{{parking_appointment.parking.image1.url}}" alt="">
+                                                      <img src="{{parking_appointment.parking.image2.url}}" alt="">
+                                                </div>
+                                                <div class="text-listing">
+                                                      <h6>{{parking_appointment.parking.name}}</h6>
+                                                      <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="">
+                                                                  <div class="d-flex align-items-center py-1">
+                                                                        <img src="{% static 'assets/icon/cars-icon.svg' %}" alt="" class="mx-3">
+                                                                        <span>{{parking_appointment.parking.available_slots}}</span>
+                                                                  </div>
+                                                                  <div class="d-flex">
+                                                                        <img src="{% static 'assets/icon/time-alarm.svg' %}" alt="" class="mx-4">
+                                                                        <span>3 mins</span>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="white-line"></div>
+                                                            <div class="value">
+                                                                  <h5>{{parking_appointment.parking.price_per_hour}} Birr/hr</h4>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="listing-detail">
+                                            <div class="row row-cols-2">
+                                              <div class="col py-2">
+                                                <h6>parking Man</h6>
+                                                <i class="fa-solid fa-user"></i>
+                                                <span class="mx-2">{{parking_appointment.user.username}}</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Price Per Day</h6>
+                                                <i class="fa-solid fa-money-bill"></i>
+                                                <span class="mx-2">120 Birr</span>
+                                              </div>
+                                              <div class="col py-2">
+                                                <h6>Total Capacity</h6>
+                                                <i class="fa-solid fa-car"></i>
+                                                <span class="mx-2">{{parking_appointment.parking.slot_capacity}} Spots</span>
+                                              </div>
+                                            </div>
+                                            <div class="col py-2">
+                                              <h6>Parking Address</h6>
+                                              <i class="fa-solid fa-location-crosshairs"></i>
+                                              <span class="mx-2">{{parking_appointment.parking.address}} Spot</span>
+                                            </div>
+                                          </div>
+                                    </div>
+                  {% endif %}
+
+            </div>
+            <div class="main">
+
+
+                  <div class="main-nav d-flex align-items-center justify-content-between px-3">
+                        <h6>Good Morning</h6>
+                        <div class="">
+                              <i class="fa-solid fa-envelope mx-2"></i>
+                              <i class="fa-solid fa-bell mx-2"></i>
+                              <span>{{request.user.first_name}} {{request.user.last_name}}</span>
+                              {% if profile %}
+                              <img src="{{profile.image.url}}" class="mx-2" alt=""  width="40px" height="40px" style="border-radius: 50%;">
+                              {% else %}
+                              <img src="{% static './assets/images/user.jpg' %}" class="mx-2" alt=""  width="40px" height="40px" style="border-radius: 50%;">
+                              {% endif %}
+                        </div>
+                  </div>
+                  {% if messages %}
+                        {% for message in messages %}
+                              {% if message.tags == 'success' %}
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Congratulations!</strong> {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                              {% elif message.tags == 'warning' %}
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>Warning!</strong> {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                              {% else %}
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                          <strong>Error!</strong> {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                              {% endif %}
+                        {% endfor %}
+                  {% endif %}
+                  
+
+                  {% if parking_request_active %}
+                  <div class="listing-list">
+                        <div class="d-flex align-items-center justify-content-between">
+                              <div class="">
+                              <h5>{{parking_request_active.parking.name}}</h5>
+                              <i class="fa-solid fa-check"></i><span class="mx-1">{{car.plate_number }}</span>
+                              <i class="fa-solid fa-square-parking"></i><spna class="mx-1">{{parking_request_active.slot }}</span>
+                              </div>
+                              <div class="">
+                              <i class="fa-solid fa-key"></i>
+                              <span>{{ parking_request_active.reference_trx }}</span> <!-- Adjust this based on your model -->
+                              </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between pt-4 pb-2">
+                              <div class="address">
+                              <h6>Start Time</h6>
+                              <i class="fa-regular fa-clock"></i>
+                              <span>{{ parking_request_active.start_time }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Time Used</h6>
+                              <i class="fa-solid fa-hourglass-start"></i>
+                              <span>{{ parking_request.time_used }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="hour">
+                              <h6>Price Per Hour</h6>
+                              <i class="fa-solid fa-money-bill"></i>
+                              <span>{{ parking_request_active.payment_per_hour }} Birr/Hr</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Total Price</h6>
+                              <i class="fa-solid fa-wallet"></i>
+                              <span>{{ parking_request_active.total_price }} Birr</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity d-flex d-column">
+                                    {% if parking_request_active.request_type == 'new' %}
+                                          <a href="{% url 'remove_request' request_id=parking_request_active.id %}"  class="px-3 py-1" style="font-size: .7rem; background-color: red; text-decoration: none; color: white; border-radius: 100px;">Remove Request</a>
+                                    {% else %}
+                                    {% if parking_request_active.stop == False %}
+                                    <a href="{% url 'stop_request' request_id=parking_request_active.id %}"  class="px-3 py-1" style="font-size: .7rem; background-color: red; text-decoration: none; color: white; border-radius: 100px;">Stop Time</a>
+                                    {% else %}
+                                    <div class="spinner loader" id="spinner"></div>
+                                    {% endif%}
+                                    {% endif %}
+                              </div>
+                        </div>
+                  </div>
+                  {% endif %}
+
+                  {% if parking_reserved_request %}
+                  <div class="listing-list">
+                        <div class="d-flex align-items-center justify-content-between">
+                                    <div class="">
+                                          <h5>{{parking_reserved_request.parking.name}}</h5>
+                                          <i class="fa-solid fa-check"></i><span class="mx-1">{{car.plate_number }}</span>
+                                          <i class="fa-solid fa-square-parking"></i><spna class="mx-1">{{parking_reserved_request.slot }}</span>
+                                          
+                                          <div class="d-flex align-items-center">
+                                                {% if preceding_resrved == 0 %}
+                                                <span style="color: black;">No Car In The Queue</span>
+                                                {% else %}
+                                                <img src="{% static 'assets/icon/cars-icon.svg' %}" alt="" class="mx-3">
+                                                {{preceding_resrved}} <span style="color: #1a1a1a;">Car In the Query</span>
+                                                {% endif %}
+                                          </div>
+                                    </div>
+                              <div class="">
+                              <i class="fa-solid fa-key"></i>
+                              <span>{{ parking_reserved_request.reference_trx }}</span> <!-- Adjust this based on your model -->
+                              </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between pb-2">
+                              <div class="address">
+                              <h6>Start Time</h6>
+                              <i class="fa-regular fa-clock"></i>
+                              <span>{{ parking_reserved_request.start_time }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Time Used</h6>
+                              <i class="fa-solid fa-hourglass-start"></i>
+                              <span>{{ parking_reserved_request.time_used }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="hour">
+                              <h6>Price Per Hour</h6>
+                              <i class="fa-solid fa-money-bill"></i>
+                              <span>{{ parking_reserved_request.parking.price_per_hour }} Birr/Hr</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Total Price</h6>
+                              <i class="fa-solid fa-wallet"></i>
+                              <span>0 Birr</span>
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity d-flex d-column">
+                                    {% if parking_reserved_request.status == False %}
+                                          <a href="{% url 'remove_request' request_id=parking_reserved_request.id %}"  class="px-3 py-1" style="font-size: .7rem; background-color: red; text-decoration: none; color: white; border-radius: 100px;">Remove Request</a>
+                                    {% else %}
+                                    <!-- <form method="POST" action="https://api.chapa.co/v1/hosted/pay" >
+                                          <input type="hidden" name="public_key" value="CHAPUBK_TEST-Htt1BYyipNBky29mdwKYuIQ7Gw6OpEyY" />
+                                          <input type="hidden" name="tx_ref" id="tx_ref" value="{{parking_requests_pending.reference_trx}}" />
+                                          <input type="hidden" name="amount" value="20" />
+                                          <input type="hidden" name="currency" value="ETB" />
+                                          <input type="hidden" name="email" value="{{parking_requests_pending.user.email}}" />
+                                          <input type="hidden" name="first_name" value="Israel" />
+                                          <input type="hidden" name="last_name" value="Goytom" />
+                                          <input type="hidden" name="title" value="Let us do this" />
+                                          <input type="hidden" name="description" value="Paying with Confidence with cha" />
+                                          <input type="hidden" name="logo" value="https://chapa.link/asset/images/chapa_swirl.svg" />
+                                          <input type="hidden" name="callback_url" value="http://127.0.0.1:8000/create_payment" />
+                                          <input type="hidden" name="return_url" value="http://127.0.0.1:8000/user_payment" />
+                                          <input type="hidden" name="meta[title]" value="test" />
+                                    </form> -->
+                                    <button type="submit"  id="chapa-button" class="px-3 py-1" style="font-size: .7rem; background-color: green; text-decoration: none; color: white; border-radius: 100px; text-align: center;">Pay Now <br>With Chapa</button>
+                                    {% endif %}
+                              </div>
+                        </div>
+                  </div>
+                  {% endif %}
+
+                  {% if parking_requests_pending %}
+                                    <div class="listing-list">
+                        <div class="d-flex align-items-center justify-content-between">
+                                    <div class="mb-3">
+                                          <h5>{{parking_requests_pending.parking.name}}</h5>
+                                          <i class="fa-solid fa-check"></i><span class="mx-1">{{car.plate_number }}</span>
+                                          <i class="fa-solid fa-square-parking"></i><spna class="mx-1">{{parking_requests_pending.slot }}</span>
+
+                                    </div>
+                              <div class="">
+                              <i class="fa-solid fa-key"></i>
+                              <span>{{ parking_requests_pending.reference_trx }}</span> <!-- Adjust this based on your model -->
+                              </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between pb-2">
+                              <div class="address">
+                              <h6>Start Time</h6>
+                              <i class="fa-regular fa-clock"></i>
+                              <span>{{ parking_requests_pending.start_time }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Time End</h6>
+                              <i class="fa-solid fa-hourglass-start"></i>
+                              <span>{{ parking_requests_pending.end_time }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="hour">
+                              <h6>Price Per Hour</h6>
+                              <i class="fa-solid fa-money-bill"></i>
+                              <span>{{ parking_requests_pending.parking.price_per_hour }} Birr/Hr</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Total Price</h6>
+                              <i class="fa-solid fa-wallet"></i>
+                              <span>0 Birr</span>
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity d-flex d-column">
+                                    {% if parking_requests_pending.status == False %}
+                                          <a href="{% url 'remove_request' request_id=parking_requests_pending.id %}"  class="px-3 py-1" style="font-size: .7rem; background-color: red; text-decoration: none; color: white; border-radius: 100px;">Remove Request</a>
+                                    {% else %}
+                                    <a  href="{% url 'pay_now' id=parking_requests_pending.id %}" class="px-3 py-1" style="font-size: .7rem; background-color: green; text-decoration: none; color: white; border-radius: 100px; text-align: center;">Pay Now </a>
+                                    {% endif %}
+                              </div>
+                        </div>
+                  </div>
+                  {% endif %}
+                  
+                  {% if parking_appointment %}
+
+                                                      <div class="listing-list">
+                        <div class="d-flex align-items-center justify-content-between">
+                                    <div class="mb-3">
+                                          <h5>{{parking_appointment.parking.name}}</h5>
+                                          <i class="fa-solid fa-check"></i><span class="mx-1">{{parking_appointment.plate_number }}</span>
+                                          <i class="fa-solid fa-square-parking"></i><spna class="mx-1">{{parking_appointment.slot }}</span>
+
+                                    </div>
+                              <div class="">
+                              <i class="fa-solid fa-key"></i>
+                              <span>{{ parking_appointment.request_ref }}</span> <!-- Adjust this based on your model -->
+                              </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between pb-2">
+                              <div class="address">
+                              <h6>Start Time</h6>
+                              <i class="fa-regular fa-clock"></i>
+                              <span>{{ parking_appointment.start_time }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Time End</h6>
+                              <i class="fa-solid fa-hourglass-start"></i>
+                              <span>{{ parking_appointment.end_time }}</span> <!-- Adjust as needed -->
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity">
+                              <h6>Total Price</h6>
+                              <i class="fa-solid fa-wallet"></i>
+                              <span>{{parking_appointment.total_price}} Birr</span>
+                              </div>
+                              <div class="vertical-line-dark"></div>
+                              <div class="capacity d-flex d-column">
+                                    {% if parking_appointment.payment_status %}
+                                          <a onclick=cancelReserve({{parking_appointment.id}})  class="px-3 py-1" style="font-size: .7rem; background-color: orange; text-decoration: none; color: white; border-radius: 100px;">Cancel Request</a>
+                                    {% else %}
+                                    <div class="d-flex flex-column">
+                                          <a  href="{% url 'pay_reserve_now' id=parking_appointment.id %}" class="px-3 py-1 mb-2" style="font-size: .7rem; background-color: green; text-decoration: none; color: white; border-radius: 100px; text-align: center;">Pay Now </a>
+                                          <a onclick=removeReserve({{parking_appointment.id}}) class="px-3 py-1 mb-2" style="font-size: .7rem; background-color: red; text-decoration: none; color: white; border-radius: 100px;">Remove Request</a>
+                                    </div>
+
+                                    {% endif %}
+                              </div>
+                        </div>
+                  </div>
+                  {% endif %}
+                  {% if parking_request_active %}
+                  <div id="map" class = "height-50vh" ></div>
+                   {% elif parking_requests_pending %}
+                   <div id="map" class = "height-50vh" ></div>
+                   {% elif parking_reserved_request %}
+                   <div id="map" class ="height-50vh"></div>
+                   {% elif parking_appointment %}
+                   <div id="map" class ="height-50vh"></div>
+                  {% else %}
+                  <div id="map" class="height-90vh"></div>
+                  {% endif %}
+
+                  <!-- Condition To Control The Seach -->
+                  {% if parking_reserved_request or parking_requests_pending or parking_request_active %}
+                        <input type="hidden" id="status" value="False">
+                  {% else %}
+                        <input type="hidden" id="status" value="True">
+                  {% endif %}
+              
+            </div>
+
+            <script src="{% static 'js/reserve.js' %}"></script>
+            <script src="{% static 'js/userScript.js' %}"></script>
+      </body>
+{% endblock %}

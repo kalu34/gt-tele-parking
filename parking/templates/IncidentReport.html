@@ -1,0 +1,45 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  <h2>Incident Report Form</h2>
+  <p>Please Fill The Form Below Properly</p>
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-10">
+        <div class="row">
+
+          <div class="col-6">
+            <div class="my-3">
+              <label class="middle mb-2" for="inputUsername">
+                <i class="fa-regular fa-user mx-1"></i>
+                Incident Type
+              </label>
+              {{form.incident_type}}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="my-3">
+              <label class="middle mb-2" for="inputUsername">
+                <i class="fa-regular fa-user mx-1"></i>
+                Upload File
+              </label>
+              {{form.evidence}}
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="my-3">
+              <label class="middle mb-2" for="inputUsername">
+                <i class="fa-regular fa-user mx-1"></i>
+                Detail Evidence
+              </label>
+              {{form.reason}}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100"> Send Incident</button>
+        </div> 
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

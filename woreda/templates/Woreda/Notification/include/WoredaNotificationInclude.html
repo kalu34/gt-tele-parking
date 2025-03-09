@@ -1,0 +1,15 @@
+<div class="d-flex">
+  {% if 'WoredaNotificationIncident' in request.get_full_path %}
+  <a href = "{% url 'WoredaNotificationIncident' %}" class="btn bg-dark text-white">Incident <i class="fa-solid fa-check mx-2"></i></a>
+  <!-- <a href="{% url 'WoredaNotificationChangePrice' %}" class="btn  bg-light mx-3">Parking Price </a>
+  <a href="{% url 'WoredaNotificationRequest' %}" class="btn  bg-light">Request </a> -->
+  {% elif 'WoredaNotificationChangePrice' in request.get_full_path %}
+  <a href = "{% url 'WoredaNotificationIncident' %}" class="btn bg-light ">Incident </a>
+  <!-- <a href="{% url 'WoredaNotificationChangePrice' %}" class="btn  bg-dark text-white mx-3">Parking Price <i class="fa-solid fa-check mx-2"></i></a>
+  <a href="{% url 'WoredaNotificationRequest' %}" class="btn  bg-light">Request </a> -->
+  {% else %}
+  <a href = "{% url 'WoredaNotificationIncident' %}" class="btn bg-light">Incident</a>
+  <!-- <a href="{% url 'WoredaNotificationChangePrice' %}" class="btn  bg-light mx-3">Parking Price </a>
+  <a href="{% url 'WoredaNotificationRequest' %}" class="btn  bg-dark text-white"> Request  <i class="fa-solid fa-check mx-2"></i></a> -->
+  {% endif %}
+</div>

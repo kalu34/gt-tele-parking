@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-12 col-md-9">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 gx-1">
+            <div class="col">
+                {% if 'CityIncomeReportPerDay' in request.get_full_path or 'CityIncomeReportPerMonth' in request.get_full_path or 'CityIncomeReportPerYear' in request.get_full_path %}
+                    <a href="{% url 'CityIncomeReportPerDay' subcity=subcity woreda=woreda %}" class="btn bg-gradient-primary text-white w-100">Income Report</a>
+                {% else %}
+                    <a href="{% url 'CityIncomeReportPerDay' subcity=subcity woreda=woreda %}" class="btn btn-white w-100">Income Report</a>
+                {% endif %}
+            </div>
+        <div class="col">
+            {% if 'CityCustomerReportPerDay' in request.get_full_path or 'CityCustomerReportPerMonth' in request.get_full_path or 'CityCustomerReportPerYear' in request.get_full_path %}
+                <a href="{% url 'CityCustomerReportPerDay' subcity=subcity woreda=woreda %}" class="btn bg-gradient-primary text-white w-100">Customer Report</i></a>
+            {% else %}
+                <a href="{% url 'CityCustomerReportPerDay' subcity=subcity woreda=woreda %}" class="btn btn-white w-100">Customer Report</a>
+            {% endif %}
+        </div>
+        
+        <!-- <div class="col">
+            {% if 'ParkingReportWoredaPerDay' in request.get_full_path %}
+            <a href="" class="btn bg-gradient-primary text-white w-100">Parking Report</i></a>
+            {% else %}
+            <a href="" class="btn btn-white w-100">Parking Report</a>
+            {% endif %}
+        </div> -->
+        
+        <!-- <div class="col">
+            {% if 'ParkingReportWoredaPerDay' in request.get_full_path %}
+            <a href="" class="btn bg-gradient-primary text-white w-100">Reqest Report</i></a>
+            {% else %}
+            <a href="" class="btn btn-white w-100">Request Report</a>
+            {% endif %}
+        </div> -->
+        </div>
+    </div>
+</div>
+
+
+
+

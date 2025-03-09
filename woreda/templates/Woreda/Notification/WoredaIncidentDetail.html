@@ -1,0 +1,17 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-7">
+      <div class="bg-white rounded p-3">
+        <h3>Incident Reason</h3>
+        <p>{{incidents.reason}}</p>
+        <span><i class="fa-solid fa-calendar-days fs-xm"></i> Jan 12 2023</span> 
+        <span><i class="fa-solid fa-business-time mx-3 fs-xm"></i> Jan 12 2023</span> 
+
+      </div>
+    </div>
+    <div class="col-md-5">
+    </div>
+  </div>
+</div>
+{% endblock%}

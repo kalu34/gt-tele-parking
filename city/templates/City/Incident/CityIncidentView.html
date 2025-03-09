@@ -1,0 +1,80 @@
+{% extends 'City/include/CityBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <h4 class="bg-dark text-white p-2 rounded ">Incidnet Report </h4>
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Request Ref</th>
+            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Incident Type</th>
+            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Slot</th>
+            <th class="text-secondary opacity-7"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in incidentList %}
+          <tr>
+            <td>
+              <div class="d-flex px-2 py-1">
+                <div>
+                  <i class="fa-solid fa-car-burst"></i>
+                </div>
+                <div class="d-flex flex-column justify-content-center mx-3">
+                  <h6 class="mb-0 text-xs">{{item.parking.name}} {{item.user.last_name}}</h6>
+                  <p class="text-xs text-secondary mb-0">{{item.parking.address}}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-bold mb-0">{{item.request.user.first_name}} {{item.request.user.last_name}}</p>
+              <p class="text-xs text-secondary mb-0">{{item.request.user.address}}</p>
+            </td>
+            <td class="align-middle text-center text-sm">
+              <span class="text-secondary text-xs font-weight-normal">{{item.request.reference_trx}}</span>
+            </td>
+            <td class="align-middle text-center text-sm">
+              <span class="text-secondary text-xs font-weight-normal">{{item.incident_type}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-normal">{{item.date}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-normal">{{item.request.slot}}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="border-top py-3 px-3 d-flex align-items-center">
+      {% if incidentList.has_previous %}
+      <a href="?page={{incidentList.previous_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+       {% else %}  
+       <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Previous</a>
+       {% endif %}
+      <nav aria-label="..." class="ms-auto">
+        <ul class="pagination pagination-light mb-0">
+          {% for num in incidentList.paginator.page_range %}
+          <li class="page-item" aria-current="page">
+            <a href="?page={{num}}" class="page-link font-weight-bold  {% if incidentList.number == num %}bg-gradient-primary text-white {% endif %}">{{num}}</a>
+          </li>
+          {% endfor %}
+          
+        </ul>
+      </nav>
+      {% if incidentList.has_next %}
+      <a href="?page={{incidentList.next_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+       {% else %}  
+       <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Next</a>
+       {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

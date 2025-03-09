@@ -1,0 +1,183 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+  <div class="container px-4">
+    <h4 class="rounded bg-gradient-dark text-center text-white p-2">Parking Information</h4>
+    <div class="bg-white p-2 rounded my-2">
+      <h6>Parking Detail Fill</h6>
+      <div class="d-flex px-4">
+        <div class="">
+          <li class="fs-6">Enter Crosspoinding Subcity And Woreda</li>
+          <li class="fs-6">Porvide Moderate Income Statement </li>
+          <li class="fs-6">Enter the capacity that the Pakring Can Hold</li>
+          <li class="fs-6">Only Toggle If the Accessory is avaliable in the parking</li>
+        </div>
+        <div class="bg-light mx-4" style="width: 2px; height: 100px;"></div>
+        <div class="">
+          <li class="fs-6">Provide Parking Information Correctily</li>
+          <li class="fs-6">Parking Name Shoudl Be Acceptable And Correct</li>
+          <li class="fs-6">Provide The Current Location</li>
+        </div>
+      </div>
+    </div>
+    <div class="row bg-white p-3">
+      <div class="col-lg-10">
+        <form action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row my-3">
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-regular fa-user mx-1"></i>
+                  Parking Name *
+                </label>
+                {{form.name}}
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-location-dot mx-1"></i>
+                  Address *
+                </label>
+                {{form.address}}
+              </div>
+            </div>
+          </div>
+          <div class="row my-3">
+            <div class="col-12 col-md-4 col-lg-4">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-money-bill mx-2"></i>
+                  Sub City *
+                </label>
+                {{form.subcity}}
+              </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-money-check-dollar mx-1"></i>
+                  Woreda *
+                </label>
+                {{form.woreda}}
+              </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-square-parking mx-1"></i>
+                  Keble *
+                </label>
+                {{form.keble}}
+              </div>
+            </div>
+          </div>
+          <div class="row my-3">
+            <div class="col-12 col-md-3 col-lg-3">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-money-bill mx-2"></i>
+                  Price Per Hour *
+                </label>
+                {{form.price_per_hour}}
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-money-check-dollar mx-1"></i>
+                  Price Per Day
+                </label>
+                {{form.price_per_day}}
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-square-parking mx-1"></i>
+                  Slot Capacity *
+                </label>
+                {{form.slot_capacity}}
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-car-side mx-1"></i>
+                  Avaliable Slot *
+                </label>
+                {{form.available_slots}}
+              </div>
+            </div>
+          </div>
+          <div class="row my-3">
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-location-crosshairs mx-1"></i>
+                  Latitude Location *
+                </label>
+                {{form.latitude}}
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-location-crosshairs mx-1"></i>
+                  Longtuide Location *
+                </label>
+                {{form.longitude}}
+              </div>
+            </div>
+          </div>
+          <div class="row my-3">
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-image mx-1"></i>
+                  Parking Image *
+                </label>
+                {{form.image1}}
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+              <div class="mb-3">
+                <label class="middle mb-2" for="inputUsername">
+                  <i class="fa-solid fa-image mx-1"></i>
+                  Parking Image *
+                </label>
+                {{form.image2}}
+              </div>
+            </div>
+          </div>
+          <button class="btn bg-gradient-dark w-50"type="submit">Save Change</button>
+  
+          {% if is_sent %}
+          <a href="{% url 'request_send' %}" class="btn btn-secondary disabled"> <i class="fa-solid fa-check"></i>  Request Received</a>
+          {% else %}
+          <a href="{% url 'request_send' %}" class="btn btn-secondary">Send Request</a>
+          {% endif %}     
+         </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

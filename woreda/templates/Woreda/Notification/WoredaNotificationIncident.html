@@ -1,0 +1,61 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="d-flex justify-content-end">  
+    {% include 'Woreda/Notification/include/WoredaNotificationInclude.html' %}
+  </div>
+  <h4 class="bg-dark text-white p-2 rounded text-center">Notification</h4>
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Request Ref</th>
+            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Incident Type</th>
+            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Slot</th>
+            <th class="text-secondary opacity-7"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in incidents %}
+          <tr>
+            <td>
+              <div class="d-flex px-2 py-1">
+                <div>
+                  <i class="fa-solid fa-car-burst"></i>
+                </div>
+                <div class="d-flex flex-column justify-content-center mx-3">
+                  <h6 class="mb-0 text-xs">{{item.parking.name}} {{item.user.last_name}}</h6>
+                  <p class="text-xs text-secondary mb-0">{{item.parking.address}}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-bold mb-0">{{item.request.user.first_name}} {{item.request.user.last_name}}</p>
+              <p class="text-xs text-secondary mb-0">{{item.request.user.address}}</p>
+            </td>
+            <td class="align-middle text-center text-sm">
+              <span class="text-secondary text-xs font-weight-normal">{{item.request.reference_trx}}</span>
+            </td>
+            <td class="align-middle text-center text-sm">
+              <span class="text-secondary text-xs font-weight-normal">{{item.incident_type}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-normal">{{item.date}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <span class="text-secondary text-xs font-weight-normal">{{item.request.slot}}</span>
+            </td>
+            <td class="align-middle text-center">
+              <a href="{% url 'WoredaNotificationIncidentDetail' id=item.id %}" class="text-secondary text-xs font-weight-normal"><i class="fa-regular fa-eye"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

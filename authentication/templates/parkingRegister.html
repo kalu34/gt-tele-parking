@@ -1,0 +1,96 @@
+{% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<section class="h-100 gradient-form" style="background-color: #eee">
+  <div class="container py-2 h-100">
+    {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Congratulations!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif message.tags == 'warning' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Warning!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% else %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %} {% endfor %} {% endif %}
+    
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-12">
+        <div class="card rounded-3 text-black">
+          <div class="text-center">
+            <h4 class="p-2" style="font-family: poppins; color: #234573; font-weight: 700;">Parking Registeration Form</h4>
+          </div>
+          <div class="row g-0">
+            <div class="col-lg-8">
+                <div class="m-4">
+                      <form action="" method="POST"  enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <!-- Form Group (username)-->
+                          <div class="mb-3">
+                              <label class="small mb-1" for="inputUsername"><i class="fa-regular fa-user mx-1"></i><i class="fa-solid fa-user mx-1"></i> Username (how your name will appear to other users on the site)</label>
+                              <input class="form-control" id="inputUsername" name="username" type="text" placeholder="@Jhon">
+                          </div>
+                          <!-- Form Row-->
+                          <div class="row gx-3 mb-3">
+                              <!-- Form Group (first name)-->
+                              <div class="col-md-6">
+                                  <label class="small mb-1" for="inputFirstName">First name</label>
+                                  <input class="form-control" id="inputFirstName" name="first_name" type="text" placeholder="Jhon">
+                              </div>
+                              <!-- Form Group (last name)-->
+                              <div class="col-md-6">
+                                  <label class="small mb-1" for="inputLastName">Last name</label>
+                                  <input class="form-control" id="inputLastName" name="last_name" type="text" placeholder="Adem">
+                              </div>
+                          </div>
+                          <!-- Form Row        -->
+                          <div class="row gx-3 mb-3">
+                              <div class="col-md-6">
+                                  <label class="small mb-1" for="inputLocation"><i class="fa-solid fa-location-dot mx-1"></i>Location</label>
+                                  <input class="form-control" id="inputLocation" name="address" type="text" placeholder="Addis Ababa, Ethiopia">
+                              </div>
+                              <div class="col-md-6">
+                                <label class="small mb-1" for="inputLocation"><i class="fa-solid fa-location-dot mx-1"></i>Password</label>
+                                <input class="form-control" id="inputLocation" name="password" type="password" placeholder="*******">
+                            </div>
+                          </div>
+                          <!-- Form Group (email address)-->
+                          <div class="mb-3">
+                              <label class="small mb-1" for="inputEmailAddress"><i class="fa-solid fa-envelope mx-1"></i> Email address</label>
+                              <input class="form-control" id="inputEmailAddress" name="email" type="email" placeholder="name@example.com">
+                          </div>
+                          <!-- Form Row-->
+                          <div class="row gx-3 mb-3">
+                              <!-- Form Group (phone number)-->
+                              <div class="col-md-6">
+                                  <label class="small mb-1" for="inputPhone"><i class="fa-solid fa-phone mx-1"></i>Phone number</label>
+                                  <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="555-123-4567">
+                              </div>
+                              <!-- Form Group (birthday)-->
+                              <div class="col-md-6">
+                                  <label class="small mb-1" for="inputBirthday"><i class="fa-regular fa-calendar-days mx-1"></i>Birthday</label>
+                                  <input class="form-control" id="inputBirthday" type="date" name="birthday" placeholder="Enter your birthday">
+                              </div>
+                          </div>
+                          <!-- Save changes button-->
+                          <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary mb-3 w-100" style="background-color: #234573;" type="submit">Register</button>
+              </div>
+            </div>
+            <div class="col-lg-4">
+            <img src="{% static 'asset/image/parking.jpg' %}" style="width: 100%;"> 
+            <span>Already registerd,</span><a href="{% url 'parking_login' %}">Sign In</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

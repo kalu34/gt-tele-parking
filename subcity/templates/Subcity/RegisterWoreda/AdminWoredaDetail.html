@@ -1,0 +1,56 @@
+{% extends 'Subcity/include/SubcityBase.html' %} {% load static %} {% block content %}
+
+<div class="container">
+    <h4 class="text-center text-white bg-gradient-dark rounded p-2" >Woreda Admin Detail </h4>
+    <h6>User Detail</h6>
+    <p>The below user have all the previliage to access and make convensional decison according to the given subcity.</p>
+    <hr>
+    <div class="row">
+        <div class="col-sm-5">
+            
+          <div class="d-flex align-items-center">
+            <div class="d-flex flex-column align-items-end me-4">
+              <h6 class="text-sm text-muted font-weight-normal mb-1">First Name : </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Last Name : </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Username :  </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Email : </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Phone Number : </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Address : </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Update Date : </h6>
+            </div>
+            <div class="">
+              <h6 class="text-sm font-weight-semibold mb-1">{{user.first_name}} </h6>
+              <h6 class="text-sm font-weight-semibold mb-1">{{user.last_name}} </h6>
+              <h6 class="text-sm font-weight-semibold mb-1">{{user.username}} </h6>
+              <h6 class="text-sm font-weight-semibold mb-1">{{user.email}} </h6>
+              <h6 class="text-sm font-weight-semibold mb-1">{{user.phone_number}} </h6>
+              <h6 class="text-sm font-weight-semibold mb-1">{{user.address}} </h6>
+              <h6 class="text-sm font-weight-semibold mb-1">{{user.updated_at}} </h6>
+            </div>
+          </div>
+          <a href="{% url 'remove-role' id=user.id%}" class="btn btn-danger mt-4">Remove Role <i class="fa-solid fa-trash ms-3"></i></a>
+        </div>
+        <div class="col-sm-7">
+          <h6 class="font-weight-semibold mb-2"><i class="fa-solid fa-lock me-2"></i>Role Related Information</h6>
+          <hr class="horizontal mb-4 dark">
+          <ul>
+            <li class="text-sm">Admin are assigned to the below subcity</li>
+            <li class="text-sm">Any Change Related to the Subcity is directly accounted to the subcity admin</li>
+            <li class="text-sm"> Allowing And Managing Admins Accordingly Will Increase Transparent Data and Role mangment</li>
+          </ul>
+          <div class="d-flex align-items-center">
+            <div class="d-flex flex-column align-items-end me-4">
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Admin Subciyt : </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Role Assign: </h6>
+              <h6 class="text-sm text-muted font-weight-normal mb-1">Assigned Date :  </h6>
+            </div>
+            <div class="">
+              <h6 class="text-sm font-weight-semibold mb-1">{{role.subcity}} /{{role.woreda}}</h6>
+              <h6 class="text-sm font-weight-semibold mb-1">Woreda - Admin </h6>
+              <h6 class="text-sm font-weight-semibold mb-1">Jan 26, 2014</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock %}

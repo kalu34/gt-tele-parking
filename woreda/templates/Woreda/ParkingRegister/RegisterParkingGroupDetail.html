@@ -1,0 +1,202 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container-fluid py-2">
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+
+  <h4 class="bg-dark text-light p-2 rounded text-center">
+    <i class="fa-solid fa-square-parking"></i>
+    Parking Group Registeration Form
+  </h4>
+  <div class="bg-white p-3 my-2">
+    <h6 class="text-muted font-weight-normal">Detail Information About Parking Group</h6>
+    <li>Enter Propery Parking Group Name</li>
+    <li>No Two parking be registered inside different parking Group</li>
+    <li>Make sure the crossponding woreda and subcity are correct </li>
+    <li>Please Provide Readable and meaning full name </li>
+  </div>
+  <div class="bg-white rounded p-2 navbar-vertical">
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="input-group input-group-outline my-3">
+              <label style="width: 100%;" for="" class="mx-2"><i class="fa-solid fa-boxes-packing"></i> Parking</label>
+              {{form.name}}
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group input-group-outline my-3">
+              <label style="width:100%" for="" class="mx-2"><i class="fa-solid fa-thumbtack"></i> Subcity</label>
+              {{form.subcity}}
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group input-group-outline my-3">
+              <label style="width:100%" for="" class="mx-2">Woreda</label>
+              {{form.woreda}}
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group input-group-outline my-3">
+              <label style="width:100%" for="" class="mx-2">Kebele</label>
+              {{form.kebele}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-light m-3 p-3 rounded d-flex align-items-center justify-content-between">
+        <div>
+          <button type="submit" class="btn btn-dark">Save</button>
+          <a href="{% url 'RegisterParkingGroupDetail' id=0 %}" class="btn btn-dark ms-1">savd and add another</a>
+        </div>
+        <div class="">
+          {% if parking_group %}
+          <a href="{% url 'InstanceDelete' id=parking_group.id id_2=0 id_3=0 %}" class="btn btn-primary">Delete</a>
+          {% else %}
+          <a href="{% url 'InstanceDelete' id=0 id_2=0 id_3=0 %}" class="btn btn-primary disabled text-white">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+    {% if parking_group %}
+    <a href="{% url 'RegisterParking' id=parking_group.id status='new' %}" class="btn btn-dark">
+      Add Parking
+      <i class="fa-solid fa-plus mx-1"></i>
+    </a>
+    {% else %}
+    <a href="" class="btn btn-dark disabled">
+      Add Parking
+      <i class="fa-solid fa-plus mx-1"></i>
+    </a>
+    {% endif %}
+  </div>
+  <h4 class="bg-dark text-light p-2 rounded text-center">
+    <i class="fa-solid fa-location-crosshairs"></i>
+    Parking Informaiton Table
+  </h4>
+      <!-- Park List Table  -->
+      <div class="card">
+        <div class="table-responsive">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking Group</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Parking</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Address</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Price Hour</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Price Day</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Slot</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Avaliabel Slot</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Ev charging</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">covered</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Approved</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Request</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in parkings %}
+              <tr>
+                <td>
+                  <div class="d-flex px-2">
+                    <div>
+                      <i class="fa-solid fa-square-parking"></i>
+                    </div>
+                    <div class="my-auto">
+                      <h6 class="mb-0 text-xs ms-2">{{item.parking_group.name}}</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-normal mb-0">{{item.name}}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-normal mb-0">{{item.address}}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-normal mb-0">{{item.price_per_hour}}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-normal mb-0">{{item.price_per_day}}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-normal mb-0">{{item.slot_capacity}}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-normal mb-0">{{item.available_slots}}</p>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    {% if item.has_ev_charging %}
+                    <span class="me-2 text-xs text-success"><i class="fa-solid fa-check"></i></span>
+                    {% else %}
+                    <span class="me-2 text-xs text-danger"><i class="fa-solid fa-x"></i></span>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    {% if item.is_covered %}
+                    <span class="me-2 text-xs text-success"><i class="fa-solid fa-check"></i></span>
+                    {% else %}
+                    <span class="me-2 text-xs text-danger"><i class="fa-solid fa-x"></i></span>
+                    {% endif %}
+                  </div>
+                </td>
+    
+                <td class="align-middle text-center">
+                  <div class="d-flex align-items-center">
+                    {% if item.is_admin %}
+                    <span class="me-2 text-xs text-success"><i class="fa-solid fa-check"></i></span>
+                    {% else %}
+                    <span class="me-2 text-xs text-danger"><i class="fa-solid fa-x"></i></span>
+                    {% endif %}
+                  </div>
+                </td>
+                <td class="align-middle text-center">
+                  <div class="d-flex align-items-center">
+                    {% if item.is_sent %}
+                    <span class="me-2 text-xs text-success"><i class="fa-solid fa-check"></i></span>
+                    {% else %}
+                    <span class="me-2 text-xs text-danger"><i class="fa-solid fa-x"></i></span>
+                    {% endif %}
+                  </div>
+                </td>
+    
+                <td class="align-middle">
+                  <a href="{% url 'RegisterParking' id=item.id status='open' %}" class="btn btn-link text-secondary mb-0">
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--  -->
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+<div class="d-flex">
+  {% if 'IncomeReportWoredaPerDay' in request.get_full_path or 'IncomeReportWoredaPerMonth' in request.get_full_path or 'IncomeReportWoredaPerYear' in request.get_full_path %}
+      <a href="{% url 'IncomeReportWoredaPerDay' %}" class="btn bg-dark text-white">Income Report <i class="fa-solid fa-check mx-2"></i></a>
+  {% else %}
+      <a href="{% url 'IncomeReportWoredaPerDay' %}" class="btn bg-light mx-2">Income Report</a>
+  {% endif %}
+
+  {% if 'CustomerReportWoredaPerDay' in request.get_full_path or 'CustomerReportWoredaPerMonth' in request.get_full_path or 'CustomerReportWoredaPerYear' in request.get_full_path %}
+      <a href="{% url 'CustomerReportWoredaPerDay' %}" class="btn bg-dark text-white">Customer Report <i class="fa-solid fa-check mx-2"></i></a>
+  {% else %}
+      <a href="{% url 'CustomerReportWoredaPerDay' %}" class="btn bg-light mx-2">Customer Report</a>
+  {% endif %}
+
+  {% if 'ParkingReportWoredaPerDay' in request.get_full_path %}
+  <a href="{% url 'ParkingReportWoredaPerDay' %}" class="btn bg-dark text-white">Parking Report <i class="fa-solid fa-check mx-2"></i></a>
+  {% else %}
+  <a href="{% url 'ParkingReportWoredaPerDay' %}" class="btn bg-light mx-2">Parking Report</a>
+  {% endif %}
+</div>
+
+

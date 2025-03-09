@@ -1,0 +1,259 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<style>
+  #map{
+    width: 100%;
+    height: 400px;
+  }
+</style>
+<div class="container">
+  {% if messages %}
+  {% for message in messages %}
+        {% if message.tags == 'success' %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Congratulations!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Warning!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% else %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% endif %}
+  {% endfor %}
+{% endif %}
+
+  <div class="p-2">
+    <div class="card p-3 my-2">
+      <h6>Parking Detail Fill</h6>
+      <div class="d-flex px-4">
+        <div class="">
+          <li class="fs-6">Enter Crosspoinding Subcity And Woreda</li>
+          <li class="fs-6">Porvide Moderate Income Statement </li>
+          <li class="fs-6">Enter the capacity that the Pakring Can Hold</li>
+          <li class="fs-6">Only Toggle If the Accessory is avaliable in the parking</li>
+        </div>
+        <div class="bg-light mx-4" style="width: 2px; height: 100px;"></div>
+        <div class="">
+          <li class="fs-6">Provide Parking Information Correctily</li>
+          <li class="fs-6">Parking Name Shoudl Be Acceptable And Correct</li>
+          <li class="fs-6">Provide The Current Location</li>
+        </div>
+      </div>
+
+    </div>
+    <h4 class="bg-dark text-light rounded p-2 mb-2"> <i class="fa-solid fa-square-parking"></i> Parking Registeration Form</h4>
+    <div class="d-flex justify-content-end">
+      {% if parking %}
+      <a href = "{% url 'ViewParkingMember' id=parking.id %}" class="bg-dark text-white px-3 py-2 rounded float-right" style="display: block; margin-top: 10px; width: 150px;">Members <i class="fa-solid fa-eye mx-2"></i></a>
+      {% else %}
+      <a href = "" class="bg-dark text-white px-3 py-2 disabled rounded float-right" style="display: block; margin-top: 10px; width: 150px;">Members <i class="fa-solid fa-eye mx-2"></i></a>
+      {% endif %}
+    </div>
+    <div class="bg-white navbar-vertica p-2 pt-3 mt-4">
+      <div class="row">
+        <div class="col-md-11">
+          <p>Parking Detail Form</p>
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-square-parking"></i> Parking Name</label>
+                {{ParkingForm.name}}
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-location-dot"></i> Parking Address</label>
+                {{ParkingForm.address}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-square-parking"></i> Parking Subcity </label>
+                {{ParkingForm.subcity}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-location-dot"></i> Parking Woreda</label>
+                {{ParkingForm.woreda}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-square-parking"></i> Parking Kebele</label>
+                {{ParkingForm.keble}}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-money-bill"></i> Parking Per Hour</label>
+                {{ParkingForm.price_per_hour}}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-sack-dollar"></i> Parking Per Day</label>
+                {{ParkingForm.price_per_day}}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-car"></i> Slot Capacity</label>
+                {{ParkingForm.slot_capacity}}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-cart-flatbed-suitcase"></i> Available Slots</label>
+                {{ParkingForm.available_slots}}
+              </div>
+            </div>
+            <!--  -->
+            <div class="col-md-3 mb-3">
+              <div class="form-switch ms-2">
+                <label class="form-check-label w-100" style="margin-left: -40px;"><i class="fa-solid fa-charging-station"></i> Have Ev Charging</label>
+               {{ParkingForm.has_ev_charging}}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="form-switch ms-2">
+                <label class="form-check-label w-100" style="margin-left: -40px;"><i class="fa-solid fa-wheelchair-move"></i> Has Disabled Parking</label>
+               {{ParkingForm.has_disabled_parking}}
+              </div>
+            </div>
+            <div class="col-md-2 mb-3">
+              <div class="form-switch ms-2">
+                <label class="form-check-label w-100" style="margin-left: -40px;"><i class="fa-solid fa-warehouse"></i> Is Covered</label>
+               {{ParkingForm.is_covered}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="form-switch ms-2">
+                <label class="form-check-label w-100" style="margin-left: -40px;"><i class="fa-solid fa-camera"></i> Has Security Cameras</label>
+               {{ParkingForm.has_security_cameras}}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="form-switch ms-2">
+                <label class="form-check-label w-100" style="margin-left: -40px;"><i class="fa-solid fa-handcuffs"></i> Has Security Guard</label>
+               {{ParkingForm.has_security_guard}}
+              </div>
+            </div>
+            <div class="col-md-5 mb-3">
+                 <div class="input-group input-group-outline">
+                <label class="form-check-label w-100"><i class="fa-solid fa-money-bill"></i> Payment Method</label>
+               {{ParkingForm.payment_method}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                 <div class="input-group input-group-outline">
+                <label class="form-check-label w-100"><i class="fa-solid fa-list"></i> Amenities</label>
+               {{ParkingForm.amenities}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-image"></i> Parking Image</label>
+                {{ParkingForm.latitude}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-image"></i> Parking Image</label>
+                {{ParkingForm.longitude}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-image"></i> Parking Image</label>
+                {{ParkingForm.image1}}
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="input-group input-group-outline">
+                <label for="" class="w-100"><i class="fa-solid fa-image"></i> Parking Image</label>
+                {{ParkingForm.image2}}
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <p>Drag The Marker To the Location</p>
+              <div id="map"></div>
+            </div>
+          </div>
+          <input type="hidden" id="id_latitude" name="latitude" value="1">
+          <input type="hidden" id="id_longitude" name="longitude" value="1">
+          <div class="bg-light mt-2 p-3 rounded d-flex align-items-center justify-content-between">
+            <div>
+              <button type="submit" class="btn btn-dark">Save</button>
+            </div>
+            <div class="">
+              {% if ParkingForm.instance.is_active %}
+              <a href="{% url 'InstanceDelete' id=parking_group.id id_2=ParkingForm.instance.id id_3=0 %}" class="btn btn-primary">Delete</a>
+              {% else %}
+              <a class="btn btn-primary disabled text-white">Delete</a>
+              {% endif %}
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Initialize map with default view
+var map = L.map('map').setView([51.505, -0.09], 13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+// Create a marker with draggable option at the default location
+var marker = L.marker([51.505, -0.09], { draggable: true }).addTo(map);
+
+// Define a function to update the hidden latitude and longitude fields
+function updateCoordinates(lat, lng) {
+  document.getElementById('id_latitude').value = lat;
+  document.getElementById('id_longitude').value = lng;
+  console.log(lat,lng)
+}
+
+// Update marker position and hidden fields when marker is dragged
+marker.on('dragend', function(event) {
+    var marker = event.target;
+    var position = marker.getLatLng();
+    updateCoordinates(position.lat, position.lng);
+});
+
+// Get the user's current location
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var userLat = position.coords.latitude;
+        var userLng = position.coords.longitude;
+
+        // Update the map view to the user's current location
+        map.setView([userLat, userLng], 15);
+        marker.setLatLng([userLat, userLng]);
+        updateCoordinates(userLat, userLng);
+    }, function(error) {
+        console.error('Error getting user location:', error);
+    });
+} else {
+    console.error('Geolocation is not supported by this browser.');
+}
+
+
+</script>
+{% endblock %}

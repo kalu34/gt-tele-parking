@@ -1,0 +1,7 @@
+<div class="d-flex">
+  <div class="btn-group">
+    <a href="{% url 'CItyAllRequest' %}" class="btn {% if 'CItyAllRequest' in request.path %}btn-dark {% else %} btn-white {% endif %}">All</a>
+    <a href="{% url 'CItyViewApprovedRequest' %}" class="btn {% if 'CItyViewApprovedRequest' in request.path %}btn-dark {% else %} btn-white {% endif %}">Approved Request</a>
+    <a href="{% url 'CItyViewDeclinedRequest' %}" class="btn {% if 'CItyViewDeclinedRequest' in request.path %}btn-dark {% else %} btn-white {% endif %}">Decined Request</a>
+  </div>
+</div>

@@ -1,0 +1,336 @@
+{% extends 'include/userBase.html' %} {% load static %} {% block content %}
+
+<div class="container-xl mt-2">
+  <nav class="nav nav-borders">
+    <a class="nav-link active" href="#" onclick="showSection('profile')">Profile</a>
+    <a class="nav-link" href="#" onclick="showSection('security')">Security</a>
+    <!-- <a class="nav-link" href="#" onclick="showSection('car')">Car Information</a>
+    <a class="nav-link" href="#" onclick="showSection('legal')">Legal Information</a> -->
+  </nav>
+  <hr class="mt-0 mb-4" />
+  {% if messages %}
+  {% for message in messages %}
+        {% if message.tags == 'success' %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Congratulations!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Warning!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% else %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% endif %}
+  {% endfor %}
+{% endif %}
+  <!-- Profile page  content -->
+  <div class="content-section d-block" id="profile">
+    <div class="row">
+      <div class="col-xl-4">
+        <!-- Profile picture card-->
+        <div class="card mb-4 mb-xl-0">
+          <div class="card-header">Profile Picture</div>
+          <div class="card-body text-center">
+            <!-- Profile picture image-->
+            <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+            <!-- Profile picture help block-->
+            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+            <!-- Profile picture upload button-->
+            <form action="{% url 'create_or_update_user_profile_image' user_id=request.user.id %}" method="POST"  enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <input class="form-control" id="inputEmailAddress" type="file" placeholder="Enter your email address" />
+              </div>
+              <button class="btn btn-primary w-100" type="submit">Upload new image</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8">
+        <!-- Account details card-->
+        <div class="card mb-4">
+          <div class="card-header">Account Details</div>
+          <div class="card-body">
+            <form action="{% url 'create_or_update_user_profile' user_id=request.user.id %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <!-- Form Group (username)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="inputUsername">
+                  <i class="fa-regular fa-user mx-1"></i>
+                  Username (how your name will appear to other users on the site)
+                </label>
+                {{profile_form.username}}
+              </div>
+              <!-- Form Row-->
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (first name)-->
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputFirstName">First name</label>
+                  {{profile_form.first_name}}
+                </div>
+                <!-- Form Group (last name)-->
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputLastName">Last name</label>
+                  {{profile_form.last_name}}
+                </div>
+              </div>
+              <!-- Form Row        -->
+              <div class="row gx-3 mb-3">
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputLocation">
+                    <i class="fa-solid fa-location-dot mx-1"></i>
+                    Location
+                  </label>
+                  {{profile_form.address}}
+                </div>
+              </div>
+              <!-- Form Group (email address)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="inputEmailAddress">
+                  <i class="fa-solid fa-envelope mx-1"></i>
+                  Email address
+                </label>
+                {{profile_form.email}}
+              </div>
+              <!-- Form Row-->
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (phone number)-->
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputPhone">
+                    <i class="fa-solid fa-phone mx-1"></i>
+                    Phone number
+                  </label>
+                  {{profile_form.phone_number}}
+                </div>
+                <!-- Form Group (birthday)-->
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputBirthday">
+                    <i class="fa-regular fa-calendar-days mx-1"></i>
+                    Birthday
+                  </label>
+                  {{profile_form.birthdate}}
+                </div>
+              </div>
+              <!-- Save changes button-->
+              <button class="btn btn-primary" type="submit">Save changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account page navigation-->
+  <div class="content-section d-none" id="security">
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Change password card-->
+        <div class="card mb-4">
+          <div class="card-header">Change Password</div>
+          <div class="card-body">
+            <form action="{% url 'change_password'%}" method="POST">
+              {% csrf_token %}
+              <!-- Form Group (current password)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="currentPassword">Current Password</label>
+                <input class="form-control" id="currentPassword" type="password" name="currentPassword" placeholder="Enter current password" />
+              </div>
+              <!-- Form Group (new password)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="newPassword">New Password</label>
+                <input class="form-control" id="newPassword" type="password" name="newPassword" placeholder="Enter new password" />
+              </div>
+              <!-- Form Group (confirm password)-->
+              <div class="mb-3">
+                <label class="small mb-1" for="confirmPassword">Confirm Password</label>
+                <input class="form-control" id="confirmPassword" type="password" name="confirmPassword" placeholder="Confirm new password" />
+              </div>
+              <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <!-- Delete account card-->
+        <div class="card mb-4">
+          <div class="card-header">Delete Account</div>
+          <div class="card-body">
+            <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below.</p>
+            <button class="btn btn-danger-soft text-danger" type="button">I understand, delete my account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  Car Information  Card -->
+  <div class="col-xl-8 content-section d-none" id="car">
+    <!-- Account details card-->
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fa-solid fa-car mx-1"></i>
+        Car Information
+      </div>
+      <div class="card-body">
+        <form action="{% url 'create_or_update_car' user_id=request.user.id %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <!-- Form Group (username)-->
+          <div class="mb-3">
+            <label class="small mb-1" for="inputUsername">Car Name</label>
+            {{ car_form.name }}
+          </div>
+          <!-- Form Row-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (first name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputFirstName">
+                <i class="fa-solid fa-car-side mx-1"></i>
+                Maker
+              </label>
+              {{ car_form.make }}
+            </div>
+            <!-- Form Group (last name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputLastName">
+                <i class="fa-solid fa-car-rear mx-1"></i>
+                Model
+              </label>
+              {{car_form.model}}
+            </div>
+          </div>
+          <!-- Form Row        -->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (organization name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputOrgName">
+                <i class="fa-regular fa-calendar-days mx-1"></i>
+                Year Of Production
+              </label>
+              {{car_form.year}}
+            </div>
+            <!-- Form Group (location)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputLocation">
+                <i class="fa-solid fa-palette mx-1"></i>
+                Color
+              </label>
+              {{car_form.color}}
+            </div>
+          </div>
+          <!--  -->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputPhone">
+                <i class="fa-solid fa-hashtag mx-1"></i>
+                Plate Number
+              </label>
+              {{car_form.plate_number}}
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputBirthday">
+                <i class="fa-solid fa-arrows-left-right-to-line mx-1"></i>
+                mileage
+              </label>
+              {{car_form.mileage}}
+            </div>
+          </div>
+          <!-- Form Group (email address)-->
+          <div class="mb-3">
+            <label class="small mb-1" for="inputEmailAddress">
+              <i class="fa-regular fa-image mx-1"></i>
+              Image Of the Car
+            </label>
+            {{car_form.image}}
+          </div>
+          <!-- Form Row-->
+          <!-- Save changes button-->
+          <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Legal Document -->
+  <div class="col-lg-8 content-section d-none" id="legal">
+    <!-- Change password card-->
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fa-solid fa-file mx-1"></i>
+        Legal Document
+      </div>
+      <div class="card-body">
+        <form action="{% url 'create_or_update_document' user_id=request.user.id %}" method="post"  enctype="multipart/form-data">
+          {% csrf_token %}
+          <!-- Form Group (current password)-->
+          <div class="mb-3">
+            <label class="small mb-1" for="currentPassword">
+              <i class="fa-solid fa-folder-open mx-1"></i>
+              Docuement
+            </label>
+            {{legal_document_form.document}}
+          </div>
+          <!-- Form Group (new password)-->
+          <div class="mb-3">
+            <label class="small mb-1" for="newPassword">
+              <i class="fa-solid fa-paste mx-1"></i>
+              Docuement Type
+            </label>
+            {{legal_document_form.document_type}}
+          </div>
+          <!-- Form Group (confirm password)-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (first name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputFirstName">
+                <i class="fa-regular fa-calendar mx-1"></i>
+                Issued Date
+              </label>
+              {{legal_document_form.issue_date}}
+            </div>
+            <!-- Form Group (last name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputLastName">
+                <i class="fa-regular fa-calendar mx-1"></i>
+                Expire Date
+              </label>
+              {{legal_document_form.expiry_date}}
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Save Document</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Funciont To visibity
+function showSection(section) {
+  // Hide all sections
+  var sections = document.querySelectorAll(".content-section");
+  sections.forEach(function (sec) {
+    sec.classList.add("d-none");
+    sec.classList.remove("d-block");
+  });
+
+  // Show the selected section
+  var activeSection = document.getElementById(section);
+  activeSection.classList.remove("d-none");
+  activeSection.classList.add("d-block");
+
+  // Optionally, update the active class for the nav links
+  var navLinks = document.querySelectorAll(".nav-link");
+  navLinks.forEach(function (link) {
+    link.classList.remove("active");
+  });
+  document.querySelector(`a[onclick="showSection('${section}')"]`).classList.add("active");
+}
+
+</script>
+{% endblock %}

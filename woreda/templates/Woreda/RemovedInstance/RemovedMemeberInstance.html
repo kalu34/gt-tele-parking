@@ -1,0 +1,78 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  
+  <div class="d-flex justify-content-end">
+    <a href="{% url 'ViewDeletedInstanceParkingMember' %}" class="btn bg-dark text-white">Parking Member <i class="fa-solid fa-check mx-2"></i> </a>
+    <a href="{% url 'ViewDeletedInstanceParking' %}" class="btn  bg-light mx-3">Parking </a>
+    <a href = "{% url 'ViewDeletedInstance' %}" class="btn bg-light">Parking Group </a>
+  </div>
+  <p class="bg-dark p-2 rounded text-white text-center">List Of Deleted Instance </p>
+  
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Full Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Address</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone </th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Parking Group</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Parking</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Address</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in deleted_instances %}
+          <tr>
+            <td>
+              <div class="d-flex px-2">
+                <div>
+                  <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="my-auto">
+                  <h6 class="mb-0 text-xs ms-3">{{item.user.first_name}} {{item.user.last_name}}</h6>
+                </div>
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.user.address}}</span>
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.user.phone_number}}</span>
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.parking_group.name}}</span>
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.parking.name}}</span>
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.parking.address}}</span>
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.date}}</span>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+  
+        </tbody>
+      </table>
+    </div>
+    </div>
+
+</div>
+{% endblock %}

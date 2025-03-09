@@ -1,0 +1,102 @@
+{% extends 'City/include/CityBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-2 px-5">
+<div class="row">
+  <div class="col-12">
+    <div class="card border shadow-xs mb-4">
+      <div class="card-body px-0 py-0">
+        <div class="border-bottom py-3 px-3 d-sm-flex align-items-center">
+          <div>
+            <h6 class="font-weight-semibold text-lg mb-0">Subcity list</h6>
+            <p class="text-sm">See information about all subcities</p>
+          </div>
+          <div class="input-group w-sm-25 ms-auto">
+            <span class="input-group-text text-body">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+              </svg>
+            </span>
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+        </div>
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="text-secondary text-xs font-weight-semibold opacity-7">Administrator</th>
+                <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Subcity</th>
+                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Status</th>
+                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Date</th>
+                <th class="text-secondary opacity-7"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in admin_with_role %}
+              <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
+                    <div class="d-flex align-items-center">
+                      <img src="{% static 'CityAssets/assets/img/Subcity-Logo.png' %}" class="avatar avatar-sm rounded-circle me-2" alt="user1">
+                    </div>
+                    <div class="d-flex flex-column justify-content-center ms-1">
+                      <h6 class="mb-0 text-sm font-weight-semibold"> SUB-{{item.role.subcity}}</h6>
+                      <p class="text-sm text-secondary mb-0">{{item.user.email}}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p class="text-sm text-dark font-weight-semibold mb-0">Adminstrator</p>
+                  <p class="text-sm text-secondary mb-0">{{item.user.first_name}} {{item.user.last_name}}</p>
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <span class="badge badge-sm border border-success text-success bg-success">Active</span>
+                </td>
+                <td class="align-middle text-center">
+                  <span class="text-secondary text-sm font-weight-normal">{{item.user.created_at}}</span>
+                </td>
+                <td class="align-middle">
+                  {% if item.role %}
+                  <a href="{% url 'WoredaReportView' subcity=item.role.subcity %}" class="text-secondary font-weight-bold text-xs" data-bs-toggle="tooltip" data-bs-title="Detail Report For Each Subcity">
+                    Detail
+                  </a>
+                  {% else %}
+                  <a href="" class="text-secondary font-weight-bold text-xs" data-bs-toggle="tooltip" data-bs-title="Role Not Assigned">
+                    Role Not Assigend
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="border-top py-3 px-3 d-flex align-items-center">
+          {% if subcityAdmins.has_previous %}
+          <a href="?page={{subcityAdmins.previous_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+           {% else %}  
+           <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Previous</a>
+           {% endif %}
+          <nav aria-label="..." class="ms-auto">
+            <ul class="pagination pagination-light mb-0">
+              {% for num in subcityAdmins.paginator.page_range %}
+              <li class="page-item" aria-current="page">
+                <a href="?page={{num}}" class="page-link font-weight-bold  {% if subcityAdmins.number == num %}bg-gradient-primary text-white {% endif %}">{{num}}</a>
+              </li>
+              {% endfor %}
+              
+            </ul>
+          </nav>
+          {% if subcityAdmins.has_next %}
+          <a href="?page={{subcityAdmins.next_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+           {% else %}  
+           <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Next</a>
+           {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

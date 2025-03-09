@@ -1,0 +1,223 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+<style>
+  .container {
+    background-color: #f7f8ff;
+    padding: 0 15px;
+}
+</style>
+<div class="container">
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+
+  <div class="row row-cols-2">
+    <div class="col">
+      <div class="request_box new_request w-100" style="color: wheat;">
+        <span>Spot Request</span>
+        <div class="row row-cols-2">
+          <div class="col mt-4" style="font-size: 0.8rem; opacity: 0.7">
+            <div class="d-flex align-items-center mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
+                <g class="nc-icon-wrapper" fill="#ffffff">
+                  <path
+                    d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm57.1 350.1L224.9 294c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v137.7l63.5 46.2c5.4 3.9 6.5 11.4 2.6 16.8l-28.2 38.8c-3.9 5.3-11.4 6.5-16.8 2.6z"></path>
+                </g>
+              </svg>
+              <span class="mx-2 start_time">{{approved_request.start_time}} - {{approved_request.end_time}}</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 640 512">
+                <g class="nc-icon-wrapper" fill="#ffffff">
+                  <path
+                    d="M624 208h-64v-64c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v64h-64c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h64v64c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-64h64c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
+                </g>
+              </svg>
+              <span class="mx-2 user">{{approved_request.user.first_name}} {{approved_request.user.last_name}}</span>
+            </div>
+          </div>
+          <div class="col" style="margin-top: -1.2rem">
+            <div class="d-flex align-items-center buttonmy-2">
+              <div class="d-flex">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                  <g class="nc-icon-wrapper" fill="#ffffff">
+                    <path
+                      d="M362.6,192.9L345,174.8c-0.7-0.8-1.8-1.2-2.8-1.2c0,0,0,0,0,0c-1.1,0-2.1,0.4-2.8,1.2l-122,122.9L173,253.3	c-0.8-0.8-1.8-1.2-2.8-1.2c-1,0-2,0.4-2.8,1.2l-17.8,17.8c-1.6,1.6-1.6,4.1,0,5.7l56,56c3.6,3.6,8,5.7,11.7,5.7	c5.3,0,9.9-3.9,11.6-5.5c0,0,0,0,0.1,0l133.7-134.4C364.1,196.9,364.1,194.4,362.6,192.9z"></path>
+                  </g>
+                </svg>
+                <span class="mx-2 plate_number">{{car.plate_number}}</span>
+              </div>
+              <button class="btn btn-light disabled w-100">Payment</button>
+            </div>
+            {% if approved_request.is_active %}
+            <a href="{% url 'parking_approve_request_stop' id=approved_request.id %}" class="btn btn-light w-100 start_time_button">End Time</a>
+            {% else %}
+            <a href="" class="btn btn-light w-100 start_time_button disabled" >End Time</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="table_box">
+          <span class="mb-2 d-block">Available Spot List</span>
+          <div class="row row-cols-6 table">
+        {% if approved_parking_requsts %}
+            {% for i in spot_list %}
+            <div class="col spot {% for item in approved_parking_requsts %}{% if item.slot == i %} {% if item.slot == approved_request.slot %} spot-selected {% else %} spot-active {% endif %}{% else %} {% endif %}{% endfor %}">{{i}}</div>
+            {% endfor %}
+        {% else %}
+          {% for i in spot_list %}
+          <div class="col spot">{{i }}</div>
+          {% endfor %}
+        {% endif %}
+    </div>
+        </div>
+        
+        </div>
+        <div class="card my-2" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="{{car.image.url}}" class="rounded w-100" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title fs-2" style="text-transform: capitalize;"><i class="fa-solid fa-car mx-1"></i> {{car.name}}</h5>
+                <div class="row mb-2">
+                  <div class="col"><p class="card-text"><i class="fa-solid fa-screwdriver-wrench mx-1 "></i> Maker:  {{car.make}}</p></div>
+                  <div class="col"><p class="card-text"><i class="fa-solid fa-car-side mx-1 "></i>Model:  {{car.model}}</p></div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col"><p class="card-text"><i class="fa-solid fa-calendar-days mx-1 "></i> Year:  {{car.year}}</p></div>
+                  <div class="col"><p class="card-text"><i class="fa-solid fa-palette mx-1 "></i> Color:  {{car.color}}</p></div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col"><p class="card-text"><i class="fa-solid fa-road mx-1 "></i> Mileage:  {{car.mileage}}</p></div>
+                  <div class="col"><p class="card-text"><i class="fa-solid fa-car-rear mx-1 "></i> Plate:  {{car.plate_number}}</p></div>
+                </div>
+                <p class="card-text"><small class="text-body-secondary">Last updated {{car.updated_at}}</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col">
+      <div class="request_box w-100 text-white" id="payment_box">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <span>Payment Request</span>
+        </div>
+        <div class="row row-cols-2">
+          <div class="col mt-2" style="font-size: 0.8rem; opacity: 0.7">
+            <div class="d-flex align-items-center mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                <g class="nc-icon-wrapper" fill="#ffffff">
+                  <path
+                    d="M362.6,192.9L345,174.8c-0.7-0.8-1.8-1.2-2.8-1.2c0,0,0,0,0,0c-1.1,0-2.1,0.4-2.8,1.2l-122,122.9L173,253.3	c-0.8-0.8-1.8-1.2-2.8-1.2c-1,0-2,0.4-2.8,1.2l-17.8,17.8c-1.6,1.6-1.6,4.1,0,5.7l56,56c3.6,3.6,8,5.7,11.7,5.7	c5.3,0,9.9-3.9,11.6-5.5c0,0,0,0,0.1,0l133.7-134.4C364.1,196.9,364.1,194.4,362.6,192.9z"></path>
+                </g>
+              </svg>
+              <span class="mx-0 plateNumber">{{car.plate_number}}</span>
+            </div>
+  
+            <div class="d-flex align-items-center mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
+                <g class="nc-icon-wrapper" fill="#ffffff">
+                  <path
+                    d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm57.1 350.1L224.9 294c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v137.7l63.5 46.2c5.4 3.9 6.5 11.4 2.6 16.8l-28.2 38.8c-3.9 5.3-11.4 6.5-16.8 2.6z"></path>
+                </g>
+              </svg>
+              <span class="mx-2 start_time">{{approved_request.start_time}} - {{approved_request.end_time}}</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 640 512">
+                <g class="nc-icon-wrapper" fill="#ffffff">
+                  <path
+                    d="M624 208h-64v-64c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v64h-64c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h64v64c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-64h64c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
+                </g>
+              </svg>
+              <span class="mx-2 user">{{approved_request.user.first_name}} {{approved_request.user.last_name}}</span>
+            </div>
+          </div>
+          <div class="col" style="margin-top: -1.2rem">
+            <div class="d-flex align-items-center my-2">
+              {% if approved_request.is_active %}
+              <a href="" class="btn btn-light text-white w-50 disabled">Payment</a>
+              {% else %}
+              {% if approved_request.payment_status == False %}
+              <a href="{% url 'cash_payment' id=approved_request.id  %}" class="btn btn-outline-light text-white w-50">Add Payment</a>
+              {% else %}
+              <a href="{% url 'cash_payment' id=approved_request.id  %}" class="btn btn-outline-light text-white w-50 disabled">Payment</a>
+              {% endif %}
+              {% endif %}
+              <span class="mx-2 fs-4 payment-value">{{approved_request.total_price}} Birr</span>
+            </div>
+            <div class="d-flex p-1 px-2 rounded align-items-center justify-content-between">
+              <button class="btn btn-light w-100 text-dark">Verifying Payment
+                {% if approved_request.payment_status %}
+              <i class="fa-solid fa-check ms-3"></i>
+              {% else %}
+              <div class="spinner loader" id="spinner"></div>
+              {% endif %}
+              </button>
+              
+              <div class="check-spinner d-none" id="check-spinner">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+    <div>
+      <div class="card my-2">
+        <div class="card-body">
+          <h3 class="h5">Customer Notes</h3>
+          <div class="row mb-2">
+            <div class="col"><p class="card-text"><i class="fa-solid fa-user mx-2"></i>{{approved_request.user.first_name}} {{approved_request.user.last_name}}</p></div>
+            <div class="col"><p class="card-text"><i class="fa-solid fa-phone mx-2"></i>{{approved_request.user.phone_number}}</p></div>
+          </div>
+          <div class="row mb-2">
+            <div class="col"><p class="card-text"><i class="fa-solid fa-envelope mx-2"></i>{{approved_request.user.email}}</p></div>
+            <div class="col"><p class="card-text"><i class="fa-solid fa-location-dot mx-2"></i>{{approved_request.user.address}}</p></div>
+          </div>
+          <div class="row mb-2">
+           
+          </div>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <!-- Shipping information -->
+        <div class="card-body">
+          <h3 class="h2">Incident Report </h3>
+          <p class="text-muted mb-3">Please Be Aware Of Incident Report Require Legal Information And Evidence Will be Used by the court</p>
+          {% if incident %}
+          <div class="my-2">
+            <p>Incidnet Type: {{incident.incident_type}} <i class="fa-solid fa-check"></i></p>
+            <p>Incidnet Date: {{incident.date}} <i class="fa-solid fa-check"></i></p>
+          </div>
+          <a href="" class="btn btn-light w-100 disabled">Reported</a>
+          {% else %}
+          <a href="{% url 'incident_report' id=parking.id id2=approved_request.id %}" class="btn btn-danger w-100">Report Now</a>
+          {% endif %}
+        </div>
+      </div>
+      <a href="{% url 'parking_request' %}" class="btn btn-warning btn-md w-100 text-white fs-5 my-1">  Cancel Request <i class="fa-solid fa-x mx-3"></i></a>
+    </div>
+    </div>
+  </div>
+
+
+
+  </div>
+</div>
+{% endblock %}

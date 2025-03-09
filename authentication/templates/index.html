@@ -1,0 +1,527 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Font LInk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet" />
+    <!-- Font Awesome Icon -->
+    <script src="https://kit.fontawesome.com/ea03f014d5.js" crossorigin="anonymous"></script>
+    <!-- Main Styel Sheet -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <!-- On Scroll Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <!--  JS For On Scroll Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- On Scroll Animation -->
+    <title>LBPS</title>
+  </head>
+  <body>
+    <div class="background-image"></div>
+    <div class="navigation">
+      <div class="logo">
+        <h2>LBPS</h2>
+      </div>
+      <div class="nav-bar">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#ourService">Service</a></li>
+          <li><a href="#benefits">Benefit</a></li>
+          <li><a href="#socialProof">Testimony</a></li>
+          <li><a href="#howTo">How To</a></li>
+        </ul>
+        <i class="fa-solid fa-x fa-lg menu-close" style="margin-top: 10px; color: #1a1a1a;"></i>
+      </div>
+      <div class="cta" style="display: flex; align-items: center; justify-content: space-between;">
+        <i class="fa-solid fa-bars mx-3 fa-lg menu" style="margin-right: 15px;"></i>
+        <a href="{% url 'user-login' %}">
+        <i class="fa-solid fa-user fa-lg"></i>
+      </a>
+      </div>
+    </div>
+    <div class="container">
+      <section class="header" id="header">
+        <div class="hero">
+          <div class="hero_left">
+            <h1>
+              One Click To Make Your Day Even
+              <span>Fantastic</span>
+            </h1>
+            <p>
+              SmartPark tracks parking spot availability in real-time, allowing users to search and reserve spots near their destination, reducing congestion. and add more future
+              on it.
+            </p>
+            <div class="hero_left_cta">
+              <a href="{% url 'user-login' %}" class="solid">View Spot</a>
+              <a class="outline">Reserve Now</a>
+            </div>
+          </div>
+          <div class="hero_right">
+            <div class="hero_right_background"></div>
+            <div class="hero_right_image"></div>
+            <div class="hero_right_shadow"></div>
+            <div class="hero_right_iconBox box-1" data-aos="zoom-in" data-aos-delay="300">
+              <div class="box">
+                <p class="title">Unity Park</p>
+                <div class="box_container">
+                  <div class="left">
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/cars-icon.svg' %}" width="30" height="30" />
+                      <p class="name">24 Spot</p>
+                    </div>
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/time-alarm.svg' %}" width="20" height="20" />
+                      <p class="name">15 min</p>
+                    </div>
+                  </div>
+                  <div class="middle"></div>
+                  <div class="right">
+                    <p>20 Birr/Hr</p>
+                  </div>
+                </div>
+              </div>
+              <div class="icon">
+                <img src="{% static 'asset/icon/parking-area-icon.svg' %}" width="50" height="50" />
+              </div>
+            </div>
+            <div class="hero_right_iconBox box-2" data-aos="zoom-in" data-aos-delay="350">
+              <div class="icon">
+                <img src="{% static 'asset/icon/parking-area-icon.svg' %}" width="50" height="50" />
+              </div>
+              <div class="box">
+                <p class="title">Aberhot LB Park</p>
+                <div class="box_container">
+                  <div class="left">
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/cars-icon.svg' %}" width="30" height="30" />
+                      <p class="name">14 Spot</p>
+                    </div>
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/time-alarm.svg' %}" width="20" height="20" />
+                      <p class="name">12 min</p>
+                    </div>
+                  </div>
+                  <div class="middle"></div>
+                  <div class="right">
+                    <p>24 Birr/Hr</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hero_right_iconBox box-3" data-aos="zoom-in" data-aos-delay="400">
+              <div class="box">
+                <p class="title">Ambassador Park</p>
+                <div class="box_container">
+                  <div class="left">
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/cars-icon.svg' %}" width="30" height="30" />
+                      <p class="name">22 Spot</p>
+                    </div>
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/time-alarm.svg' %}" width="20" height="20" />
+                      <p class="name">18 min</p>
+                    </div>
+                  </div>
+                  <div class="middle"></div>
+                  <div class="right">
+                    <p>26 Birr/Hr</p>
+                  </div>
+                </div>
+              </div>
+              <div class="icon">
+                <img src="{% static 'asset/icon/parking-area-icon.svg' %}" width="50" height="50" />
+              </div>
+            </div>
+            <div class="hero_right_iconBox box-4" data-aos="fade-down">
+              <div class="icon">
+                <img src="{% static 'asset/icon/parking-area-icon.svg' %}" width="50" height="50" />
+              </div>
+              <div class="box">
+                <p class="title">Aberhot LB Park</p>
+                <div class="box_container">
+                  <div class="left">
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/cars-icon.svg' %}" width="30" height="30" />
+                      <p class="name">14 Spot</p>
+                    </div>
+                    <div class="left_car">
+                      <img src="{% static 'asset/icon/time-alarm.svg' %}" width="20" height="20" />
+                      <p class="name">12 min</p>
+                    </div>
+                  </div>
+                  <div class="middle"></div>
+                  <div class="right">
+                    <p>24 Birr/Hr</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Header Section End Here -->
+      <section class="ourService" id="ourService">
+        <h2 class="heading">Our Service</h2>
+        <div class="card_box">
+          <div class="card" data-aos="fade-right" data-aos-duration="300">
+            <div class="icon">
+              <i class="fa-solid fa-square-parking fa-2xl"></i>
+            </div>
+            <h2>Smart Parking</h2>
+            <p>Modern way of allocating parking spaces to drivers. It is a convenient and efficient way to park your vehicle.</p>
+            <button>View Spot</button>
+          </div>
+          <div class="card" data-aos="fade-down" data-aos-delay="400">
+            <div class="icon">
+              <i class="fa-solid fa-car fa-2xl"></i>
+            </div>
+            <h2>Car Parking</h2>
+            <p>Car can be parked in a designated parking area. It is a convenient and efficient way to park your vehicle.</p>
+            <button>View Spot</button>
+          </div>
+          <div class="card" data-aos="fade-left" data-aos-delay="500">
+            <div class="icon">
+              <i class="fa-solid fa-clock fa-2xl"></i>
+            </div>
+            <h2>Efficient TIme</h2>
+            <p>You don't waste time searching for parking spots. It is a convenient and efficient way to park your vehicle.</p>
+            <button>View Spot</button>
+          </div>
+        </div>
+      </section>
+      <!-- Our Service End Here -->
+      <section class="howTo" id="howTo">
+        <h2 class="heading">How To</h2>
+        <div class="howToPosition">
+          <div class="howToBackground"></div>
+          <div class="howToItem howToItemOneLocation" data-aos="fade-up">
+            <img src="{% static './asset/icon/parking-area-icon.svg' %}" alt="" width="50" height="50" data-aos="fade-right" />
+            <div class="howToBox" data-aos="fade-left">
+              <h2>Register</h2>
+              <p>Create an account with personal info and legal documents.</p>
+              <div class="IconBox">
+                <i class="fa-solid fa-user"></i>
+                <p>All Personal Informationo</p>
+              </div>
+              <div class="IconBox">
+                <i class="fa-solid fa-file"></i>
+                <p>Legal Document To Attach To the User Profile</p>
+              </div>
+            </div>
+          </div>
+          <div class="howToItem howToItemTwoLocation" data-aos="fade-up">
+            <img src="{% static './asset/icon/parking-area-icon.svg' %}" alt="" width="50" height="50" data-aos="fade-right" />
+            <div class="howToBox" data-aos="fade-left">
+              <h2>Search for Parking</h2>
+              <p>Enter your destination and search for available parking spots.</p>
+              <div class="IconBox">
+                <i class="fa-solid fa-magnifying-glass-location"></i>
+                <p>Search for Parking Spots</p>
+              </div>
+              <div class="IconBox">
+                <i class="fa-solid fa-filter-circle-dollar"></i>
+                <p>Filter by Location, Time, and Price</p>
+              </div>
+            </div>
+          </div>
+          <div class="howToItem howToItemThreeLocation" data-aos="fade-up">
+            <img src="{% static './asset/icon/parking-area-icon.svg' %}" alt="" width="50" height="50" data-aos="fade-right" />
+            <div class="howToBox" data-aos="fade-left">
+              <h2>Book Your Spot</h2>
+              <p>Select your preferred parking spot and book it in advance.</p>
+              <div class="IconBox">
+                <i class="fa-solid fa-bookmark"></i>
+                <p>Book Your Parking Spot</p>
+              </div>
+              <div class="IconBox">
+                <i class="fa-solid fa-diamond-turn-right"></i>
+                <p>Receive Confirmation and Directions</p>
+              </div>
+            </div>
+          </div>
+          <div class="howToItem howToItemFourLocation" data-aos="fade-up">
+            <img src="{% static './asset/icon/parking-area-icon.svg' %}" alt="" width="50" height="50" data-aos="fade-right" />
+            <div class="howToBox" data-aos="fade-left">
+              <h2>Pay and Park</h2>
+              <p>Pay for your parking spot and park your vehicle.</p>
+              <div class="IconBox">
+                <i class="fa-solid fa-money-check"></i>
+                <p>Pay for Your Parking Spot</p>
+              </div>
+              <div class="IconBox">
+                <i class="fa-solid fa-calendar-day"></i>
+                <p>Park Your Vehicle and Enjoy Your Day</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- How To End Here -->
+      <section class="benefits" id="benefits">
+        <div class="benefit-text">
+          <h2>Benefits</h2>
+          <p>
+            With LBPS, say goodbye to parking frustrations and hello to a more convenient, efficient, and cost-effective way to park. Our innovative solution offers a range of
+            benefits, including reduced congestion and lower emissions.
+          </p>
+          <button>Explore</button>
+          <div class="social-media">
+            <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="benefit-box-container">
+          <div class="benefit-box" data-aos="zoom-in" data-aos-delay="400">
+            <i class="fa-solid fa-clock"></i>
+            <h2>Time-Saving</h2>
+            <p>LBPS helps you save time by providing real-time parking availability and guiding you to the nearest available spot.</p>
+          </div>
+          <div class="benefit-box" data-aos="zoom-in" data-aos-delay="600">
+            <i class="fa-solid fa-dollar-sign"></i>
+            <h2>Cost-Effective</h2>
+            <p>With LBPS, you can save money by choosing the most affordable parking option and avoiding unnecessary parking fees.</p>
+          </div>
+          <div class="benefit-box" data-aos="zoom-in" data-aos-delay="800">
+            <i class="fa-solid fa-leaf"></i>
+            <h2>Environmentally Friendly</h2>
+            <p>By reducing congestion and promoting efficient parking, LBPS helps reduce air pollution and promote a more sustainable environment.</p>
+          </div>
+          <div class="benefit-box" data-aos="zoom-in" data-aos-delay="1000">
+            <i class="fa-solid fa-star"></i>
+            <h2>Improved User Experience</h2>
+            <p>LBPS provides a seamless and user-friendly experience, allowing you to easily find and reserve parking spots, and receive directions to your destination.</p>
+          </div>
+        </div>
+      </section>
+      <!-- Benefit End Here -->
+      <!-- <section class="socialProof" id="socialProof">
+        <h2>
+          Social Proof
+          <br />
+          Testimonials
+        </h2>
+        <div class="socialProofBoxOne socialProof-1" data-aos="fade-left">
+          <img src="{% static '/asset/image/TestimonyMan2.jpg' %}" alt="" />
+          <div class="text">
+            <h4>Sophia Patel</h4>
+            <p>"LBPS makes parking so easy and small time."</p>
+            <div class="text-rate">
+              <div class="startBox">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>15K</p>
+            </div>
+          </div>
+        </div>
+        <div class="socialProofBoxTwo socialProof-2" data-aos="zoom-in">
+          <div class="boxTop">
+            <img src="{% static './asset/image/TestimonyMan.jpg' %}" alt="" />
+            <h4>David Lee</h4>
+          </div>
+          <div class="text">
+            <p>"I was skeptical at first, but LBPS really does make parking easier and more efficient. I've already recommended it to all my friends!"</p>
+            <div class="text-rate">
+              <div class="startBox">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>15K</p>
+            </div>
+          </div>
+        </div>
+        <div class="socialProofBoxTwo socialProof-3" data-aos="fade-up">
+          <div class="boxTop">
+            <img src="{% static './asset/image/TestimonyMan.jpg' %}" alt="" />
+            <h4>David Lee</h4>
+          </div>
+          <div class="text">
+            <p>"I was skeptical at first, but LBPS really does make parking easier and more efficient. I've already recommended it to all my friends!"</p>
+            <div class="text-rate">
+              <div class="startBox">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>15K</p>
+            </div>
+          </div>
+        </div>
+        <div class="socialProofThree socialProof-4" data-aos="zoom-in">
+          <div class="topThreeBox">
+            <img src="{% static '/asset/image/TestimonyMan3.jpg' %}" alt="" />
+            <div class="text">
+              <h4>Alexander Brown</h4>
+              <p>"I was amazed at how easy it was to find a parking spot with LBPS. It saved me so much time and stress!"</p>
+              <div class="text-rate">
+                <div class="startBox">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <p>15K</p>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="topThreeBox">
+            <img src="{% static '/asset/image/TestimonyMan4.jpg' %}" alt="" />
+            <div class="text">
+              <h4>Emily Chen</h4>
+              <p>"LBPS is a game-changer for city parking. I no longer have to worry about circling the block for hours."</p>
+              <div class="text-rate">
+                <div class="startBox">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <p>15K</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="socialProofThree socialProof-5" data-aos="fade-right">
+          <div class="topThreeBox">
+            <img src="{% static '/asset/image/TestimonyMan3.jpg' %}" alt="" />
+            <div class="text">
+              <h4>Alexander Brown</h4>
+              <p>"I was amazed at how easy it was to find a parking spot with LBPS. It saved me so much time and stress!"</p>
+              <div class="text-rate">
+                <div class="startBox">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <p>15K</p>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="topThreeBox">
+            <img src="{% static '/asset/image/TestimonyMan4.jpg' %}" alt="" />
+            <div class="text">
+              <h4>Emily Chen</h4>
+              <p>"LBPS is a game-changer for city parking. I no longer have to worry about circling the block for hours."</p>
+              <div class="text-rate">
+                <div class="startBox">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <p>15K</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="socialProofBoxOne socialProof-6" data-aos="fade-down">
+          <img src="{% static '/asset/image/TestimonyMan2.jpg' %}" alt="" />
+          <div class="text">
+            <h4>Sophia Patel</h4>
+            <p>"LBPS makes parking so easy and small time."</p>
+            <div class="text-rate">
+              <div class="startBox">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>15K</p>
+            </div>
+          </div>
+        </div>
+        <div class="socialProofBoxTwo socialProof-7" data-aos="zoom-out">
+          <div class="boxTop">
+            <img src="{% static './asset/image/TestimonyMan.jpg' %}" alt="" />
+            <h4>David Lee</h4>
+          </div>
+          <div class="text">
+            <p>"I was skeptical at first, but LBPS really does make parking easier and more efficient. I've already recommended it to all my friends!"</p>
+            <div class="text-rate">
+              <div class="startBox">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <p>15K</p>
+            </div>
+          </div>
+        </div>
+      </section> -->
+      <!-- Social Proof End Here -->
+    </div>
+    <section class="footer" id="footer">
+      <div class="info">
+        <h2>Info</h2>
+        <ul>
+          <li>Format</li>
+          <li>Compression</li>
+          <li>Pricing</li>
+          <li>FAQ</li>
+          <li>Status</li>
+          <li>Policy</li>
+          <li>API</li>
+        </ul>
+      </div>
+      <div class="gettingStarted">
+        <h2>Getting Started</h2>
+        <ul>
+          <li>Information</li>
+          <li>Themes</li>
+          <li>Documentation</li>
+          <li>Usage</li>
+          <li>Elements</li>
+          <li>Global</li>
+        </ul>
+      </div>
+      <div class="resource">
+        <h2>Resource</h2>
+        <ul>
+          <li>API</li>
+          <li>Form Validation</li>
+          <li>Accessability</li>
+          <li>Market Place</li>
+          <li>Visibility</li>
+          <li>Community</li>
+        </ul>
+      </div>
+      <div class="newsLetter">
+        <h2>Newsletter</h2>
+        <p>Since early. 1990s, a significant amount of microalloyed line pipe in the API 5L X52 grade has been used to transmit hydrogen gas at pressure in excess</p>
+        <div class="subscribe">
+          <input type="text" placeholder="Enter Your Email" />
+          <button>Subscribe</button>
+        </div>
+        <div class="social-media bg-white">
+          <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Script -->
+    <script src="{% static 'js/index.js' %}"></script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+</html>

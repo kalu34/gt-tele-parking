@@ -1,0 +1,36 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+
+  <h4 class="bg-dark text-white p-2 rounded text-center"><i class="fa-solid fa-table-columns"></i> Instance Deletion Form </h4>
+  <p>Please Fill the Below Form With Big Catution</p>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="input-group input-group-outline my-3">
+      <div class="d-flex flex-column">
+        <label for=""><i class="fa-solid fa-pen-nib"></i> Reason</label>
+        {{form.reason}}
+      </div>
+    </div>
+    <button  type="submit" class="btn btn-danger">Delete</button>
+  </form>
+</div>
+{% endblock %}

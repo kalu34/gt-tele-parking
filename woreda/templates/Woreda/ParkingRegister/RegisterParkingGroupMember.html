@@ -1,0 +1,142 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container-fluid py-2">
+  {% if messages %}
+  {% for message in messages %}
+        {% if message.tags == 'success' %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Congratulations!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Warning!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% else %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% endif %}
+  {% endfor %}
+{% endif %}
+<div class="container p-2">
+  <h4 class="text-center text-white bg-gradient-dark rounded p-3">Register Parking Member</h4>
+  <div class="bg-white p-2 my-2">
+    <h5>Personal Detail Information</h5>
+    <ul>
+      <li class="">Please Provide Valid and acceptable input.</li>
+      <li class="">Anyform of input will resemble to an the parking man. </li>
+      <li class="">Please be aware of that any form of change to the parking will be on the parking man.</li>
+      <li class="">You Should Only Select One Admin at a parking. </li>
+    </ul>
+  </div>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-7 bg-white m-2 p-3 rounded navbar-vertical">
+        <p>Provide Personal Detail</p>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="input-group input-group-outline my-3">
+              <div class="d-flex flex-column">
+                <label for=""><i class="fa-solid fa-user mx-2"></i> Username *</label>
+                {{formUser.username}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group input-group-outline my-3">
+              <div class="d-flex flex-column">
+                <label for=""> First Name *</label>
+                {{formUser.first_name}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group input-group-outline my-3">
+              <div class="d-flex flex-column">
+                <label for="">Last Name *</label>
+                {{formUser.last_name }}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3">
+              <div class="d-flex flex-column w-100">
+                <label for=""> <i class="fa-solid fa-envelope mx-2"></i> Email *</label>
+                {{formUser.email}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3">
+              <div class="d-flex flex-column w-100">
+                <label for=""><i class="fa-solid fa-address-book mx-2"></i> Phone Number *</label>
+                {{formUser.phone_number}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3">
+              <div class="d-flex flex-column w-100">
+                <label for=""><i class="fa-solid fa-location-dot mx-2"></i> Address *</label>
+                {{formUser.address}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group input-group-outline my-3">
+              <div class="d-flex flex-column w-100">
+                <label for=""><i class="fa-regular fa-calendar-days me-2"></i> Expire Date *</label>
+                {{formGroupMember.end_date}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="d-flex flex-column my-3">
+              <div class="form-check form-switch">
+                <div class="d-flex flex-column align-items-start">
+                  <label for="">The User Below Is The Admin Of this Parking</label>
+                  {{formGroupMember.is_admin}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4  bg-white m-2 p-3 rounded navbar-vertical" style="height: min-content;">
+        <p>Provide Legal Information</p>
+        <div class="input-group input-group-outline my-3">
+          <div class="d-flex flex-column">
+            <label>Driving Licence <i class="fa-solid fa-file mx-2"></i></label>
+            {{userLegalDocument.driving_licence}}
+          </div>
+        </div>
+          <div class="input-group input-group-outline my-3">
+            <div class="d-flex flex-column">
+              <label>National Id <i class="fa-solid fa-file mx-2"></i></label>
+              {{userLegalDocument.national_id}}
+            </div>
+          </div>
+
+      </div>
+    </div>
+    <div class="p-3 rounded d-flex align-items-center justify-content-between">
+      <div class="d-flex mt-1">
+        <button type="submit" class="btn btn-dark">Save</button>
+        <a href="{% url 'woreda_parking_register' %}" class="btn btn-dark ms-1">savd and add another</a>
+        <a href="{% url 'woreda_parking_register' %}" class="btn btn-dark ms-1">save and continue editing</a>
+      </div>
+      <div class="">
+        {% if user %}
+        <a href="{% url 'InstanceDelete' id=parking.id id_2=1 id_3=formUser.instance.id %}" class="btn btn-primary">Delete</a>
+        {% else %}
+        {% endif %}
+      </div>
+    </div>
+  </form>
+</div>
+  <div>{% endblock %}</div>
+</div>

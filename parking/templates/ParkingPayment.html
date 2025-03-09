@@ -1,0 +1,93 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/payment.css' %}">
+<h4 class="rounded bg-gradient-dark p-2 text-center text-white mx-4">Payment Records</h4>
+<div class="accordion m-3 mx-4" id="accordionPanelsStayOpenExample">
+    {% if no_payments_message %}
+        <p>{{ no_payments_message }}</p>
+    {% else %}
+  {% for payment in payments %}
+  <div class="accordion-item mb-3">
+      <div class="accordion-header">
+          <div class="accordion-button" style="background-color: transparent; padding: 30px 10px;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ payment.payment_data.id }}" aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ payment.payment_data.id }}">
+              <div class="d-flex align-items-center justify-content-between w-100 me-3">
+                  <div class="">
+                      <i class="fa-solid fa-money-bill"></i>
+                      <span>Payment Amount</span>
+                      <span style="font-size: 1rem;" class="mx-2">{{ payment.payment_data.amount }} Birr</span>
+                  </div>
+                  <div class="">
+                      <i class="fa-solid fa-key"></i>
+                      <span style="font-size: 1rem;" class="mx-2">Transaction Reference</span>
+                      <span>{{ payment.payment_data.tx_ref }}</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div id="panelsStayOpen-collapse{{ payment.payment_data.id }}" class="accordion-collapse collapse">
+          <div class="accordion-body">
+              <div class="col-12">
+                  <div class="row">
+                      <div class="col-12 mb-4"> 
+                          <div class="row p-3"> 
+                              <div class="col-md-5 ps-0 ">
+                                  <p class="ps-3 textmuted fw-bold h6 mb-0">TOTAL PAID BIRR</p>
+                                  <p class="h1 fw-bold d-flex"> 
+                                      <span class="fas fa-dollar-sign textmuted pe-1 h6 align-text-top mt-1"></span>
+                                      {{ payment.payment_data.amount }}
+                                  </p> 
+                                  <p class="ms-3 px-2 bg-green">+10% since last month</p> 
+                                  <p class="ps-3 textmuted h6 mb-0 py-3">TRANSACTION REFERENCE</p>
+                                  <p class="h4 fw-bold d-flex"> 
+                                      <i class="fa-solid fa-key fs-6 pe-1"></i>
+                                      {{ payment.payment_data.tx_ref }}
+                                  </p> 
+                              </div> 
+                              <div class="col-md-3" style="position: relative;"> 
+                                  <p class="textmuted h8">Payment Status</p> 
+                                  <p class="h7">{{ payment.payment_data.status }}</p> 
+                                  <p class="textmuted h8">Request ID</p> 
+                                  <p class="h7">{{ payment.payment_data.request_id }}</p> 
+                                  <p class="textmuted h8">Payment Date</p> 
+                                  <p class="h7">{{ payment.payment_data.created_at }}</p> 
+                              </div> 
+                              <div class="col-md-4" style="position: relative;"> 
+                                  <i class="fa-solid fa-print fs-5" style="position: absolute; right: 0;" onclick="printPaymentDetails()"></i>
+                                  <p class="textmuted h8">User  Name</p> 
+                                  <p class="h7">{{ payment.payment_data.user.first_name }} {{ payment.payment_data.user.last_name }}</p> 
+                                  <p class="textmuted h8">User  Address</p> 
+                                  <p class="h7">{{ payment.payment_data.user.address }}</p> 
+                                  <p class="textmuted h8">User  Phone Number</p> 
+                                  <p class="h7">{{ payment.payment_data.user.phone_number }}</p> 
+                              </div> 
+                          </div> 
+                      </div> 
+                  </div> 
+              </div> 
+              <div class="col-md-4 col-12 ps-md-5 p-0 "> 
+                  <div class="box-left"> 
+                      <div class="d-flex justify-content-between"> 
+                          <div class="">
+                              <p class="textmuted h8">Parking</p> 
+                              <p class="h7">{{ payment.payment_data.request_id.parking.name }}</p> 
+                              <p class="textmuted h8">Start Time</p> 
+                              <p class="h7">{{ payment.payment_data.request_id.start_time }}</p> 
+                              <p class="textmuted h8">End Time</p> <p class="h7">{{ payment.payment_data.request_id.end_time }}</p> 
+                          </div>
+                          <div class="mx-5">
+                              <p class="textmuted h8">Slot</p> 
+                              <p class="h7">{{ payment.payment_data.request_id.slot }}</p> 
+                              <p class="textmuted h8">Plate Number</p> 
+                              <p class="h7">{{ payment.payment_data.request_id.plate_number }}</p> 
+                              <p class="textmuted h8">Request Type</p> 
+                              <p class="h7">{{ payment.payment_data.request_id.request_type }}</p> 
+                          </div>
+                      </div>
+                  </div> 
+              </div> 
+          </div>
+      </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,191 @@
+
+:root{
+  --primary-color:  #6046C1;
+  --secondary-color: #A0ACF9;
+  --third-color: #eef0ff;
+  --primary-dark: #666666;
+}
+/* Poppins Font */
+.poppins-thin {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.poppins-extralight {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-extrabold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.poppins-black {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.poppins-thin-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.poppins-extralight-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.poppins-light-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.poppins-regular-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.poppins-medium-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poppins-semibold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.poppins-bold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.listing-list-container{
+  height: 90vh;
+  overflow-y: auto;
+}
+.listing-list-container::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.listing-list-container::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-color); /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Round the corners of the scrollbar thumb */
+}
+
+.listing-list-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-color); /* Color when hovering */
+}
+.listing-detail{
+  width: 100%;
+  padding: 10px 25px;
+}
+.listing-detail .row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.listing-detail h6{
+  font-size: .9rem;
+  color: rgba(0, 0, 0, .6);
+  font-weight: 500;
+}
+.listing-detail span{
+  color: var(--primary-color);
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.listing-list{
+  background-color: #F6F5FF;
+  padding: 1rem 2rem;
+  margin: 1rem .5rem;
+  border: 1px solid rgba(0, 0, 0, 0.151);
+  border-radius: 10px;
+  transition: all .2s ease-in;
+}
+.listing-list:hover{
+  box-shadow: 0 10px 15px rgba(5, 28, 128, 0.164);
+}
+.listing-list h4{
+  padding: 5px 10px;
+}
+.listing-list button {
+  background-color: var(--primary-color);
+  color: var(--third-color);
+  padding: 6px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.vertical-line-dark{
+  width: 2px;
+  height: 65px;
+  background-color: rgba(0, 0, 0, .1)
+}
+.listing-list h6{
+  color: rgba(0, 0, 0, .6);
+  font-size: .9rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.listing-list span{
+  margin: 0 5px;
+  color: var(--primary-color);
+  font-weight: 500;
+}

@@ -1,0 +1,74 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  <h4 class="p-2 bg-dark text-white rounded text-center">Parking Group List</h4>
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking Group Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Subcity</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Woreda</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Kebele</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Created Date</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Update Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in parking_group %}
+          <tr>
+            <td>
+              <div class="d-flex px-2">
+                <div>
+                  <i class="fa-solid fa-bars " ></i>
+                </div>
+                <div class="my-auto">
+                  <h6 class="mb-0 text-xs ms-2">{{item.name}}</h6>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.subcity}}</p>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.woreda}}</span>
+              </span>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.kebele}}</span>
+              </span>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.created_at}}</span>
+              </span>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.updated_at}}</span>
+              </span>
+            </td>
+  
+  
+            <td class="align-middle">
+              <a href="{% url 'requestListDetail' id=item.id %}" class="btn btn-link text-secondary mb-0">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+            </td>
+  
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

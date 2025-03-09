@@ -1,0 +1,80 @@
+{% extends 'City/include/CityBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4 px-5"> 
+  {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% elif message.tags == 'warning' %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% else %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong>
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
+
+  <h4 class="text-center text-white bg-dark p-2 rounded">Subcity Admin Register Form</h4>
+  <div class="text-dark">
+    <h6>Information Guild </h6>
+    <ul>
+      <li>Please Provied A valid Username, eg 'jhon'</li>
+      <li>Provide Unique Email Address With '@'gmail.com at the ending, eg. 'example@gmail.com'</li>
+      <li>Phone Number shoud be 10 dight <digit> 09</digit> start with eg. '0911******'</li>
+      <li>Address shoud be approprate and acceptable <span class="text-muted">eg. 'Addis Ababa'</span></li>
+    </ul>
+  </div>
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    <div class="row">
+      {% for field in form %}
+      <div class="col-md-6 mt-2 mb-2">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+      </div>
+    {% endfor %}
+    </div>
+    <div class="d-flex rounded p-3 align-items-center border-1 flex-wrap flex-sm-nowrap">
+      <button type="submit" class="btn btn-dark">Save</button>
+      <button type="submit" class="btn btn-dark mx-2">Save and Add Another</button>
+      <a href="{% url 'RemoveSubcityAdmin' id=user_id %}" class="btn btn-danger">Delete</a>
+    </div> 
+  </form>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card p-3 border-1">
+        <h5 class="text-center text-dark text-white bg-gradient-dark p-2 rounded"><i class="fa-solid fa-users"></i> User Role</h5>
+        <div class="d-flex justify-content-end mt-2">
+          {% if form.instance.pk %}
+          {% if role %}
+          <a href="{% url 'AdminSubcityDetail' id=form.instance.pk %}" class="btn btn-dark"> Open Role</a>
+          {% else %}
+          <a href="{% url 'AddSubcityAdminsRole' id=form.instance.pk %}" class="btn btn-dark"><i class="fa-solid fa-plus"></i> Add Role</a>
+          {% endif %}
+          {% else %}
+          <a href="{% url 'AddSubcityAdminsRole' id=0 %}" class="btn btn-dark disabled "><i class="fa-solid fa-plus"></i> Add Role</a>
+          {% endif %}
+        </div>
+        <hr>
+        <h6>Information Detail About The Role Of the Above User</h6>
+        <ul>
+          <li>This User is allowed to all permission that is happend to be executed and approved</li>
+          <li>Any Change made, it is directly refected to the Above User</li>
+          <li>Be informed that, The crossponding user is allowed to performe any operation according to it role permission</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

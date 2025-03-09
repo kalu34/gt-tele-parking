@@ -1,0 +1,95 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% include 'Woreda/Report/include/ReportWoredaBase.html' %}
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking Group</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Parking</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Address</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Price Hour</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Price Day</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Slot</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Avaliabel Slot</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Approved</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-0">Request</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in parkings %}
+          <tr>
+            <td>
+              <div class="d-flex px-2">
+                <div>
+                  <img src="{{item.image1.url}}" class="avatar avatar-sm rounded-circle me-2" />
+                </div>
+                <div class="my-auto">
+                  <h6 class="mb-0 text-xs">{{item.parking_group.name}}</h6>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.name}}</p>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.address}}</p>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.price_per_hour}}</p>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.price_per_day}}</p>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.slot_capacity}}</p>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.available_slots}}</p>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                {% if item.is_admin %}
+                <span class="me-2 text-xs text-success"><i class="fa-solid fa-check"></i></span>
+                {% else %}
+                <span class="me-2 text-xs text-danger"><i class="fa-solid fa-x"></i></span>
+                {% endif %}
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                {% if item.is_sent %}
+                <span class="me-2 text-xs text-success"><i class="fa-solid fa-check"></i></span>
+                {% else %}
+                <span class="me-2 text-xs text-danger"><i class="fa-solid fa-x"></i></span>
+                {% endif %}
+              </div>
+            </td>
+
+            <td class="align-middle">
+              <a href="{% url 'RegisterParking' id=item.id status='open' %}" class="btn btn-link text-secondary mb-0">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><h6 class="mb-0 text-xs">Count</h6></td>
+            <td><h6 class="mb-0 text-xs align-middle">{{count}}</h6></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+  {% endblock %}

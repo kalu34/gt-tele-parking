@@ -1,0 +1,138 @@
+{% extends 'include/userBase.html' %} {% load static %} {% block content %}
+<div class="w-100">
+  <div class="main-nav d-flex align-items-center justify-content-between px-3 w-100">
+    <h6>Good Morning</h6>
+    <div class="">
+      <i class="fa-solid fa-envelope mx-2"></i>
+      <i class="fa-solid fa-bell mx-2"></i>
+      <span>{{request.user.first_name}} {{request.user.last_name}}</span>
+      {% if profile %}
+      <img src="{{profile.image.url}}" class="mx-2" alt="" width="40px" height="40px" style="border-radius: 50%" />
+      {% else %}
+      <img src="{% static './assets/images/user.jpg' %}" class="mx-2" alt="" width="40px" height="40px" style="border-radius: 50%" />
+      {% endif %}
+    </div>
+  </div>
+  {% if messages %}
+  {% for message in messages %}
+        {% if message.tags == 'success' %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Congratulations!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Warning!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% else %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% endif %}
+  {% endfor %}
+{% endif %}
+  <div class="py-4 px-3">
+    <h5 class="text-muted">Digital Wallet</h5>
+    <p class="text-muted">This is a digital wallet provide by LBPS as an option to pay to any fie related to location based Parking System.</p>
+
+    <div class="row mt-4">
+      <div class="col-md-7">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="card">
+              <div class="pt-3 px-3 rounded text-white wallet-card">
+                <div class="card-header">
+                  <h6  class="mb-4">Digital Wallet</h6>
+                  <div class="d-flex">
+                    <div class="mt-5 me-5">
+                      <h6 class="h6 fw-sm">Card Holder</h6>
+                      <h5 class="h5">{{wallet.user.first_name}} {{wallet.user.last_name}}</h6>
+                    </div>
+                    <div class="mt-5">
+                      <h6 class="h6 fw-sm">Balance</h6>
+                      <h5 class="h5">{{wallet.balance}} Birr</h6>
+                    </div>
+                  </div>
+                  <h6></h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card">
+              <div class="bg-primary-custom rounded">
+                <div class="p-3 text-center text-white">
+                  <i class="fa-solid fa-building-columns fs-1 mb-3"></i>
+                  <h6 class="fw-sm">Amount</h6>
+                  <div class="input-group mt-3">
+                    <span class="input-group-text">$</span>
+                    <input type="number" id="deposit-amount" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-text">.00</span>
+                  </div>
+                  <div class="btn btn-dark w-100 mt-3" id="btn-deposit">Deposit <i class="fa-solid fa-plus ms-3"></i></div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="shadow-dark border-radius-lg pt-4 pb-3">
+              <h6 class="text-capitalize ps-3">Transaction table</h6>
+            </div>
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">State</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Txr</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Amount</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in transaction %}
+                  <tr>
+                    <td>
+                      <div class="py-1">
+                        {% if item.status %}
+                        <span class="border border-success rounded text-xxs text-success px-2 py-1">success</span>
+                        {% else %}
+                        <span class="border border-danger rounded text-xxs text-danger px-2 py-1">faild</span>
+                        {% endif %}
+                      </div>
+                    </td>
+                    <td>
+                      <span class="text-xs">{{item.transaction_type}}</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs">{{item.transaction_ref}}</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-xs">{{item.amount}}</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs font-weight-bold">{{item.date}}</span>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/payment.js' %}"></script>
+{% endblock %}

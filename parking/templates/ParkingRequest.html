@@ -1,0 +1,111 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="request_wrapper">
+    {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Congratulations!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif message.tags == 'warning' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Warning!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% else %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %} {% endfor %} {% endif %}
+  </div>
+  <h4 class="bg-dark text-white p-2 rounded text-center">Reserved Request List</h4>
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reference</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Slot</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Plate Number</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in NewRequestPaginator %}
+          <tr>
+            <td>
+              <div class="d-flex px-2">
+                <div class="my-auto">
+                  <h6 class="mb-0 text-xs ms-2">{{item.user.first_name}} {{item.user.last_name}}</h6>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.requset_rfe}}</p>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.date}}</span>
+              </span>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.slot}}</span>
+              </span>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.plate_number}}</span>
+              </span>
+            </td>
+            {% if item.status %}
+            <td><i class="fa-solid fa-check" style="color: green;"></i></td>
+            {% else %}
+            <td><i class="fa-solid fa-x" style="color: red;"></i></td>
+            {% endif %}
+  
+            <td class="align-middle">
+              <a href="{% url 'parking_new_request_detail' id=item.id %}" class="btn btn-link text-secondary mb-0">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+            </td>
+  
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="border-top py-3 px-3 d-flex align-items-center">
+      {% if NewRequestPaginator.has_previous %}
+      <a href="?page={{NewRequestPaginator.previous_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+       {% else %}  
+       <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Previous</a>
+       {% endif %}
+      <nav aria-label="..." class="ms-auto">
+        <ul class="pagination pagination-light mb-0">
+          {% for num in NewRequestPaginator.paginator.page_range %}
+          <li class="page-item" aria-current="page">
+            <a href="?page={{num}}" class="page-link font-weight-bold  {% if NewRequestPaginator.number == num %}bg-gradient-dark text-white {% endif %}">{{num}}</a>
+          </li>
+          {% endfor %}
+          
+        </ul>
+      </nav>
+      {% if NewRequestPaginator.has_next %}
+      <a href="?page={{NewRequestPaginator.next_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+       {% else %}  
+       <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Next</a>
+       {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

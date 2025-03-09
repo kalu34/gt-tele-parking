@@ -1,0 +1,153 @@
+{% extends 'City/include/CityBase.html' %}
+{% load static %}
+{% block content %}
+ {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Congratulations!</strong>
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif message.tags == 'warning' %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Warning!</strong>
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% else %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error!</strong>
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %} {% endfor %} {% endif %}
+<div class="main-content position-relative max-height-vh-100 h-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-main navbar-expand-lg bg-transparent shadow-none position-absolute px-4 w-100 z-index-2">
+    <div class="container-fluid py-1">
+      <nav aria-label="breadcrumb">
+        <h6 class="text-white font-weight-bolder p-4">Profile</h6>
+      </nav>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <div class="container-fluid">
+    <div class="page-header min-height-250 border-radius-lg mt-4 d-flex flex-column justify-content-end">
+      <span class="mask bg-dark opacity-7"></span>
+      <div class="w-100 position-relative p-3">
+        <div class="d-flex justify-content-between align-items-end">
+          <div class="d-flex align-items-center">
+            <div class="avatar avatar-xl position-relative me-3">
+              <img src="{{profileForm.image.value.url}}" alt="profile_image" class="w-100 border-radius-lg shadow-sm" />
+            </div>
+            <div>
+              <h5 class="mb-1 text-white font-weight-bolder">{{userForm.first_name.value}} {{userForm.last_name.value}}</h5>
+              <p class="mb-0 text-white text-sm">City Admin </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <a href="{% url 'City_Dashboard' %}" class="btn btn-outline-white mb-0 me-1 btn-sm">Dashboard</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card h-100">
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-6 p-5">
+              <h3 class="text-primary">Personal Information</h3>
+              <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">First Name</span>
+                    {{userForm.first_name}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Last Name</span>
+                    {{userForm.last_name}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                    {{userForm.username}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Email</span>
+                    {{userForm.email}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Phone Number</span>
+                    {{userForm.phone_number}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Address</span>
+                    {{userForm.address}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Birthdate</span>
+                    {{userForm.birthdate}}
+                  </div>
+                </div>
+                <button type="submit" class="btn bg-gradient-dark w-100 btn-lg">Update Profile</button>
+              </form>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6 p-5">
+              <h4 class="text-secondary">Security Information</h4>
+              <form action="{% url 'change_password' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Current Password</span>
+                    <input type="password" class="form-control" placeholder="********" aria-label="Username" aria-describedby="basic-addon1" name="currentPassword" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">New Password</span>
+                    <input type="password" class="form-control" placeholder="********" aria-label="Username" aria-describedby="basic-addon1"  name="newPassword"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Confirm Password</span>
+                    <input type="password" class="form-control" placeholder="********" aria-label="Username" aria-describedby="basic-addon1" name="confirmPassword"/>
+                  </div>
+                </div>
+                <button type="submit" class="btn bg-gradient-dark w-100 btn-lg">Save Password</button>
+              </form>
+              <h4 class="text-secondary">Profile Picture</h4>
+              <form action="{% url 'subcity_profile_update' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token%}
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">Profile Image</span>
+                    {{profileForm.image}}
+                  </div>
+                </div>
+                <button type="submit" class="btn bg-gradient-dark w-100 btn-lg">Update Profile Image</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

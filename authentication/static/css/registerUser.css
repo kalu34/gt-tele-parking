@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  background-image: linear-gradient(to right bottom, #2e5f88, #0395bc);
+  margin-left: 150px;
+  margin-right: 100px;
+}
+::selection {
+  background-image: linear-gradient(to right bottom, #2e5f88, #0395bc);
+}
+.container {
+  width: 350px; /* Reduced width */
+  text-align: center;
+  border-radius: 5px;
+  padding: 20px 25px 25px 25px; /* Reduced padding */
+  overflow: auto; /* Allow scrolling */
+  background-color: white;
+}
+.title {
+  font-size: 28px; /* Reduced font size */
+  font-weight: 300;
+  margin: 0 0 20px 0; /* Reduced margin */
+  color: #2e5f88;
+}
+.container .form-outer {
+  width: 100%;
+  overflow: hidden;
+}
+.container .form-outer form {
+  display: flex;
+  width: 400%;
+}
+.form-outer form .page {
+  width: 25%;
+  transition: margin-left 0.3s ease-in-out;
+}
+.form-outer form .page .field {
+  width: 100%; /* Adjusted for container width */
+  height: 40px; /* Reduced height */
+  margin: 0 0 65px 0; /* Reduced margin */
+  position: relative;
+}
+form .page .field .label {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px;
+  font-weight: 400;
+  font-size: 16px;
+  opacity: 0.7;
+}
+form .page .field input {
+  height: 100%;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding-left: 10px; /* Reduced padding */
+  font-size: 14px; /* Reduced font size */
+}
+.fields {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+}
+
+form .page .fields button {
+  width: 100%;
+  height: 40px; /* Reduced height */
+  border: none;
+  background-image: linear-gradient(to right bottom, #2e5f88, #0395bc);
+  margin-top: 10px; /* Adjusted margin */
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px; /* Reduced font size */
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: 0.5s ease;
+}
+form .page .field button:hover {
+  background-image: linear-gradient(to right bottom, #2e85cc, #075c74);
+}
+form .page .btns button {
+  margin-top: 10px !important;
+}
+form .page .btns button.prev {
+  margin-right: 3px;
+  font-size: 14px;
+}
+form .page .btns button.next {
+  margin-left: 3px;
+}
+.container .bar {
+  display: flex;
+  margin: 20px 0; /* Reduced margin */
+  user-select: none;
+}
+.container .bar .step {
+  text-align: center;
+  width: 100%;
+  position: relative;
+}
+.container .bar .step p {
+  font-weight: 500;
+  font-size: 14px; /* Reduced font size */
+  color: #000;
+  margin-bottom: 5px; /* Reduced margin */
+}
+.bar .step .bullet {
+  height: 20px; /* Reduced size */
+  width: 20px; /* Reduced size */
+  border: 1px solid #000;
+  display: inline-block;
+  border-radius: 50%;
+  position: relative;
+  transition: 0.2s;
+  font-weight: 500;
+  font-size: 12px; /* Reduced font size */
+  line-height: 18px; /* Reduced line height */
+}
+.bar .step .bullet.active {
+  border-color: #2e5f88;
+  background-image: linear-gradient(to right bottom, #2e5f88, #0395bc);
+}
+.bar .step .bullet span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bar .step .bullet.active span {
+  display: none;
+}
+.bar .step .bullet:before,
+.bar .step .bullet:after {
+  position: absolute;
+  content: "";
+  bottom: 4px; /* Adjusted position */
+  right: -40px; /* Adjusted position */
+  height: 2px; /* Reduced height */
+  width: 35px; /* Reduced width */
+  background: #262626;
+}
+.bar .step .bullet.active:after {
+  background-image: linear-gradient(to right bottom, #2e5f88, #0395bc);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: animate 0.3s linear forwards;
+}
+.login{
+    margin-top: 10px;
+}
+.login h6{
+    font-weight: 300;
+}
+.login a{
+    text-decoration: none;
+}
+
+.last-button{
+    margin-top: 20px;
+}
+@keyframes animate {
+  100% {
+    transform: scaleX(1);
+  }
+}
+.bar .step:last-child .bullet:before,
+.bar .step:last-child .bullet:after {
+  display: none;
+}
+.bar .step p.active {
+  color: #2e5f88;
+  transition: 0.2s linear;
+}
+.bar .step .check {
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  font-size: 12px; /* Reduced font size */
+  transform: translate(-50%, -50%);
+  display: none;
+}
+.bar .step .check.active {
+  display: block;
+  color: #1a1a1a;
+}
+
+/* input.error {
+  border: 2px solid red;
+} */
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

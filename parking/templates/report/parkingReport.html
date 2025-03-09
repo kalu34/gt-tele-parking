@@ -1,0 +1,502 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+<style></style>
+<div class="container px-4">
+  <div class="mb-0">
+    <div class="d-flex align-items-center justify-content-end">
+      <button id="customerButton" class="btn bg-gradient-dark me-3" onclick="toggleSection('customer')">Customer</button>
+      <button id="incomeButton" class="btn bg-gradient-dark" onclick="toggleSection('income')">Income</button>
+    </div>
+  </div>
+  <div class="d-block" id="customerSection">
+    <h4 class="p-2 rounded text-center text-white bg-gradient-dark" >Report On Customer</h4>
+    <div class="row">
+      <div class="col-12 col-md-12 col-lg-12 mb-5">
+        <div class="card card-chart" style="border: none; box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1)">
+          <div class="card-header" style="border: none; font-family: poppins; background: none">
+            <div class="row">
+              <div class="col-sm-6 text-left">
+                <h5 class="card-category" style="font-family: poppins; color: rgb(161, 161, 161); font-weight: 200">Total Customer Over The Year</h5>
+                <h2 class="card-title m-1" style="font-family: poppins; font-weight: 300; color: #1976d2">Customer's</h2>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="customerChartYear" style="width: 1196px; height: 290px"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-6 mb-3">
+        <div class="card card-chart" style="border: none; box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1)">
+          <div class="card-header" style="border: none; font-family: poppins; background: none">
+            <div class="row">
+              <div class="col-sm-6 text-left">
+                <h5 class="card-category" style="font-family: poppins; color: rgb(161, 161, 161); font-weight: 200">Total Customer Of This Week</h5>
+                <h2 class="card-title m-1" style="font-family: poppins; font-weight: 300; color: #1976d2">Customer's</h2>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="customerChartMonth" style="width: 100%; height: 280px"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6  col-lg-6 mb-3">
+        <div class="card card-chart" style="border: none; box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1)">
+          <div class="card-header" style="border: none; font-family: poppins; background: none">
+            <div class="row">
+              <div class="col-sm-6 text-left">
+                <h5 class="card-category" style="font-family: poppins; color: rgb(161, 161, 161); font-weight: 200">Total Customer Of Today</h5>
+                <h2 class="card-title m-1" style="font-family: poppins; font-weight: 300; color: #1976d2">Customer's</h2>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="customerChartDay" style="width: 100%; height: 280px"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-none" id="incomeSection">
+    <h4 class="p-2 rounded text-center text-white bg-gradient-dark" >Report On Income</h4>
+    <div class="row">
+      <div class="col-12 col-md-6  col-lg-6 mb-3">
+        <div class="card card-chart" style="border: none; box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1)">
+          <div class="card-header" style="border: none; font-family: poppins; background: none">
+            <div class="row">
+              <div class="col-sm-6 text-left">
+                <h5 class="card-category" style="font-family: poppins; color: rgb(161, 161, 161); font-weight: 200">Today's Income</h5>
+                <h4 class="card-title m-1" style="font-family: poppins; font-weight: 300; color: #28d219">
+                  <i class="fa-solid fa-money-bill mx-2"></i>
+                  Income Birr
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="incomeChartDay" style="width: 100%; height: 280px"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-6  mb-3">
+        <div class="card card-chart" style="border: none; box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1)">
+          <div class="card-header" style="border: none; font-family: poppins; background: none">
+            <div class="row">
+              <div class="col-sm-12 text-left">
+                <h5 class="card-category" style="font-family: poppins; color: rgb(161, 161, 161); font-weight: 200">This Week Income</h5>
+                <h4 class="card-title m-1" style="font-family: poppins; font-weight: 300; color: #28d219">
+                  <i class="fa-solid fa-money-bill mx-2"></i>
+                  Income Week
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="incomeChartWeek" style="width: 100%; height: 280px"></canvas>
+          </div>
+        </div>
+      </div>
+          </div>
+        <div class="row">
+      <div class="col-12 col-md-8 col-lg-8 mb-3">
+        <div class="card card-chart" style="border: none; box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1)">
+          <div class="card-header" style="border: none; font-family: poppins; background: none">
+            <div class="row">
+              <div class="col-sm-12 text-left">
+                <h5 class="card-category" style="font-family: poppins; color: rgb(161, 161, 161); font-weight: 200">Income Month</h5>
+                <h4 class="card-title m-1" style="font-family: poppins; font-weight: 300; color: #28d219">
+                  <i class="fa-solid fa-money-check-dollar mx-2"></i>
+                  Average Income
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="incomeChartMonth" style="width: 100%; height: 280px"></canvas>
+          </div>
+        </div>
+      </div>
+            <div class="col-12 col-md-4 col-lg-4 mb-3">
+        <div class="card card-chart" style="border: none; box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.1)">
+          <div class="card-header" style="border: none; font-family: poppins; background: none">
+            <div class="row">
+              <div class="col-sm-12 text-left">
+                <h5 class="card-category" style="font-family: poppins; color: rgb(161, 161, 161); font-weight: 200">Income Today</h5>
+                <h4 class="card-title m-1" style="font-family: poppins; font-weight: 300; color: #28d219">
+                  <i class="fa-solid fa-money-check-dollar mx-2"></i>
+                  Average Income
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="incomeChartDayPie" style="width: 100%; height: 280px"></canvas>
+          </div>
+        </div>
+      </div>
+        </div>
+
+  </div>
+</div>
+
+<script>
+  function toggleSection(section) {
+    if (section === "customer") {
+      document.getElementById("customerSection").classList.remove("d-none");
+      document.getElementById("customerSection").classList.add("d-block");
+      document.getElementById("incomeSection").classList.remove("d-block");
+      document.getElementById("incomeSection").classList.add("d-none");
+    } else {
+      document.getElementById("incomeSection").classList.remove("d-none");
+      document.getElementById("incomeSection").classList.add("d-block");
+      document.getElementById("customerSection").classList.remove("d-block");
+      document.getElementById("customerSection").classList.add("d-none");
+    }
+  }
+
+  // Set the initial state on page load
+  window.onload = function () {
+    toggleSection("customer");
+  };
+</script>
+
+<script>
+      // ======================  Chart Js Rendering =================
+  const customerChartYear = document.getElementById('customerChartYear');
+  const customerChartMonth = document.getElementById('customerChartMonth');
+  const customerChartDay = document.getElementById('customerChartDay');
+  const incomeChartYear = document.getElementById('incomeChartYear');
+  const incomeChartMonth = document.getElementById('incomeChartMonth');
+  const incomeChartWeek = document.getElementById('incomeChartWeek');
+  const incomeChartDay = document.getElementById('incomeChartDay');
+  const incomeChartDayPie = document.getElementById('incomeChartDayPie');
+
+// Daily Report
+const labels_daily = {{ daily_report.labels|safe|default:"[]" }}; // Labels for daily report
+
+const dataValues_daily = [
+    {% for entry in daily_report.data %}
+        {{ entry.total_value|default:0 }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+]; // Total values for the daily chart
+
+const dataCustomers_daily = [
+    {% for entry in daily_report.data %}
+        {{ entry.total_customers|default:0 }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+]; // Total customers for the daily chart
+
+
+// Monthly Report
+const labels = {{ monthly_report.labels|safe|default:"[]" }};
+const dataValues = [
+    {% for entry in monthly_report.data %}
+        {{ entry.total_value|default:0 }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+]; // Total values for the monthly chart
+
+const dataCustomers = [
+    {% for entry in monthly_report.data %}
+        {{ entry.total_customers|default:0 }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+]; // Total customers for the monthly chart
+
+
+// Weekly Report
+const labels_week = {{ weekly_report.labels|safe|default:"[]" }}; // Ensure this is correctly rendered
+
+// Transform labels_week to get short day names
+const dayNames = labels_week.map((date) => {
+    const day = new Date(date).toLocaleString("en-US", { weekday: "short" }); // Get short day name
+    return day.charAt(0).toUpperCase() + day.slice(1); // Capitalize the first letter
+});
+const dataValues_week = [
+    {% for entry in weekly_report.data %}
+        {{ entry.total_value|default:0 }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+]; // Total values for the weekly chart
+
+const dataCustomers_week = [
+    {% for entry in weekly_report.data %}
+        {{ entry.total_customers|default:0 }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+]; // Total customers for the weekly chart
+
+  // Create the monthly total value chart
+  const chartCustomerChartMonth = new Chart(customerChartYear, {
+      type: 'line', // Line chart for monthly data
+      data: {
+          labels: labels,
+          datasets: [{
+              label: 'Monthly Total Customers',
+              data: dataCustomers,
+              borderColor: '#ff5722',
+              borderWidth: 2,
+              pointRadius: 0,
+              fill: true,
+              backgroundColor: 'rgba(255, 87, 34, 0.2)'
+          }]
+      },
+      options: {
+          responsive: true,
+          title: {
+              display: true,
+              text: 'Monthly Total Customers'
+          },
+          scales: {
+              xAxes: [{
+                  gridLines: { display: false }
+              }],
+              yAxes: [{
+                  gridLines: { display: false },
+                  ticks: {
+                      beginAtZero: true,
+                      max: Math.max(...dataCustomers) + 10,
+                      stepSize: 10
+                  }
+              }]
+          }
+      }
+  });
+
+  // Create the weekly total value chart
+  const chartIncomeChartWeek = new Chart(customerChartMonth, {
+      type: 'bar', // Bar chart for weekly data
+      data: {
+          labels: dayNames,
+          datasets: [{
+              label: 'Weekly Total Customers',
+              data: dataCustomers_week,
+              borderColor: '#1976d2',
+              borderWidth: 2,
+              pointRadius: 0,
+              fill: true,
+              backgroundColor: 'rgba(25, 118, 210, 0.2)'
+          }]
+      },
+      options: {
+          responsive: true,
+          title: {
+              display: true,
+              text: 'Weekly Total Customers'
+          },
+          scales: {
+              xAxes: [{
+                  gridLines: { display: false }
+              }],
+              yAxes: [{
+                  gridLines: { display: false },
+                  ticks: {
+                      beginAtZero: true,
+                      max: Math.max(...dataCustomers_week) + 10,
+                      stepSize: 10
+                  }
+              }]
+          }
+      }
+  });
+
+  // Create the daily total value chart
+  const chartcustomerChartDay= new Chart(customerChartDay, {
+  type: 'line',
+  data: {
+    labels: labels_daily,
+    datasets: [{
+      label: 'Random Data',
+      data: dataCustomers_daily,
+      borderColor: '#1976d2',
+      borderWidth: 2,
+      pointRadius: 0, // Set pointRadius to 0 to remove circles
+      fill: true, // Enable filling under the line
+      backgroundColor: 'rgba(25, 118, 210, 0)' // Set the background color under the line
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          beginAtZero: true,
+          max: 50,
+          stepSize: 10 // Set the gap between y-axis ticks to 10
+        }
+      }]
+    }
+  }
+});
+
+//Income Report 
+const chartincomeChartMonth= new Chart(incomeChartMonth, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Random Data',
+      data: dataValues,
+      borderColor: '#1976d2',
+      borderWidth: 2,
+      pointRadius: 0, // Set pointRadius to 0 to remove circles
+      fill: true, // Enable filling under the line
+      backgroundColor: 'rgba(25, 118, 210, 0)' // Set the background color under the line
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          beginAtZero: true,
+          max: 1600,
+          stepSize: 200 // Set the gap between y-axis ticks to 10
+        }
+      }]
+    }
+  }
+});
+
+const chartincomeChartWeek= new Chart(incomeChartWeek, {
+  type: 'bar',
+  data: {
+    labels: dayNames,
+    datasets: [{
+      label: 'Weekly Income',
+      data:dataValues_week,
+      borderColor: '#1976d2',
+      borderWidth: 2,
+      pointRadius: 0, // Set pointRadius to 0 to remove circles
+      fill: true, // Enable filling under the line
+      backgroundColor: 'rgba(25, 118, 210, 0)' // Set the background color under the line
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Weekly Income Distribution' // Title for the chart
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          beginAtZero: true,
+          max: 50,
+          stepSize: 10 // Set the gap between y-axis ticks to 10
+        }
+      }]
+    }
+  }
+});
+
+const chartincomeChartDay= new Chart(incomeChartDay, {
+  type: 'line',
+  data: {
+    labels: labels_daily,
+    datasets: [{
+      label: 'Daily Income In Time ',
+      data: dataValues_daily,
+      borderColor: '#1976d2',
+      borderWidth: 2,
+      pointRadius: 0, // Set pointRadius to 0 to remove circles
+      fill: true, // Enable filling under the line
+      backgroundColor: 'rgba(25, 118, 210, 0)' // Set the background color under the line
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Daily Income Distribution' // Title for the chart
+    },
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          beginAtZero: true,
+          max: 50,
+          stepSize: 10 // Set the gap between y-axis ticks to 10
+        }
+      }]
+    }
+  }
+});
+
+const chartincomeChartDayPie = new Chart(incomeChartDayPie, {
+  type: 'pie',
+  data: {
+    labels: labels_daily,
+    datasets: [{
+      label: 'Daily Income Data',
+      data: dataValues_daily,
+      backgroundColor: [
+        'rgba(25, 118, 210, 0.6)', // Segment color 1
+        'rgba(255, 99, 132, 0.6)', // Segment color 2
+        'rgba(75, 192, 192, 0.6)', // Segment color 3
+        'rgba(255, 206, 86, 0.6)', // Segment color 4
+        'rgba(153, 102, 255, 0.6)' // Segment color 5
+        // Add more colors as needed for additional segments
+      ],
+      borderColor: '#ffffff', // Color of the border around each segment
+      borderWidth: 1 // Width of the border around each segment
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: 'Daily Income Distribution' // Title for the chart
+    },
+    plugins: {
+      legend: {
+        display: true, // Show the legend
+        position: 'top', // Position of the legend
+      },
+      tooltip: {
+        callbacks: {
+          label: function(tooltipItem) {
+            return tooltipItem.label + ': $' + tooltipItem.raw; // Format tooltip label
+          }
+        }
+      }
+    }
+  }
+});
+
+  // Additional charts can be created similarly for income data or any other metrics as needed
+</script>
+{% endblock %}

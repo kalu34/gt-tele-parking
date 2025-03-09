@@ -1,0 +1,15 @@
+<div class="d-flex">
+  {% if 'SubcityWoredaDetailReport' in request.get_full_path or 'SubcityIncomeReportPerMonth' in request.get_full_path or 'SubcityIncomReportPerYear' in request.get_full_path %}
+      <a href="{% url 'SubcityWoredaDetailReport' id=woreda_id %}" class="btn bg-primary text-white">Income Report <i class="fa-solid fa-check mx-2"></i></a>
+  {% else %}
+      <a href="{% url 'SubcityWoredaDetailReport' id=woreda_id %}" class="btn bg-light mx-2">Income Report</a>
+  {% endif %}
+
+  {% if 'SubcityCustomerReportPerDay' in request.get_full_path or 'SubcityCustomerReportPerMonth' in request.get_full_path or 'SubcityCustomerReportPerYear' in request.get_full_path %}
+      <a href="{% url 'SubcityCustomerReportPerDay' id=woreda_id %}" class="btn bg-primary text-white">Customer Report <i class="fa-solid fa-check mx-2"></i></a>
+  {% else %}
+      <a href="{% url 'SubcityCustomerReportPerDay' id=woreda_id %}" class="btn bg-light mx-2">Customer Report</a>
+  {% endif %}
+</div>
+
+

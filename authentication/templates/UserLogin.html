@@ -1,0 +1,72 @@
+{% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %} {% load static %}
+<style>
+  .bg-color{
+    background-image: linear-gradient(to right bottom, #2E5F88, #0395BC);
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<!--  -->
+<section class="h-100 bg-color">
+  <div class="container py-3 h-100">
+    {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Congratulations!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif message.tags == 'warning' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Warning!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% else %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %} {% endfor %} {% endif %}
+    <div class="d-flex align-items-center justify-content-center pt-2 mb-2">
+      <img src="{% static 'asset/image/GUBA_blue_logo.png' %}" alt="">
+    </div>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-md-5 px-5">
+        <div class="card p-3">
+            <form id="token-login-form">
+              {% csrf_token %}
+              <p class="text-danger" id="token-login-error"></p>
+              <div data-mdb-input-init class="form-outline mb-3 text-center">
+                <label class="form-label" for="form2Example11">Phone Number</label>
+                <input type="username" id="token-phone-number" name="username" class="form-control"required placeholder="+251.."/>
+              </div>
+
+              <div data-mdb-input-init class="form-outline mb-3 text-center">
+                <label class="form-label" for="form2Example22">Password</label>
+                <input type="password" id="token-password" name="password" class="form-control" required />
+              </div>
+
+              <button class="btn btn-primary btn-block fa-lg bg-color mb-3 px-5 w-100" type="submit" id="token-login-button" style="height: 40px;">Log in</button>
+            </form>
+            <span class="text-dark">don't have account</span>
+            <div class="d-flex align-items-center justify-content-between">
+              <a href="{% url 'user-register' %}"> sign up</a>
+              <a href="{% url 'user-register' %}"> Forget Password</a>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const csrfToken = "{{ csrf_token }}";
+</script>
+
+<!-- Base URl -->
+<script>
+  window.API_URL = "{{ API_URL }}";
+</script>
+
+<script src="{% static 'js/userAuth.js' %}"></script>

@@ -1,0 +1,14 @@
+1. Report -- Table, Chart, Card, Save As Pdf
+2. User Register
+
+1. Report 
+	- Total Customre Per Day - Per Month - Per Year  - Done
+		- Total Customer Per Day per Parking , Per Month - Per Year
+	- Total Income Per Day  - Per Month - Per Year  - Done
+		- Total Income Per Day per Parking , Per Month - Per Year
+	- Approved Parking Request Per Day  - Per Month - Per Year
+	- Request Sent Per Day  - Per Month - Per Year
+
+	# Active Parking - Dormant Parking
+	# Total Request - Approved Request - Declined Request
+	# Incident Case 

@@ -1,0 +1,59 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  <div class="d-flex justify-content-end">
+    <a href="{% url 'ViewDeletedInstanceParking' %}" class="btn  bg-dark text-white">Parking  <i class="fa-solid fa-check mx-2"></i></a>
+    <a href = "{% url 'ViewDeletedInstance' %}" class="btn bg-light mx-3">Parking Group</a>
+    <a href="{% url 'ViewDeletedInstanceParkingMember' %}" class="btn  bg-light">Parking Member </a>
+  </div>
+  <p class="bg-dark p-2 rounded text-white text-center">List Of Deleted Instance </p>
+
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Address</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">User </th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in deleted_instances %}
+          <tr>
+            <td>
+              <div class="d-flex px-2">
+                <div>
+                  <img src="{% static 'WoredaAssets/assets/img/small-logos/parking-logo.svg ' %}" class="avatar-sm me-2">
+                </div>
+                <div class="my-auto">
+                  <h6 class="mb-0 text-xs">{{item.parking.name}}</h6>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xxs font-weight-normal">{{item.parking.address}}</span>
+              </span>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.woreda_admin.first_name}}</span>
+              </div>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.date}}</span>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    </div>
+
+</div>
+{% endblock %}

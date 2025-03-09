@@ -1,0 +1,121 @@
+{% extends 'Woreda/include/WoredaBase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="py-1" style="width: 97%;">
+  <div class="row">
+    <div class="ms-3">
+      <h3 class="mb-2 h4 font-weight-bolder">Dashboard</h3>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-header py-3 p-2 ps-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="text-sm mb-0 text-capitalize">Today's Money</p>
+              <h4 id="today_money" class="mb-0"></h4>
+            </div>
+            <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
+              <i class="material-symbols-rounded opacity-10">weekend</i>
+            </div>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0">
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-header py-3 p-2 ps-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="text-sm mb-0 text-capitalize">Monthly Income</p>
+              <h4 id="monthly_income" class="mb-0">0</h4>
+            </div>
+            <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
+              <i class="material-symbols-rounded opacity-10">person</i>
+            </div>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0">
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-header py-3 p-2 ps-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="text-sm mb-0 text-capitalize">Todays User</p>
+              <h4 id="total_user" class="mb-0">-</h4>
+            </div>
+            <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
+              <i class="material-symbols-rounded opacity-10">leaderboard</i>
+            </div>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0">
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card">
+        <div class="card-header py-3 p-2 ps-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="text-sm mb-0 text-capitalize">Monthly User</p>
+              <h4 id="monthly_user" class="mb-0">0</h4>
+            </div>
+            <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
+              <i class="material-symbols-rounded opacity-10">weekend</i>
+            </div>
+          </div>
+        </div>
+        <hr class="dark horizontal my-0">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-md-6 mt-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="mb-0 ">Weekly Income</h6>
+          <p class="text-sm ">Last Week's Income</p>
+          <div class="pe-2">
+            <div class="chart">
+              <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
+            </div>
+          </div>
+          <hr class="dark horizontal">
+          <div class="d-flex ">
+            <i class="material-symbols-rounded text-sm my-auto me-1">schedule</i>
+            <p class="mb-0 text-sm"> campaign sent 2 days ago </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 mt-4 mb-4">
+      <div class="card ">
+        <div class="card-body">
+          <h6 class="mb-0 "> Weekly User </h6>
+          <p class="text-sm" id="response_report"> </p>
+          <div class="pe-2">
+            <div class="chart">
+              <canvas id="chart-line" class="chart-canvas" height="170"></canvas>
+            </div>
+          </div>
+          <hr class="dark horizontal">
+          <div class="d-flex ">
+            <i class="material-symbols-rounded text-sm my-auto me-1">schedule</i>
+            <p class="mb-0 text-sm"> updated 4 min ago </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <script>
+        //  Auto Refresh Page With 5 Second
+        setInterval(function() {
+  // Place your code here that you want to execute periodically
+  location.reload();
+}, 10000); // Refresh the page every 5 seconds (5000 milliseconds)
+</script> -->
+{% endblock %}

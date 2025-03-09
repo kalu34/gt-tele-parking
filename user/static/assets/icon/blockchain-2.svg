@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="91.333" height="77.521" viewBox="0 0 91.333 77.521">
+  <g id="blockchain-2" transform="translate(0.5 -3.545)">
+    <line id="Line_10" data-name="Line 10" y2="6.865" transform="translate(45.167 26.122)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="5"/>
+    <path id="Path_20" data-name="Path 20" d="M47.394,23.179V16.312L31.7,6.5,16,16.439v6.74" transform="translate(13.47)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="5"/>
+    <path id="Path_21" data-name="Path 21" d="M16,11.5l15.7,9.811,15.7-9.811" transform="translate(13.47 4.812)" fill="none" stroke="#fff" stroke-width="5"/>
+    <path id="Path_22" data-name="Path 22" d="M17.7,34.872V52.531L2,42.721V25.189l15.7-9.94,15.7,9.813L17.7,34.872,2,25.189" transform="translate(0 8.419)" fill="none" stroke="#fff" stroke-width="5"/>
+    <path id="Path_23" data-name="Path 23" d="M45.7,34.872V52.531l15.7-9.811V25.062L45.7,15.249,30,25.189l15.7,9.683,15.7-9.811" transform="translate(26.939 8.419)" fill="none" stroke="#fff" stroke-width="5"/>
+    <line id="Line_11" data-name="Line 11" y2="17.659" transform="translate(45.167 60.459)" fill="none" stroke="#fff" stroke-width="5"/>
+    <path id="Path_24" data-name="Path 24" d="M47.394,33.812,31.7,24,16,33.939V51.471l15.7,9.811,15.7-9.811Z" transform="translate(13.47 16.837)" fill="none" stroke="#fff" stroke-width="5"/>
+    <path id="Path_25" data-name="Path 25" d="M16,29l15.7,9.811L47.394,29" transform="translate(13.47 21.649)" fill="none" stroke="#fff" stroke-width="5"/>
+    <line id="Line_12" data-name="Line 12" y2="17.659" transform="translate(45.167 60.459)" fill="none" stroke="#fff" stroke-width="5"/>
+  </g>
+</svg>

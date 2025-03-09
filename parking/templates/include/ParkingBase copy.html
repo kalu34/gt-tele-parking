@@ -1,0 +1,290 @@
+{% load static %} {% load profile_pic_filter %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="csrf-token" content="{{ csrf_token }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous" />
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/ea03f014d5.js" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous" />
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <!-- Data Table Css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.semanticui.css" />
+
+    <!-- Main Css -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="left_menu">
+        <div class="logo d-flex align-items-center">
+          <span>L</span>
+          BPS
+          <div class="close-x ms-5 fs-6">
+            <i class="fa-solid fa-x"></i>
+          </div>
+        </div>
+        <div class="ul">
+          <li class="{% if request.resolver_match.url_name == 'parking_home' %}active{% endif %}">
+            <a href="{% url 'parking_home' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <g class="nc-icon-wrapper" fill="#171717"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path></g>
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li
+            class="{% if 'parking_request' in request.path or 'parking_approved_request_detail' in request.path or 'parking_new_request_detail' in request.path%}active{% endif %}">
+            <a href="{% url 'parking_request' %}" style="position: relative">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                <g class="nc-icon-wrapper" fill="#171717">
+                  <path
+                    d="M48,82.7v346.7c0,19.1,15.5,34.7,34.7,34.7h346.7c19.1,0,34.7-15.5,34.7-34.7V82.7c0-19.1-15.5-34.7-34.7-34.7H82.7 C63.5,48,48,63.5,48,82.7z M137.3,379.8c-13.1,1.7-24.1-9.3-22.4-22.4c1.1-8.9,8.3-16.1,17.2-17.2c13.1-1.7,24.1,9.3,22.4,22.4 C153.4,371.5,146.2,378.7,137.3,379.8z M137.3,275.8c-13.1,1.7-24.1-9.3-22.4-22.4c1.1-8.9,8.3-16.1,17.2-17.2 c13.1-1.7,24.1,9.3,22.4,22.4C153.4,267.5,146.2,274.7,137.3,275.8z M137.3,171.8c-13.1,1.7-24.1-9.3-22.4-22.4 c1.1-8.9,8.3-16.1,17.2-17.2c13.1-1.7,24.1,9.3,22.4,22.4C153.4,163.5,146.2,170.7,137.3,171.8z M384.7,374h-180 c-7.7,0-14-6.3-14-14l0,0c0-7.7,6.3-14,14-14h180c7.7,0,14,6.3,14,14l0,0C398.7,367.7,392.4,374,384.7,374z M384.7,270h-180 c-7.7,0-14-6.3-14-14l0,0c0-7.7,6.3-14,14-14h180c7.7,0,14,6.3,14,14l0,0C398.7,263.7,392.4,270,384.7,270z M384.7,166h-180 c-7.7,0-14-6.3-14-14l0,0c0-7.7,6.3-14,14-14h180c7.7,0,14,6.3,14,14l0,0C398.7,159.7,392.4,166,384.7,166z"></path>
+                </g>
+              </svg>
+              Request
+              <p
+                class="your-count-class d-none"
+                style="
+                  font-size: 0.9rem;
+                  background: red;
+                  color: white;
+                  border-radius: 50%;
+                  width: 18px;
+                  height: 18px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  position: absolute;
+                  top: -5px;
+                  right: -10px;
+                ">
+                0
+              </p>
+            </a>
+          </li>
+          <li class="{% if 'parking_history' in request.get_full_path %}active{% endif %}">
+            <a href="{% url 'parking_history' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <g class="nc-icon-wrapper" fill="#171717">
+                  <path
+                    d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"></path>
+                </g>
+              </svg>
+              History
+            </a>
+          </li>
+          <li class="{% if 'parking_payment' in request.get_full_path %}active{% endif %}">
+            <a href="{% url 'parking_payment' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <g class="nc-icon-wrapper" fill="#171717">
+                  <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"></path>
+                </g>
+              </svg>
+              Payment
+            </a>
+          </li>
+          <li class="{% if 'parking_report' in request.get_full_path %}active{% endif %}">
+            <a href="{% url 'parking_report' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 384 512">
+                <g class="nc-icon-wrapper" fill="#171717">
+                  <path
+                    d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm64 236c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-64c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-72v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm96-114.1v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"></path>
+                </g>
+              </svg>
+              Report
+            </a>
+          </li>
+
+          <li
+            class="{% if 'parking_profile' in request.get_full_path or 'parking_password' in request.get_full_path or 'parking_data' in request.get_full_path or 'parking_working_hour' in request.path %}active{% endif %}"
+            style="cursor: pointer">
+            <div class="dropdown" style="margin-left: 16px">
+              <a class="dropdown-toggle" style="color: #6d6d6d" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa-solid fa-user"></i>
+                <span style="margin-left: 22px">Profile</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item {% if 'parking_profile' in request.get_full_path %}active_profile{% endif %}" href="{% url 'parking_profile' %}">
+                  <i class="fa-regular fa-user mx-2"></i>
+                  User
+                </a>
+                <a class="dropdown-item {% if 'parking_password' in request.get_full_path %}active_profile{% endif %}" href="{% url 'parking_password' %}">
+                  <i class="fa-solid fa-key mx-2"></i>
+                  Security
+                </a>
+                <a class="dropdown-item {% if 'parking_working_hour' in request.get_full_path %}active_profile{% endif %}" href="{% url 'parking_working_hour' %}">
+                  <i class="fa-regular fa-clock"></i>
+                  Working Hour
+                </a>
+                <a class="dropdown-item {% if 'parking_data' in request.get_full_path %}active_profile{% endif %}" href="{% url 'parking_data' %}">
+                  <i class="fa-solid fa-square-parking mx-2"></i>
+                  Parking
+                </a>
+              </div>
+            </div>
+          </li>
+
+          <li class="{% if 'parking_logout' in request.get_full_path %}active{% endif %}">
+            <a href="" id="logout-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 1195 1195">
+                <g class="nc-icon-wrapper" fill="#171717">
+                  <path
+                    d="M981.333 352h-62.656v-94.016L789.333 256l.672 96H401.333l2.656-96-126.656 1.984v96l-64-1.984c-35.328 0-64 28.672-64 64v448c0 35.328 28.672 64 64 64h768c35.328 0 64-28.672 64-64V416c0-35.328-28.672-64-64-64zm-160-64h64v128h-64V288zm-416 217.984c38.656 0 70.016 41.184 70.016 92s-31.36 92-70.016 92-70.016-41.184-70.016-92 31.36-92 70.016-92zm-96-217.984h64v128h-64V288zm-42.656 510.336s7.584-60.864 24.832-72.352c17.216-11.488 66.88-19.136 66.88-19.136s32.192 34.4 45.888 34.4c13.664 0 45.856-34.4 45.856-34.4s49.664 7.616 66.912 19.136c20.256 13.504 25.312 72.352 25.312 72.352h-275.68zM917.333 768h-288v-32h288v32zm0-64h-288v-32h288v32zm0-64h-288v-32h288v32zm0-64h-288v-32h288v32z"></path>
+                </g>
+              </svg>
+              Logout
+            </a>
+          </li>
+        </div>
+      </div>
+      <div class="main_content">
+        <nav class="navigation_top">
+          <div class="serach_bar">
+            <form action="">
+              <input type="text" placeholder="Avaliable Spot" />
+              <button type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                  <g class="nc-icon-wrapper" fill="#171717">
+                    <path
+                      d="M443.5,420.2L336.7,312.4c20.9-26.2,33.5-59.4,33.5-95.5c0-84.5-68.5-153-153.1-153S64,132.5,64,217s68.5,153,153.1,153	c36.6,0,70.1-12.8,96.5-34.2l106.1,107.1c3.2,3.4,7.6,5.1,11.9,5.1c4.1,0,8.2-1.5,11.3-4.5C449.5,437.2,449.7,426.8,443.5,420.2z M217.1,337.1c-32.1,0-62.3-12.5-85-35.2c-22.7-22.7-35.2-52.9-35.2-84.9c0-32.1,12.5-62.3,35.2-84.9c22.7-22.7,52.9-35.2,85-35.2	c32.1,0,62.3,12.5,85,35.2c22.7,22.7,35.2,52.9,35.2,84.9c0,32.1-12.5,62.3-35.2,84.9C279.4,324.6,249.2,337.1,217.1,337.1z"></path>
+                  </g>
+                </svg>
+              </button>
+            </form>
+          </div>
+          <div class="profile">
+            <div class="notification">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <g class="nc-icon-wrapper" fill="#171717">
+                  <path
+                    d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path>
+                </g>
+              </svg>
+            </div>
+            <div class="menu">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="user_profile">
+              <span>{{request.user.first_name}} {{request.user.last_name}}</span>
+              <div class="profile_box">
+                <img src="{% get_profile_image request.user.id %}" alt="" />
+              </div>
+            </div>
+          </div>
+        </nav>
+        {% block content %} {% endblock %}
+      </div>
+    </div>
+    <!-- Bootstrap Script -->
+    <script>
+      const csrfToken = "{{ csrf_token }}";
+    </script>
+    <script>
+      window.API_URL = "{{ API_URL }}";
+    </script>
+    <script></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <!-- Axious -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+    <!-- Main JS -->
+    <script src="{% static 'js/parkingLogout.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/Request/script.js' %}"></script>
+
+    <!-- Font awesome -->
+    <script src="https://kit.fontawesome.com/ea03f014d5.js" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function () {
+        $("#requestInput").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $("#reserveTable tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+          });
+        });
+      });
+    </script>
+    <script>
+      // Approved Input
+      $(document).ready(function () {
+        $("#approvedInput").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $("#approvedTable tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+          });
+        });
+      });
+    </script>
+    <script>
+      // Function to fetch parking requests and count the relevant entries
+      async function fetchAndCountRequests() {
+        try {
+          const response = await fetch(`${window.API_URL}/parking-requests/`);
+          const data = await response.json(); // Assuming the response is in JSON format
+          approved_data = data.approved_parking;
+          reserved_data = data.reserve_parking;
+          console.log(reserved_data);
+          // Filter the data based on the specified conditions
+          const approve_count = approved_data.filter((request) => request.stop === true).length;
+
+          const reserve_count = reserved_data.filter((request) => request.status === false).length;
+
+          if (approve_count + reserve_count > 0) {
+            const countElement = document.querySelector(".your-count-class"); // Replace with your actual class or ID
+            countElement.classList.remove("d-none");
+            countElement.textContent = approve_count + reserve_count; // Update the content of the <p> tag
+          } else {
+            const countElement = document.querySelector(".your-count-class"); // Replace with your actual class or ID
+            countElement.classList.add("d-none");
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      // Function to initialize the fetch and count process
+      function initFetchAndCount() {
+        fetchAndCountRequests(); // Initial call
+        setInterval(fetchAndCountRequests, 3000000); // Call every 5000 milliseconds (5 seconds)
+      }
+
+      // Run the function when the DOM is fully loaded
+      document.addEventListener("DOMContentLoaded", initFetchAndCount);
+    </script>
+  </body>
+</html>

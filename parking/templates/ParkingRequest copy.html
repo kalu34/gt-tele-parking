@@ -1,0 +1,210 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+<head>
+</head>
+<style>
+  .container {
+  padding: 15px 25px;
+}
+html,
+body,
+.intro {
+  height: 100%;
+}
+
+.gradient-custom-1 {
+  /* fallback for old browsers */
+  background: #cd9cf2;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to top, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to top, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
+}
+
+table td,
+table th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+tbody td {
+  font-weight: 500;
+  color: #999999;
+}
+</style>
+<div class="container">
+  <div class="request_wrapper">
+    {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Congratulations!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif message.tags == 'warning' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Warning!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% else %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %} {% endfor %} {% endif %}
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h4>Reserved Request List</h2>
+    </div>
+    <div class="col">
+      <input class="form-control" id="requestInput" type="text" placeholder="Search Any Request">
+    </div>
+  </div>
+    <div class="container">
+      <table class="table">
+        <thead style="border-radius: 10px; overflow: hidden; color: white;">
+          <tr style="text-align: center; height: 50px; border-radius: 10px; overflow: hidden; background-color: red;"> 
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;"><i class="fa-solid fa-user mx-1"></i>User</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-key mx-1"></i> Reference</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" > <i class="fa-solid fa-calendar-days mx-1"></i>Date</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" > <i class="fa-solid fa-square-parking mx-1"></i> Slot</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-car mx-1"></i> Plate Number</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-question mx-1"></i> Status</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ></i> Detail</th>
+          </tr>
+        </thead>
+        <tbody id="reserveTable">
+          {% for item in NewRequestPaginator %}
+          <tr style="height: 50px; text-align: center;">
+            <td><span class="mx-1" style="font-size: 15px;">{{item.user.first_name}} {{item.user.last_name}}</span></td>
+            <td style="color: green;">{{item.requset_rfe}}</td>
+            <td>{{item.date}}</td>
+            <td>{{item.slot}}</td>
+            <td>{{item.plate_number}}</td>
+            {% if item.status %}
+            <td><i class="fa-solid fa-check" style="color: green;"></i></td>
+            {% else %}
+            <td><i class="fa-solid fa-x" style="color: red;"></i></td>
+            {% endif %}
+            <td><a href="{% url 'parking_new_request_detail' id=item.id %}"><i class="fa-solid fa-eye"></i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-end">
+        <nav aria-label="...">
+          <ul class="pagination">
+            {% if NewRequestPaginator.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="{{NewRequestPaginator.previouse_page_number}}" tabindex="-1">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for num in NewRequestPaginator.paginator.page_range %}
+            <li class="page-item {% if NewRequestPaginator.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{num}}">{{num}}<span class="sr-only">(current)</span></a>
+            </li>
+            {% endfor %}
+            {% if NewRequestPaginator.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="{{NewRequestPaginator.next_page_number}}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Next</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+      
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4>Approved Request List</h2>
+      </div>
+      <div class="col">
+        <input class="form-control" id="approvedInput" type="text" placeholder="Search Any Request">
+      </div>
+    </div>
+    <div class="container">
+      <table class="table">
+        <thead style="border-radius: 10px; overflow: hidden; color: white;">
+          <tr style="height: 50px; border-radius: 10px; overflow: hidden; background-color: red;"> 
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;"><i class="fa-solid fa-user"></i>User</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-key"></i> Reference</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" > <i class="fa-regular fa-clock"></i>Start Time</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" > <i class="fa-solid fa-clock"></i> End TIme</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-dollar-sign"></i> Price</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-calendar-days"></i> Date</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-question"></i> Status</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ><i class="fa-solid fa-cash-register"></i> Payemnt</th>
+            <th scope="col" style="color: #808080; font-size: 16px; font-weight: 100;" ></i> Detail</th>
+          </tr>
+        </thead>
+        <tbody id="approvedTable">
+          {% for item in ApprovedRequestPaginator %}
+          <tr style="height: 50px">
+            <td><span class="mx-1" style="font-size: 15px;">{{item.user.first_name}} {{item.user.last_name}}</span></td>
+            <td style="color: green;">{{item.reference_trx}}</td>
+            <td style="color: blue;">{{item.start_time}}</td>
+            <td style="color: darkred;">{{item.end_time}}</td>
+            <td style="color: green;">{{item.total_price}} Birr</td>
+            {% if item.is_active %}
+            <td><i class="fa-solid fa-check" style="color: green;"></i></td>
+            {% else %}
+            <td><i class="fa-solid fa-x" style="color: red;"></i></td>
+            {% endif %}
+            <td>{{item.date}}</td>
+            {% if item.payment_status %}
+            <td style="color: green;">Completed</td>
+            {% else %}
+            <td style="color: red;">pending</td>
+            {% endif %}
+            <td><a href="{% url 'parking_approved_request_detail' id=item.id %}"><i class="fa-solid fa-eye"></i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-end">
+        <nav aria-label="...">
+          <ul class="pagination">
+            {% if ApprovedRequestPaginator.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ApprovedRequestPaginator.previous_page_number}}" tabindex="-1">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            {% endif %}
+            {% for num in ApprovedRequestPaginator.paginator.page_range %}
+            <li class="page-item {% if ApprovedRequestPaginator.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+            {% if ApprovedRequestPaginator.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ApprovedRequestPaginator.next_page_number}}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">Next</a>
+            </li> 
+            {% endif %}
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+</div>
+{% endblock %}

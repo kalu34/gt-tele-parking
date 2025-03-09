@@ -1,0 +1,115 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% if messages %}
+  {% for message in messages %}
+        {% if message.tags == 'success' %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Congratulations!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Warning!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% else %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% endif %}
+  {% endfor %}
+{% endif %}
+  <div class="d-flex justify-content-end">
+    <a href="{% url 'RegisterParkingGroupMember' id=parking.id id2=0 %}" class="btn btn-dark">
+      Add Member
+      <i class="fa-solid fa-plus mx-1"></i>
+    </a>
+  </div>
+  <h5 class="bg-dark p-2 text-light rounded text-center">
+    <i class="fa-solid fa-user"></i>
+    Parking Memeber
+  </h5>
+  {% if parking_members %}
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking Group Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Subcity</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">First Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Expiredate</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Admin</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in parking_members %}
+          <tr>
+            <td>
+              <div class="d-flex px-2">
+                <div>
+                  <i class="fa-solid fa-user me-2"></i>
+                </div>
+                <div class="my-auto">
+                  <h6 class="mb-0 text-xs">{{item.parking.name}}</h6>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.parking.subcity}}</p>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.user.first_name}}</span>
+              </span>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.user.email}}</span>
+              </div>
+            </td>
+
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.user.phone_number}}</span>
+              </div>
+            </td>
+
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.end_date}}</span>
+              </div>
+            </td>
+
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                {% if item.is_admin %}
+                <span class="me-2 text-xs text-success"><i class="fa-solid fa-check"></i></span>
+                {% else %}
+                <span class="me-2 text-xs text-danger"><i class="fa-solid fa-x"></i></span>
+                {% endif %}
+              </div>
+            </td>
+
+            <td class="align-middle">
+              <a href="{% url 'RegisterParkingGroupMember' id=parking.id id2=item.user.id %}" class="btn btn-link text-secondary mb-0">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <p>No Data Avaliable</p>
+  {% endif %}
+</div>
+
+{% endblock %}

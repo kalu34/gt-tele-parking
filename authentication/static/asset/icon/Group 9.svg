@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="536" height="412" viewBox="0 0 536 412">
+  <g id="Group_9" data-name="Group 9" transform="translate(-140 -1288)">
+    <path id="Path_13" data-name="Path 13" d="M10,0H526a10,10,0,0,1,10,10V360a10,10,0,0,1-10,10H10A10,10,0,0,1,0,360V10A10,10,0,0,1,10,0Z" transform="translate(140 1288)" fill="#2e148f"/>
+    <g id="farmer-market-2" transform="translate(347.773 1279.182)">
+      <circle id="Ellipse_5" data-name="Ellipse 5" cx="6.603" cy="6.603" r="6.603" transform="translate(35.132 81.354)" fill="none" stroke="#fff" stroke-width="5"/>
+      <path id="Path_16" data-name="Path 16" d="M35.132,277.19h-9.9V260.682H94.561v23.111" transform="translate(0 -189.232)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="5"/>
+      <line id="Line_5" data-name="Line 5" x2="46.222" transform="translate(48.338 87.957)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="5"/>
+      <rect id="Rectangle_5" data-name="Rectangle 5" width="13.206" height="13.206" transform="translate(59.894 49.989)" fill="none" stroke="#fff" stroke-width="5"/>
+      <rect id="Rectangle_6" data-name="Rectangle 6" width="13.206" height="13.206" transform="translate(46.688 49.989)" fill="none" stroke="#fff" stroke-width="5"/>
+      <path id="Path_17" data-name="Path 17" d="M33.636,36.738a8.188,8.188,0,0,0,13.206,0,8.188,8.188,0,0,0,13.206,0,8.188,8.188,0,0,0,13.206,0,8.188,8.188,0,0,0,13.206,0,8.188,8.188,0,0,0,13.206,0l-6.6-11.511H40.24Z" transform="translate(-6.758)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="5"/>
+      <path id="Path_18" data-name="Path 18" d="M58.864,123.317v-21.46" transform="translate(-27.033 -60.122)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="5"/>
+      <path id="Path_19" data-name="Path 19" d="M344.773,123.317v-21.46" transform="translate(-256.815 -60.122)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="5"/>
+      <line id="Line_6" data-name="Line 6" y1="11.511" x2="3.302" transform="translate(40.084 25.227)" fill="none" stroke="#fff" stroke-width="5"/>
+      <line id="Line_7" data-name="Line 7" y1="11.511" x2="0.825" transform="translate(53.291 25.227)" fill="none" stroke="#fff" stroke-width="5"/>
+      <line id="Line_8" data-name="Line 8" x1="0.825" y1="11.511" transform="translate(65.672 25.227)" fill="none" stroke="#fff" stroke-width="5"/>
+      <line id="Line_9" data-name="Line 9" x1="3.302" y1="11.511" transform="translate(76.402 25.227)" fill="none" stroke="#fff" stroke-width="5"/>
+    </g>
+    <text id="Sport_Results._Inspirational_designs_illustrations_and_graphic_elements_from_the_world_s_best_designers." data-name="Sport Results. Inspirational designs, illustrations, and graphic elements from the world&apos;s best designers." transform="translate(164 1400)" fill="#fff" font-size="28" font-family="Poppins-Medium, Poppins" font-weight="500"><tspan x="-186" y="29">Sport Results. Inspirational </tspan><tspan x="-237" y="75">designs, illustrations, and graphic </tspan><tspan x="-216" y="121">elements from the world&apos;s best </tspan><tspan x="-72" y="167">designers.</tspan></text>
+    <g id="Rectangle_7" data-name="Rectangle 7" transform="translate(252 1632)" fill="#fff" stroke="#2e148f" stroke-width="1">
+      <rect width="312" height="68" rx="34" stroke="none"/>
+      <rect x="0.5" y="0.5" width="311" height="67" rx="33.5" fill="none"/>
+    </g>
+    <text id="View_Spot" data-name="View Spot" transform="translate(408 1676)" fill="#2e148f" font-size="28" font-family="Poppins-Medium, Poppins" font-weight="500"><tspan x="-69" y="0">View Spot</tspan></text>
+  </g>
+</svg>

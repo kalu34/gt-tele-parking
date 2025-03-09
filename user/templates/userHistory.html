@@ -1,0 +1,136 @@
+{% extends 'include/userBase.html' %}
+{% load static %}
+{% block content %}
+<div class="w-100">
+  <div class="main-nav d-flex align-items-center justify-content-between px-3 w-100">
+    <h6>Good Morning</h6>
+    <div class="">
+          <i class="fa-solid fa-envelope mx-2"></i>
+          <i class="fa-solid fa-bell mx-2"></i>
+          <span>{{request.user.first_name}} {{request.user.last_name}}</span>
+                               {% if profile %}
+                              <img src="{{profile.image.url}}" class="mx-2" alt=""  width="40px" height="40px" style="border-radius: 50%;">
+                              {% else %}
+                              <img src="{% static './assets/images/user.jpg' %}" class="mx-2" alt=""  width="40px" height="40px" style="border-radius: 50%;">
+                              {% endif %}
+    </div>
+  </div>
+  <h2 style="color: rgb(134, 134, 134); font-family: poppins; font-weight: 600;" class="p-3">History</h5>
+  {% if no_parking_payment %}
+  <p class="p-2 mx-4">No History records found. Please make a request to see.</p>
+{% else %}
+
+  {% for parking in parking_payments %}
+  <div class="" style="height: 90vh; overflow-y: auto;">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="listing-list mb-2" style="width: 60%;">
+        <div class="d-flex align-items-center justify-content-between">
+              <div class="">
+                    <h5>{{parking.request_id.parking.name}}</h5>
+                    <i class="fa-solid fa-check"></i><span class="mx-1">Toyota Collora B32134</span>
+              </div>
+          <div class="">
+              <i class="fa-solid fa-key"></i>
+              <span>{{parking.request_id.reference_trx}}</span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between pt-4 pb-2">
+          <div class="address">
+            <h6>Start Time</h6>
+            <i class="fa-regular fa-clock"></i>
+            <span>{{parking.request_id.start_time}}</span>
+          </div>
+          <div class="vertical-line-dark"></div>
+          <div class="capacity">
+            <h6>Time Used</h6>
+            <i class="fa-solid fa-hourglass-start"></i>
+            <span>{{parking.request_id.end_time}}</span>
+          </div>
+          <div class="vertical-line-dark"></div>
+          <div class="hour">
+            <h6>Price Per Hour</h6>
+            <i class="fa-solid fa-money-bill"></i>
+            <span>{{parking.request_id.payment_per_hour}} Birr/Hr </span>
+          </div>
+          <div class="vertical-line-dark"></div>
+          <div class="capacity">
+            <h6>Total Price</h6>
+            <i class="fa-solid fa-wallet"></i>
+            <span>{{ parking.request_id.total_price}}Birr </span>
+          </div>
+        </div>
+      </div>
+      <div class="listing-box" style="width: 40%;">
+        <div class="image-listing">
+              <img src="{{parking.request_id.parking.image1.url}}" alt="">
+              <img src="{{parking.request_id.parking.image2.url}}" alt="">
+        </div>
+        <div class="text-listing">
+              <h6>{{parking.request_id.parking.name}}</h6>
+        </div>
+  </div>
+    </div>
+    <div class="">
+      <div class="row m-0"> 
+        <div class="col-md-7 col-12" style="width: 60%;">
+          <div class="row">
+            <div class="col-12 mb-4"> 
+              <div class="row box-right"> 
+                <div class="col-md-6 ps-0 ">
+                  <p class="ps-3 textmuted fw-bold h6 mb-0">TOTAL PAID BIRR</p>
+                  <p class="h1 fw-bold d-flex"> 
+                    <span class="fas fa-dollar-sign textmuted pe-1 h6 align-text-top mt-1"></span>
+                    {{parking.amount}} 
+                  </p> 
+                  <p class="ms-3 px-2 bg-green">+10% since last month</p> 
+                  <p class="ps-3 textmuted h6 mb-0 py-3">TRANSACTION REFERENCE</p>
+                  <p class="h4 fw-bold d-flex"> 
+                    <i class="fa-solid fa-key fs-6  pe-1"></i>
+                    {{parking.tx_ref}}
+                  </p> 
+                </div> 
+                <div class="col-md-5" style="position: relative;"> 
+                  <i class="fa-solid fa-print fs-5" style="position: absolute; right: 0;" onclick="printPaymentDetails()"></i>
+                  <p class="textmuted h8">Payment Status</p> 
+                  <p class="fw-bold h7">{{parking.status}}</p> 
+                  <p class="textmuted h8">Request ID</p> 
+                  <p class="fw-bold h7">{{parking.request_id}}</p> 
+                  <p class="textmuted h8">Payment Date</p> 
+                  <p class="fw-bold h7">{{parking.created_at}}</p> 
+                </div> 
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+        <div class="col-md-4 col-12 ps-md-5 p-0 "> 
+          <div class="box-left"> 
+            <div class="d-flex justify-content-between"> 
+              <div class="">
+                <p class="textmuted h8">Parking</p> 
+                <p class="fw-bold h7">{{parking.request_id.parking.name}}</p> 
+                <p class="textmuted h8">Start  Time</p> 
+                <p class="fw-bold h7">{{parking.request_id.start_time}}</p> 
+                <p class="textmuted h8">End  Time</p> 
+                <p class="fw-bold h7">{{parking.request_id.end_time}}</p> 
+              </div>
+              <div class="mx-5">
+                <p class="textmuted h8">Slot</p> 
+                <p class="fw-bold h7">{{parking.request_id.slot}}</p> 
+                <p class="textmuted h8">Plate Number</p> 
+                <p class="fw-bold h7">{{parking.request_id.plate_number}}</p> 
+                <p class="textmuted h8">Request Type</p> 
+                <p class="fw-bold h7">{{parking.request_id.request_type}}</p> 
+              </div>
+            </div>
+          </div> 
+        </div> 
+      </div> 
+    </div>
+    <div class="horizontal-line"></div>
+  </div>
+  {% endfor %}
+
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'City/include/CityBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-y px-4">
+  <div class="d-flex justify-content-end">  
+    {% include 'City/Request/include/CItyRequestInclude.html' %}
+  </div>
+  <h4 class="bg-slate-900 w-100 px-3 py-2 rounded text-white text-center">Declined Request</h4>
+  <!-- Table Data -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card border shadow-xs mb-4">
+        <div class="card-body px-0 py-0">
+          <div class="border-bottom py-3 px-3 d-sm-flex align-items-center">
+            <div>
+              <h6 class="font-weight-semibold text-lg mb-0">Approved Request list</h6>
+              <p class="text-sm">See information about all approved request</p>
+            </div>
+          </div>
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="text-secondary text-xs font-weight-semibold opacity-7">Parking Group</th>
+                  <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Parking</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Subcity</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Woreda</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Date</th>
+                  <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Read</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in DecliendRequest %}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-code-pull-request rounded-circle me-2" aria-multiline="Parking Group"></i>
+                      </div>
+                      <div class="d-flex flex-column justify-content-center ms-1">
+                        <h6 class="mb-0 text-sm font-weight-semibold">{{item.request_ref.parking_group.name}}</h6>
+                        <p class="text-sm text-secondary mb-0">{{item.request_ref.parking_group.subcity}} - W0 {{item.request_ref.parking_group.woreda}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="text-sm text-dark font-weight-semibold mb-0">{{item.request_ref.parking.name}}</p>
+                    <p class="text-sm text-secondary mb-0">{{item.request_ref.parking.address}}</p>
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <span class="text-secondary text-sm font-weight-normal">{{item.request_ref.subcity}}</span>
+                    <!-- <span class="badge badge-sm border border-success text-success bg-success">Active</span> -->
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-sm font-weight-normal">{{item.request_ref.woreda}}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-sm font-weight-normal">{{item.date}}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    {% if item.is_read  %}
+                      <span class="badge badge-sm border border-success text-success bg-success">Checked</span>
+                    {% else %}
+                    <span class="badge badge-sm border border-danger text-danger bg-danger">Not Checked</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="border-top py-3 px-3 d-flex align-items-center">
+            {% if DecliendRequest.has_previous %}
+            <a href="?page={{DecliendRequest.previous_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+             {% else %}  
+             <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Previous</a>
+             {% endif %}
+            <nav aria-label="..." class="ms-auto">
+              <ul class="pagination pagination-light mb-0">
+                {% for num in DecliendRequest.paginator.page_range %}
+                <li class="page-item" aria-current="page">
+                  <a href="?page={{num}}" class="page-link font-weight-bold  {% if DecliendRequest.number == num %}bg-gradient-primary text-white {% endif %}">{{num}}</a>
+                </li>
+                {% endfor %}
+                
+              </ul>
+            </nav>
+            {% if DecliendRequest.has_next %}
+            <a href="?page={{DecliendRequest.next_page_number}}" class="btn btn-sm btn-white d-sm-block d-none mb-0 ">Previous</a>
+             {% else %}  
+             <a class="btn btn-sm btn-white d-sm-block d-none mb-0 disabled">Next</a>
+             {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

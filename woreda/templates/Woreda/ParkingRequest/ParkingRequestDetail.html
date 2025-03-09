@@ -1,0 +1,145 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container">
+  {% if messages %}
+  {% for message in messages %}
+        {% if message.tags == 'success' %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Congratulations!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Warning!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% else %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% endif %}
+  {% endfor %}
+{% endif %}
+  <h4 class="bg-dark text-white rounded p-2 text-center "><i class="fa-solid fa-square-parking mx-2"> </i>Parking Detail Page </h4>
+  {% for item in parking_with_working_hours %}
+  <div class="row">
+    <div class="col-md-6">
+      <div class="bg-white p-3 rounded navbar-vertical">
+        <h5></i> Parking</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <p class="h6  font-weight-normal"><i class="fa-solid fa-circle-check"></i> {{item.parking.name}}</p>
+            <p class="h6 text-muted font-weight-normal"><i class="fa-solid fa-location-dot"></i> {{item.parking.address}}</p>
+          </div>
+        </div>
+        <div class="row px-3 py-1">
+          <div class="col-md-4">
+              <p class="h6 font-weight-normal text-sm">Subcity</p>
+              <p class="h6 text-muted font-weight-normal text-sm"><i class="fa-solid fa-location-crosshairs"></i> {{item.parking.subcity}}</p>
+          </div>
+          <div class="col-md-4">
+            <p class="h6 font-weight-normal text-sm">Woreda</p>
+            <p class="h6 text-muted font-weight-normal text-sm">- {{item.parking.woreda}}</p>
+        </div>
+        <div class="col-md-4">
+          <p class="h6 font-weight-normal text-sm"> Kebele</p>
+          <p class="h6 text-muted font-weight-normal text-sm"> {{item.parking.keble}}</p>
+      </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-md-5">
+            {% if item.parking.has_ev_charging %}
+            <p class="h6 font-weight-normal text-sm text-success"><i class="fa-solid fa-square-check"></i> Has Ev Charging</p>
+            {% else %}
+            <p class="h6 font-weight-normal text-sm text-danger"><i class="fa-solid fa-square-xmark"></i> Has Ev Charging</p>
+            {% endif %}
+
+            {% if item.parking.has_disabled_parking %}
+            <p class="h6 font-weight-normal text-sm text-success"><i class="fa-solid fa-square-check"></i> Has Disabled Parking</p>
+            {% else %}
+            <p class="h6 font-weight-normal text-sm text-danger"><i class="fa-solid fa-square-xmark"></i> Has Disabled Parking</p>
+            {% endif %}
+            {% if item.parking.is_covered %}
+            <p class="h6 font-weight-normal text-sm text-success"><i class="fa-solid fa-square-check"></i> Is Covered</p>
+            {% else %}
+            <p class="h6 font-weight-normal text-sm text-danger"><i class="fa-solid fa-square-xmark"></i> Is Covered</p>
+            {% endif %}
+            {% if item.parking.has_security_cameras %}
+            <p class="h6 font-weight-normal text-sm text-success"><i class="fa-solid fa-square-check"></i> Has Security Cameras</p>
+            {% else %}
+            <p class="h6 font-weight-normal text-sm text-danger"><i class="fa-solid fa-square-xmark"></i> Has Security Cameras</p>
+            {% endif %}
+            {% if item.parking.has_security_guard %}
+            <p class="h6 font-weight-normal text-sm text-success"><i class="fa-solid fa-square-check"></i> Has Security Guard</p>
+            {% else %}
+            <p class="h6 font-weight-normal text-sm text-danger"><i class="fa-solid fa-square-xmark"></i> Has Security Guard</p>
+            {% endif %}
+
+          </div>
+          <div class="col-md-3 bg-white px-2">
+            <p class="h6 font-weight-normal text-sm"> Price Per Hour <br><span class="text-muted"><i class="fa-solid fa-money-bill"></i> {{item.parking.price_per_hour}} Birr</span></p>
+            <p class="h6 font-weight-normal text-sm"> Price Per Day <br><span class="text-muted"><i class="fa-solid fa-money-bill"></i> {{item.parking.price_per_day}} Birr</span></p>
+          </div>
+          <div class="col-md-4 bg-white px-2">
+            <p class="h6  font-weight-normal text-sm"> Slot Capacity <br><span class="text-muted"><i class="fa-solid fa-car"></i> {{item.parking.slot_capacity}} </span></p>
+            <p class="h6  font-weight-normal text-sm"> Avaliable Slot <br><span class="text-muted"><i class="fa-solid fa-car-side"></i> {{item.parking.available_slots}}  </span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="bg-white p-3 rounded navbar-vertical">
+        <h5></i> Working Hour</h5>
+        <div class="row">
+          {% for working_hour in item.working_hours %}
+          <div class="col-md-5 mt-2">
+            <span class="text-success">{{working_hour.day}}<br></span>
+            <i class="fa-solid fa-clock"></i>
+            <span class="text-sm">{{working_hour.start_time}} - {{working_hour.end_time}}</span>
+          </div>
+          {% endfor %}
+
+
+        </div>
+      </div>
+      <div class="bg-white p-3 rounded navbar-vertical mt-2">
+        <h5></i> Request Status</h5>
+        <div class="row">
+          <div class="col-md-6">
+            {% if item.parking.is_approved %}
+            <p class="h6 text-success">APPROVED <i class="fa-solid fa-check"></i> </p>
+            {% else %}
+            <p class="h6 text-danger">NOT APPROVED </p>
+            {% endif %}
+
+            <p>{{item.is_sent}}</p>
+            {% if item.parking.is_sent %}
+            <a href="" class="btn btn-dark disabled" disabled>Send Request</a>
+            {% else %}
+            <a href="{% url 'sendRequestWoreda' id=parking_group.id id_2=item.parking.id %}" class="btn btn-dark">Send Request</a>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            {% for request in item.requests %}
+            <p class="text-muted h6 font-weight-normal text-sm">Requested Date:  {{request.date}}</p>
+            {% if request.status %}
+            <p class="text-muted h6 font-weight-normal text-sm">Status : <span class="text-success"><i class="fa-solid fa-check"></i></span> </p>
+            {% else %}
+            <p class="text-muted h6 font-weight-normal text-sm">Status : <span class="text-danger"><i class="fa-solid fa-x"></i></span> </p>
+            {% endif %}
+
+            {% if request.is_read %}
+            <p class="text-muted h6 font-weight-normal text-sm">Checked : <span class="text-success"><i class="fa-solid fa-check"></i></span> </p>
+            {% else %}
+            <p class="text-muted h6 font-weight-normal text-sm">Checked : <span class="text-danger"><i class="fa-solid fa-x"></i></span> </p>
+            {% endif %}
+
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

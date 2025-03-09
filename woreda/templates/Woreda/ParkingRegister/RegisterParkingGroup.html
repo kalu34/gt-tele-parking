@@ -1,0 +1,92 @@
+{% extends 'Woreda/include/WoredaBase.html' %} {% load static %} {% block content %}
+<div class="container-fluid py-2">
+  <!-- Message  -->
+
+  {% if messages %}
+  {% for message in messages %}
+        {% if message.tags == 'success' %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Congratulations!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% elif message.tags == 'warning' %}
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>Warning!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% else %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        {% endif %}
+  {% endfor %}
+{% endif %}
+
+<!-- Message End Here -->
+<div class="d-flex justify-content-end">
+  <a href="{% url 'RegisterParkingGroupDetail' id=0 %}" class="btn btn-dark"><i class="fa-solid fa-plus mx-2"></i>Add New Group</a>
+</div>
+<h4 class="p-2 bg-dark text-white rounded text-center">Parking Group</h4>
+
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table align-items-center mb-0">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Parking Group Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Subcity </th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Woreda</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Kebele</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in parking_group %}
+          <tr>
+            <td>
+              <div class="d-flex px-2">
+                <div>
+                  <img src="{% static 'WoredaAssets/assets/img/small-logos/parking-logo.svg' %}" class="avatar-sm me-2">
+                </div>
+                <div class="my-auto">
+                  <a href="{% url 'RegisterParkingGroupDetail' id=item.id %}" class="mb-0 text-xs">{{item.name}}</a>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="text-xs font-weight-normal mb-0">{{item.subcity}}</p>
+            </td>
+            <td>
+              <span class="badge badge-dot me-4">
+                <i class="bg-info"></i>
+                <span class="text-dark text-xs">{{item.woreda}}</span>
+              </span>
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.kebele}}</span>
+              </div>
+            </td>
+  
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-xs">{{item.created_at}}</span>
+              </div>
+            </td>
+
+            <td class="align-middle">
+              <a href="{% url 'RegisterParkingGroupDetail' id=item.id %}" class="btn btn-link text-secondary mb-0">
+                <i class="fa-solid fa-eye"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+    </div>
+    </div>
+
+</div>
+{% endblock %}

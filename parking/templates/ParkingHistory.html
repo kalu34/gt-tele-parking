@@ -1,0 +1,65 @@
+{% extends 'include/ParkingBase.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static './css/listing.css' %}">
+<h4 class="rounded bg-gradient-dark p-2 text-center text-white mx-4">History Records</h4>
+{% if historys %}
+{% for history in historys %}
+<div class="listing-list mb-2" style="margin: 20px;">
+  <div class="d-flex align-items-center justify-content-between">
+        <div class="">
+              <h5>{{history.request.parking.name}}</h5>
+              <i class="fa-solid fa-car"><span class="mx-1">{{ history.car_model.name }} </span></i><i class="fa-solid fa-check"></i><span class="mx-2">{{ history.car_model.plate_number }}</span>
+        </div>
+    <div class="">
+        <i class="fa-solid fa-key"></i>
+        <span>{{history.request.reference_trx}}</span>
+    </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-between pt-4 pb-2">
+    <div class="address">
+      <h6>Start Time</h6>
+      <i class="fa-regular fa-clock"></i>
+      <span>{{history.request.start_time}}</span>
+    </div>
+    <div class="vertical-line-dark"></div>
+    <div class="capacity">
+      <h6>Time Used</h6>
+      <i class="fa-solid fa-hourglass-start"></i>
+      <span>{{history.request.end_time}}</span>
+    </div>
+    <div class="vertical-line-dark"></div>
+    <div class="hour">
+      <h6>Price Per Hour</h6>
+      <i class="fa-solid fa-money-bill"></i>
+      <span>{{history.request.payment_per_hour}} Birr/Hr </span>
+    </div>
+    <div class="vertical-line-dark"></div>
+    <div class="capacity">
+      <h6>Total Price</h6>
+      <i class="fa-solid fa-wallet"></i>
+      <span>{{history.request.total_price}} Birr </span>
+    </div>
+    <div class="vertical-line-dark"></div>
+    <div class="capacity">
+      <h6>Date</h6>
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>{{history.request.date}}</span>
+    </div>
+    <div class="vertical-line-dark"></div>
+    <div class="capacity">
+      <h6>Slot</h6>
+      <i class="fa-solid fa-square-parking"></i>
+      <span>{{history.request.slot}}</span>
+    </div>
+    <div class="vertical-line-dark"></div>
+    <div class="capacity">
+      <h6>Payment Status</h6>
+      <i class="fa-solid fa-rotate-right"></i>
+      <span>{{history.request.payment_status}} </span>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% else %}
+<p class="text-muted p-4 fs-6">Look Like There Is No History Record </p>
+{% endif %}
+{% endblock %}
