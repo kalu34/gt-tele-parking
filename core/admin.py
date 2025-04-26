@@ -3,7 +3,6 @@ from .models import *
 # Register your models here.
 
 admin.site.register(ApprovedRequest)
-admin.site.register(ReservedRequest)
 admin.site.register(Incident)
 
 admin.site.register(ReserveParking)

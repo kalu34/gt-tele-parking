@@ -22,3 +22,11 @@ class ParkingRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApprovedRequest
         fields = '__all__'  # Or specify the fields you need
+
+
+class LocationSerializer(serializers.Serializer):
+
+    latitude = serializers.FloatField(required=True)
+    longitude = serializers.FloatField(required=True)
+
+

@@ -1,7 +1,9 @@
+import json
 import random
 import string
 
-from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import generics, status
@@ -11,14 +13,20 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from chapa import Chapa
 
+from parking.api.serializers import ParkingListSerializer
+
 from authentication.models import User, Wallet, Transaction
+from core.api.serializers import SerialiserReserveParking
 from parking.models import Parking
-from core.models import Payment
+from core.models import Payment, ReserveParking, ReservedRequest, ApprovedRequest
 from core.context_processors import global_settings
 from user.models import LegalDocument
 
+from rest_framework import filters
+
 from .serializers import *
 
+from django.db.models import Q
 
 def generate_random_string():
     # Generate 3 random uppercase letters
@@ -39,19 +47,19 @@ class chapaPayView(generics.ListAPIView):
   
   
   def post(self, request, *args, **kwargs):
-    context = global_settings(request)  # Manually call the processor
-    api_url = context.get('API_URL')  # Extract the API_URL
+    context = global_settings(request) 
+    api_url = context.get('API_URL')  
     amount = request.data.get('amount')
     tx_refs = generate_random_string()
     response = chapa.initialize(
-    email=request.user.email,
-    amount=amount,
-    first_name=request.user.first_name,
-    last_name=request.user.last_name,
-    tx_ref=tx_refs,
-    callback_url=f"{api_url}/chapa_verify_payment", 
-    return_url=f"{api_url}/user_wallet" 
-    )
+        email=request.user.email,
+        amount=amount,
+        first_name=request.user.first_name,
+        last_name=request.user.last_name,
+        tx_ref=tx_refs,
+        callback_url=f"{api_url}/chapa_verify_payment", 
+        return_url=f"{api_url}/user_wallet" 
+        )
     wallet = Wallet.objects.get(user=request.user)
     if wallet: # Check if wallet exists
         wallet.create_transaction(amount, tx_refs)
@@ -101,6 +109,9 @@ class VerifyChapaPayment(generics.GenericAPIView):
 # Car Information -- Done
 # And Legal Informaiotn  --Done 
 
+
+# Searching Goes Here
+
 class ViewParkingLIst(generics.ListAPIView):
     serializer_class = ViewParkingListSerializer
     queryset = Parking.objects.all()
@@ -114,6 +125,38 @@ class ViewUserHistory(generics.ListAPIView):
     def get_queryset(self):
         queryset = Payment.objects.filter(user=self.request.user, status="successful")
         return queryset
+
+class ViewUserHistoryDetail(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PaymentSerializer  # The primary object this view retrieves is a Payment
+    queryset = Payment.objects.all()
+    lookup_field = 'id'
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()  # Get the Payment object based on the URL 'id'
+            payment_data = self.serializer_class(instance).data
+
+            approved_request = ApprovedRequest.objects.get(id=instance.request_id.id)
+            request_data = ApprovedRequestSerializer(approved_request).data
+
+            parking = Parking.objects.get(id=approved_request.parking_id)
+            parking_data = ParkingListSerializer(parking, context={'request': request}).data
+
+            return Response({
+                'payment': payment_data,
+                'request': request_data,
+                'parking': parking_data
+            }, status=status.HTTP_200_OK)  # Use 200 OK for successful retrieval
+
+        except Payment.DoesNotExist:
+            return Response({'message': 'Payment not found'}, status=status.HTTP_404_NOT_FOUND)
+        except ApprovedRequest.DoesNotExist:
+            return Response({'message': 'Approved Request not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Parking.DoesNotExist:
+            return Response({'message': 'Parking not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'message': f'Error fetching data: {e}'}, status=status.HTTP_400_BAD_REQUEST)
     
 class ViewUserPayment(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -251,3 +294,123 @@ class UpdateLegalDocument(generics.UpdateAPIView):
             raise ValidationError('Document Dont Exist At This Id')
         
 
+# Mobile Chapa Payment Verification and intialization
+
+
+class PayWithChapaMobile(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SerialiserReserveParking
+
+    def post(self, request, *args, **kwargs):
+        serialiserData = self.serializer_class(data=request.data)
+        context = global_settings(request)
+        api_url = context.get('API_URL')
+        response = None  # Initialize response to None
+
+        if serialiserData.is_valid():
+            try:
+                response = chapa.initialize(
+                    email=request.user.email,
+                    amount=serialiserData.data['total_price'],
+                    first_name=request.user.first_name,
+                    last_name=request.user.last_name,
+                    tx_ref=serialiserData.data['request_ref'],
+                    return_url="https://8ffdb622036ac98f41b8cbc44d920ea5.serveo.net/parkingTele/confirmPayment",
+                    callback_url="https://8ffdb622036ac98f41b8cbc44d920ea5.serveo.net/api/verify-payment-chapa",
+                )
+                print(response)
+            except Exception as e:
+                # Handle potential errors during Chapa initialization
+                return Response({'error': f'Error initializing Chapa payment: {e}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(serialiserData.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Payment initialization successful', 'chapaResponse': response})
+
+
+
+class VerifyPaymentChapaMobile(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs): # Change to post
+        try:
+            callback_data_str = request.body.decode('utf-8')
+            callback_data = json.loads(callback_data_str)
+
+            transaction_reference = str(callback_data.get('trx_ref'))
+            transaction_id = str(callback_data.get('ref_id'))
+            payment_status = callback_data.get('status')
+
+            if (payment_status == 'success'):
+                # First Making the request approved
+                reserved_request = ReserveParking.objects.filter(request_ref = transaction_reference).first()
+                reserved_request.payment_status = True
+                reserved_request.save()
+
+                # Adding to approved Request 
+                approved_request = ApprovedRequest(
+                        user = reserved_request.user,
+                        parking = reserved_request.parking,
+                        reference_trx = transaction_reference,
+                        slot = 1,
+                        start_time = reserved_request.start_time,
+                        end_time = reserved_request.end_time,
+                        payment_status = True,
+                        total_price = reserved_request.total_price
+                )
+
+                approved_request.save()
+                #  Creating A payment
+
+                payment = Payment(
+                    request_id = approved_request,
+                    tx_ref = approved_request.reference_trx,
+                    user = approved_request.user,
+                    amount = approved_request.total_price,
+                    status = 'successful',
+                )
+                payment.save()
+
+                print('all done')
+            # Implement your verification and database update logic here
+
+            return redirect('user_wallet')
+
+        except json.JSONDecodeError:
+            return Response({'error': 'Invalid JSON data received'}, status=400)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return Response({'error': 'Error processing callback'}, status=500)
+
+
+# Implementing Searching Logic
+
+class SeachParking(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ParkingListSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'address']
+
+    def get_queryset(self):
+        queryset = Parking.objects.filter(is_approved = True, price_per_hour__lt = self.request.query_params.get('price'))
+        filte_params = self.request.query_params.getlist('filter[]')
+
+        if filte_params: 
+            q_object = Q()
+
+            for param in filte_params:
+                q_object &= Q(**{param: True})
+            queryset = queryset.filter(q_object)
+
+        return queryset
+        
+
+class SearchHistory(generics.ListAPIView):
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = ViewUserHistorySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['request_id__parking__name']
+
+    def get_queryset(self):
+        return Payment.objects.filter(user = self.request.user)

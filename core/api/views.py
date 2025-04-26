@@ -5,15 +5,18 @@ from decimal import Decimal
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import generics, status
-from rest_framework.exceptions import ValidationError, NotFound, APIException
+# from rest_framework.exceptions import ValidationError, NotFound, APIException
+from rest_framework.serializers import ValidationError
 
 from authentication.models import Wallet, PlateNumber, Transaction
 from core.models import Payment
 
 from django.contrib import messages
-from .serializers import ParkingRequestSerializer,ReserveRequestSerializer, ReserveParkingSerializer, ParkingSerialzier
+
+from parking.api.serializers import ParkingListSerializer
+from .serializers import ParkingRequestSerializer,ReserveRequestSerializer, ReserveParkingSerializer, ParkingSerialzier, ParkingReserveSerializer, SerialiserReserveParking
 from ..models import ApprovedRequest, ReservedRequest, ReserveParking
 from authentication.models import User
 from parking.models import Parking, ParkingGroupMember
@@ -22,6 +25,12 @@ from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 from ..signals import  parking_request_updated
 
+
+# Importing Time Interval generator
+from ..utils import generate_time_interval
+
+# Importing Request Check
+from ..utils import check_reserve_or_approved
 
 def generate_random_string():
     # Generate 3 random uppercase letters
@@ -178,6 +187,7 @@ class ReserveParkingView(generics.GenericAPIView):
         validated_data['user'] = user
         validated_data['parking'] = parking
         validated_data['request_ref'] = generate_random_string()
+        validated_data['slot'] = 1
 
         try:
             plate_number = PlateNumber.objects.get(user=user).plate_number
@@ -191,6 +201,7 @@ class ReserveParkingView(generics.GenericAPIView):
 
         if ReserveParking.objects.filter(user=user, status=True).exists():
             return Response({'message':"Parking Already Reseved, please reload the page"})
+        
         ReserveParking.objects.create(**validated_data)
         messages.success(request, 'Parking Reserved Successfuly')
 
@@ -321,9 +332,9 @@ class StopActiveParkingRequest(APIView):
         
         if parking_request is None:
             raise ValidationError('No Approved Request Found In Using This Id')
-        
-        if parking_request.stop:
-            raise ValidationError('Parking request already stopped.')
+
+        if (parking_request.stop == False):
+            raise ValidationError({'message':'Request Already Sent'})
         
         parking_request.stop = True
         parking_request.save()
@@ -373,3 +384,83 @@ class PayActiveParkingRequest(APIView):
         return Response({'message':'Payment can not be done, insuffcient Balance'})
     
 
+
+
+#  Mobile API View -- soon will be inherited as the basic api for all the system
+class ReserveParkingAPI(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ParkingReserveSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        parking_id = request.data.get('parking_id')
+        start_time = serializer.validated_data.get('start_time')
+        end_time= serializer.validated_data.get('end_time')
+
+        hour  = ((end_time - start_time).total_seconds()) / 3600
+
+        try:
+            parking = Parking.objects.get(id=parking_id)
+            total_price = round(hour * float(parking.price_per_hour))
+
+            if ReserveParking.objects.filter(user=request.user, status=True).exists():
+                return Response({'message':"Parking Already Reseved, please reload the page"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            ReserveParking.objects.create(
+                   user = request.user,
+                    parking = parking,
+                    slot = 1,
+                    request_ref = generate_random_string(),
+                    start_time = start_time,
+                    end_time = end_time,
+                    total_price = total_price
+            )
+            return Response({'parking_name':parking.name, 'parking_price':parking.price_per_hour, 'user':request.user.phone_number, 'total-price':total_price}, status=status.HTTP_201_CREATED)
+        
+        except Parking.DoesNotExist:
+            return Response({'message': 'Parking not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class CheckReserve(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request): 
+        user = request.user
+        if ReserveParking.objects.filter(user= user, status = True).exists() or ApprovedRequest.objects.filter(user=user, status=True).exists():
+            return Response({'message':'Reserved Parking Already Exist'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({'message':'Reserve Checking Approved'}, status=status.HTTP_200_OK)
+
+class FilterReservasion(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+
+        active_parking = ApprovedRequest.objects.filter(user=user, status=True).first()
+        reserve_parking = ReserveParking.objects.filter(user=user, status=True, payment_status=False).first()
+        
+        if active_parking:
+            parking = ParkingListSerializer(active_parking.parking, context={'request': request}).data
+            return Response({'hasActiveParking':'true', 
+                             'request':ParkingRequestSerializer(active_parking).data,
+                             'parking':parking, 
+                             'user': user.phone_number, 
+                             'time_interval':generate_time_interval(active_parking.start_time, active_parking.end_time)[0], 
+                             'status':generate_time_interval(active_parking.start_time, active_parking.end_time)[1], 
+                             'stop':active_parking.stop,
+                             'type':check_reserve_or_approved(user)})
+
+        if reserve_parking:
+            return self.build_response(request ,'hasUnpaidReservation', SerialiserReserveParking(reserve_parking).data, reserve_parking.parking, user.phone_number)
+
+        return Response({'message': 'No Reserve Parking found'}, status=status.HTTP_200_OK)
+
+    def build_response(self, request,key, request_data, parking_obj, user):
+        if parking_obj:
+            parking_serializer = ParkingListSerializer(parking_obj, context={'request': request})
+            return Response({key: 'true', 'request': request_data, 'parking': parking_serializer.data, 'user':user}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Error retrieving parking details'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

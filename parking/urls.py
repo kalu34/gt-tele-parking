@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .api.views import ParkingListView,ParkingIncomeReportView
+from .api.views import ParkingListView, NearParkingListView
 
 urlpatterns = [
     path('parking_home', views.parking_home, name='parking_home'),
@@ -26,8 +26,9 @@ urlpatterns = [
 
     # API
     path('parking-list/', ParkingListView.as_view(), name='mymodel-list'),
+    path('api/near_parking', NearParkingListView.as_view(), name="api-near-parking"),
     path('near_parking/', views.NearestParkingView.as_view(), name="near_parking" ),
-    path('api/report_income/<str:time_frame>/', ParkingIncomeReportView.as_view(), name='parking_report'),
+    # path('api/report_income/<str:time_frame>/', ParkingIncomeReportView.as_view(), name='parking_report'),
     # Request Sent
 
     path('request_send', views.request_send, name='request_send'),

@@ -1,13 +1,10 @@
-from rest_framework import generics
+from django.http import JsonResponse
+from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from ..models import Parking
-from .serializers import ParkingListSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.utils import timezone
-from datetime import timedelta
-from core.models import ApprovedRequest
-from .serializers import ParkingRequestSerializer
+from .serializers import ParkingListSerializer , LocationSerializer
+from geopy.distance import geodesic
+
 
 
 class ParkingListView(generics.ListAPIView):
@@ -88,3 +85,54 @@ class ParkingIncomeReportView(APIView):
             return Response({"error": "Invalid time frame"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(report_data, status=status.HTTP_200_OK)
+    
+
+
+class NearParkingListView(APIView):
+
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+
+        location_data = request.query_params
+        location_serialiser = LocationSerializer(data=location_data)
+        
+
+        if location_serialiser.is_valid():
+            
+            try: 
+                userLocation = (location_serialiser.validated_data['latitude'], location_serialiser.validated_data['longitude'])
+                nearParkingList = []
+                allParking = Parking.objects.all()
+
+                for parking in allParking:
+
+                    if parking.location.srid != 4326:
+                        transformed_location = parking.location.transform(4326, clone=True)
+                        parkingLocation = (transformed_location.y, transformed_location.x)
+                    else:
+                        parkingLocation = (parking.location.y, parking.location.x)
+
+                    distance = geodesic(userLocation, parkingLocation).kilometers
+
+                    if distance <= 1: 
+                        parking_serialiser = ParkingListSerializer(parking, context={'request': request})
+                        nearParkingList.append(parking_serialiser.data)
+
+                return Response({'mesage':'Data Fetched', 'data': nearParkingList}, status=status.HTTP_200_OK)
+
+
+            except: 
+                print('internal server error')
+                return Response({'message':'Internal Server Error'})
+        else:
+            print('error location datat is not valid')
+            return Response({'message': 'Location Data is Not Valid'})
+        
+
+
+
+
+
+        
+        

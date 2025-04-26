@@ -1,8 +1,6 @@
 from django.db import models
 from authentication.models import User
 from parking.models import Parking, ParkingGroup
-from django.utils import timezone
-from datetime import datetime
 
 class ReserveParking(models.Model):
    user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -12,39 +10,25 @@ class ReserveParking(models.Model):
    start_time = models.DateTimeField()
    end_time = models.DateTimeField()
    status = models.BooleanField(default=True)
-   plate_number = models.CharField(max_length=10)
    payment_status = models.BooleanField(default=False)
    total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
+   def __str__(self):
+        return self.user.first_name + ' ' + self.parking.name
 
-
-class ReservedRequest(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    parking = models.ForeignKey(Parking, on_delete=models.CASCADE)
-    slot = models.IntegerField(blank=True, null=True)
-    date = models.DateField(auto_now_add=True)
-    requset_rfe = models.TextField(max_length=300, default="E432ED")
-    status = models.BooleanField(default=False)
-    plate_number = models.TextField(max_length=10, default="B32133")
 
 class ApprovedRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    parking = models.ForeignKey(Parking, related_name='parkings',on_delete=models.CASCADE)
+    parking = models.ForeignKey(Parking, related_name='parking',on_delete=models.CASCADE)
     reference_trx = models.CharField(max_length=20, default="none")
     slot = models.IntegerField(blank=True, null=True)
-    start_time = models.TimeField(null=True, blank=True, auto_now=True)
-    end_time = models.TimeField(blank=True, null=True)
-    date = models.DateField(auto_now_add=True)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
     payment_status = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    status = models.BooleanField(default=True)
     stop = models.BooleanField(default=False)
-    payment_per_hour = models.DecimalField(max_digits=5, decimal_places=2)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        if self.start_time is None:
-            self.start_time = timezone.now().time() 
-        super().save(*args, **kwargs) 
 
     def __str__(self):
         return self.user.first_name + ' ' + self.parking.name
@@ -111,6 +95,9 @@ class Request(models.Model):
   woreda = models.ForeignKey(User, on_delete=models.CASCADE)
   subcity = models.TextField(max_length=50, choices=subcity_choice)
 
+
+class ReservedRequest(models.Model):
+   pass
 
 class ApprovedRequestAdmin(models.Model):
   request_ref = models.ForeignKey(Request, on_delete=models.CASCADE)

@@ -4,23 +4,37 @@ from core.models import Payment, ApprovedRequest
 from user.models import Car, LegalDocument
 from authentication.models import User, Profile
 
+
+
 class ViewParkingListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parking
-        fields = '__all__'
+        fields = ['name']
 
 class RequestSerializerWithParking(serializers.ModelSerializer):
-    # parkings = ViewParkingListSerializer(many=True, read_only=True)
+    parking = ViewParkingListSerializer(read_only=True)
 
     class Meta:
         model = ApprovedRequest
-        fields = ['slot']
+        fields = ['slot','parking']
+
 
 class ViewUserHistorySerializer(serializers.ModelSerializer):
     request_id = RequestSerializerWithParking(read_only = True)
 
     class Meta:
         model = Payment
+        fields = ['date','request_id','id']
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
+
+
+class ApprovedRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ApprovedRequest
         fields = '__all__'
 
 
@@ -71,3 +85,6 @@ class LegalDocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = LegalDocument
         fields = '__all__'
+
+
+

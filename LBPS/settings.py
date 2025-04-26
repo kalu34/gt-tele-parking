@@ -27,8 +27,7 @@ SECRET_KEY = 'django-insecure-j#sot$23zr$qen8=$67gs#&_d$914e&fg7^=_=ex3!(j#e7z3r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-ABSOLUE_URL = 'https'
+ALLOWED_HOSTS = ['192.168.8.6', '127.0.0.1','192.168.1.7','172.16.29.230','8ffdb622036ac98f41b8cbc44d920ea5.serveo.net']
 AUTH_USER_MODEL = 'authentication.User'
 
 SCHEDULER_AUTOSTART = True
@@ -56,11 +55,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_filters',
 
     'bootstrap5',
     'crispy_forms', 
     'crispy_bootstrap4',
-    'fontawesomefree',
+    # 'fontawesomefree',
     'formtools',
 ]
 
@@ -107,8 +107,8 @@ ASGI_APPLICATION = 'LBPS.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'lbpstele',
-        'USER':'teleuser',
+        'NAME': 'lbps',
+        'USER':'kalu',
         'PASSWORD':'1234',
         'HOST':'localhost',
         'PORT':'5432',
@@ -175,7 +175,7 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL =  "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -187,6 +187,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # Setting Configeration For Sample JWT

@@ -16,6 +16,11 @@ urlpatterns = [
     path('api/remove-parking-reservasion/<int:reserved_id>/', RemoveReservedParking.as_view(), name="remove-parking-reservasion"),
     path('api/remove-parking-request/<int:request_id>/', RemoveReservedParkingRequest.as_view()),
     path('api/stop-active-parking-request/<int:request_id>/', StopActiveParkingRequest.as_view()),
-    path('api/pay-active-parking-request/<int:request_id>/', PayActiveParkingRequest.as_view())
+    path('api/pay-active-parking-request/<int:request_id>/', PayActiveParkingRequest.as_view()),
+    #  Mobile App Api
+
+    path('api/mobile/reserve-parking', ReserveParkingAPI.as_view(), name="api/mobile/reserve-parking"),
+    path('api/mobile/check-reserve', CheckReserve.as_view(), name="Check-Reserve"),
+    path('api/mobile/filter-reservasion', FilterReservasion.as_view(), name='filter-reservasion')
 
 ]

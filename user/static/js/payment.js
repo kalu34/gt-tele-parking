@@ -33,8 +33,8 @@ chapabutton.addEventListener('click', function () {
     }),
   })
     .then((response) => {
-      if (!response.ok) { // Check for non-2xx status codes
-        return response.text().then(err => {throw new Error(err || 'Invalid Response')}); // Include error message from server
+      if (!response.ok) {
+        return response.text().then(err => {throw new Error(err || 'Invalid Response')});
       }
       return response.json();
     })

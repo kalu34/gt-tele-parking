@@ -30,6 +30,7 @@ urlpatterns = [
     # API URl --------
     path('api/list-parking', ViewParkingLIst.as_view()),
     path('api/view-user-history', ViewUserHistory.as_view()),
+    path('api/view-user-history/detail/<int:id>', ViewUserHistoryDetail.as_view()),
     path('api/view-user-payment', ViewUserPayment.as_view()),
 
     path('api/user-profile', ViewProfile.as_view()),
@@ -43,5 +44,15 @@ urlpatterns = [
     path('api/user-legal-document', ViewLegalDocument.as_view()),
     path('api/user-create-legal-document', CreateLegalDocument.as_view()),
     path('api/user-update-legal-document/<int:document_id>/', UpdateLegalDocument.as_view()),
+
+
+    # Pay For Mobile 
+    path('api/pay-with-chapa', PayWithChapaMobile.as_view(), name='pay-with-chapa'),
+    path('api/verify-payment-chapa', VerifyPaymentChapaMobile.as_view(), name='verify-chapa'),
+
+    # Implementing Search
+
+    path('api/parking-search', SeachParking.as_view(), name='api/parking-search'),
+    path('api/history-search', SearchHistory.as_view(), name='history-search'),
 
 ]

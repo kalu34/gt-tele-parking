@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from authentication.models import User, PlateNumber
 from rest_framework import serializers
 from django.core.validators import validate_email
@@ -7,17 +8,21 @@ class UserRegistrationAPIViewSerializer(serializers.ModelSerializer):
     role = serializers.CharField(max_length=2, read_only=True)
     plate_number = serializers.CharField(max_length=6, write_only=True)
     email = serializers.EmailField(required=False, allow_blank=True)
+    token = serializers.CharField(max_length=300, read_only=True)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password', 'phone_number', 'plate_number', 'role']
-        extra_kwargs = {'password': {'write_only': True}} # Important: hide password on responses
+        fields = ['first_name', 'last_name', 'email', 'password', 'phone_number', 'plate_number', 'role','token']
+        extra_kwargs = {'password': {'write_only': True}}
 
     def validate(self, attrs):
         first_name = attrs.get('first_name')
         last_name = attrs.get('last_name')
         phone_number = attrs.get('phone_number')
-        plate_number = attrs.get('plate_number') #Get plate number
+        plate_number = attrs.get('plate_number')
+        email = attrs.get('email')
+        
+        print('working' ,first_name)
         errors = {}
 
         # Name Validation (First and Last)
@@ -31,6 +36,8 @@ class UserRegistrationAPIViewSerializer(serializers.ModelSerializer):
         elif not re.match(r'^[a-zA-Z\s]+$', last_name):  # Allows only letters and spaces
             errors['last_name'] = "Last name can only contain letters and spaces."
 
+        if User.objects.filter(email = email).exists():
+            raise ValidationError({'message':'Email Already Exist'})
         # Phone Number Validation
         if not phone_number:
             errors['phone_number'] = "Phone number is required."
@@ -58,10 +65,11 @@ class UserRegistrationAPIViewSerializer(serializers.ModelSerializer):
 
         if plate_number: 
             if PlateNumber.objects.filter(plate_number=plate_number).exists():
-                raise serializers.ValidationError('Plate Number Alreday Exisist')
+                raise serializers.ValidationError({'message':'Plate Number Alreday Exisist'})
             
             user = User.objects.create_user(**validated_data)
             PlateNumber.objects.create(user=user, plate_number=plate_number) 
 
 
         return user
+    

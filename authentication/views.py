@@ -33,33 +33,27 @@ class UserRegistrationAPIView(generics.GenericAPIView):
 class UserLoginAPIView(generics.GenericAPIView):
     serializer_class = UserRegistrationAPIViewSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         phone = request.data.get('phone')
         password = request.data.get('password')
 
         user = User.objects.filter(phone_number=phone).first()
 
         if user is None:
-            raise AuthenticationFailed('User Not Found, Invalid credientail')
-        
+            raise AuthenticationFailed({'message':'User Not Found, Invalid credential'})
+
         if not user.is_active:
-            raise AuthenticationFailed('User Is Not Active')
-        
-        print()
+            raise AuthenticationFailed({'meesage':'User Is Not Active'})
+
         if not user.check_password(password):
-            raise AuthenticationFailed('Invalid Password')
+            raise AuthenticationFailed({'message':'Invalid Password'})
 
-        
-        response = Response({'phone':user.phone_number, 'role':user.role})
+        token = str(user.token)
 
-        response.set_cookie('access_token', value=user.token, 
-                httponly=False, 
-                secure=True,    
-                samesite='Lax', 
-                path='/',)
-        login(request, user)
+        login(request, user)        
+
+        return Response({'phone': user.phone_number, 'role': user.role, 'token': token, 'message':'Login Successful'}, status=status.HTTP_200_OK)
     
-        return response
     
 class AdminLoginAPIView(generics.GenericAPIView):
     serializer_class = UserRegistrationAPIViewSerializer
@@ -105,7 +99,20 @@ class UserLogout(generics.GenericAPIView):
         except Exception as e:
             print(e) # Log the exception for debugging
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class CheckPhoneNumber(generics.GenericAPIView):
+
+    def post(self, request, *args, **kwargs):
+        phone = request.data.get('phone')
+
+        if User.objects.filter(phone_number = phone).exists():
+            return Response({'message':'Phone Number Already Exist'}, status=status.HTTP_400_BAD_REQUEST)
+
         
+        return Response({'message':'New phone number'}, status=status.HTTP_202_ACCEPTED)
+
+
 
 def loginView(request):
     return render(request, 'UserLogin.html')

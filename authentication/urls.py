@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserRegistrationAPIView, UserLoginAPIView,UserLogout,AdminLoginAPIView, loginView, landingPageView,userRegisterView,adminLoginView, changePassword, logout, removeRole
+from .views import UserRegistrationAPIView, UserLoginAPIView,UserLogout,AdminLoginAPIView,CheckPhoneNumber, loginView, landingPageView,userRegisterView,adminLoginView, changePassword, logout, removeRole
 
 
 
@@ -14,6 +14,8 @@ urlpatterns = [
     path('user-login-api', UserLoginAPIView.as_view(), name="user-login-api"),
     path('admin-login-api', AdminLoginAPIView.as_view(), name="admin-login-api"),
     path('user-logout', UserLogout.as_view(), name="user-logout"),
+
+    path('check_phone_number', CheckPhoneNumber.as_view(), name='check_phone_number'),
 
     path('logout', logout, name="logout"),
 
